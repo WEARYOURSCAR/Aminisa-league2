@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aminisa Snooker Club League (ASCL) — Abuja Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        asclGreen: '#00A651',
+                        asclGold: '#D4AF37',
+                        asclDark: '#0A0A0A',
+                        asclCard: '#141414',
+                        asclGray: '#1E1E1E'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar to match high-fidelity theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E1E1E;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00A651;
+        }
+        .form-input {
+            background-color: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.2s ease-in-out;
+        }
+        .form-input:focus {
+            border-color: #00A651;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 166, 81, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-asclDark text-white font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- 1. HEADER / NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 bg-[#0F0F0F]/90 backdrop-blur-md border-b border-asclGold/15 shadow-xl">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div onclick="switchTab('home')" class="flex items-center space-x-3 cursor-pointer group">
+                <div class="w-8 h-8 rounded-full bg-asclGreen border-2 border-asclGold flex items-center justify-center font-bold text-white shadow-lg transition duration-300 group-hover:scale-105">
+                    8
+                </div>
+                <div>
+                    <h1 class="text-sm md:text-base font-black tracking-wider leading-none">AMINISA SNOOKER LEAGUE</h1>
+                    <div class="flex items-center space-x-1.5 mt-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-[9px] font-bold text-asclGold tracking-widest uppercase">OFFICIAL WEB PORTAL • ABUJA CP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-1">
+                <button onclick="switchTab('home')" id="nav-home" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-asclGreen transition-colors flex items-center space-x-1.5">
+                    <i class="fa-solid fa-house text-xs"></i> <span>Home</span>
+                </button>
+                <button onclick="switchTab('register')" id="nav-register" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors flex items-center space-x-1.5">
+                    <i class="fa-solid fa-id-card text-xs"></i> <span>Roster Envelope</span>
+                </button>
+                <button onclick="switchTab('league')" id="nav-league" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors flex items-center space-x-1.5">
+                    <i class="fa-solid fa-trophy text-xs"></i> <span>League Central</span>
+                </button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors flex items-center space-x-1.5">
+                    <i class="fa-solid fa-user-shield text-xs"></i> <span>Secure Kernel</span>
+                </button>
+            </nav>
+
+            <!-- Live Status & Mobile Menu Access -->
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center space-x-2 bg-emerald-950/40 border border-emerald-500/20 rounded-full px-3 py-1">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
+                    <span class="text-[10px] font-black text-emerald-400 tracking-wider">LIVE PORTAL</span>
+                </div>
+                <!-- Mini toggler just for styling completeness -->
+                <div class="text-[10px] bg-asclCard border border-asclGold/30 px-2 py-1 rounded text-asclGold font-mono uppercase">
+                    WEB v1.4
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Quick Tabs for bottom representation -->
+        <div class="flex justify-around border-t border-white/5 bg-[#0A0A0A] md:hidden">
+            <button onclick="switchTab('home')" id="mobile-nav-home" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-asclGreen flex flex-col items-center">
+                <i class="fa-solid fa-house mb-0.5 text-sm"></i> Home
+            </button>
+            <button onclick="switchTab('register')" id="mobile-nav-register" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-id-card mb-0.5 text-sm"></i> Register
+            </button>
+            <button onclick="switchTab('league')" id="mobile-nav-league" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-trophy mb-0.5 text-sm"></i> League
+            </button>
+            <button onclick="switchTab('admin')" id="mobile-nav-admin" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-user-shield mb-0.5 text-sm"></i> Admin
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTAINER -->
+    <main class="flex-grow w-full max-w-6xl mx-auto px-4 py-6 md:py-10">
+
+        <!-- ==================== HOME SECTION ==================== -->
+        <section id="section-home" class="space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-br from-asclCard to-[#070707] border border-asclGold/20 rounded-2xl overflow-hidden p-6 md:p-12 shadow-2xl">
+                <!-- Decorative Cue Background Elements -->
+                <div class="absolute top-0 right-0 w-80 h-80 bg-asclGreen/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                <div class="absolute bottom-0 left-0 w-80 h-80 bg-asclGold/5 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+                <div class="relative max-w-2xl space-y-6">
+                    <div class="inline-flex items-center space-x-2 bg-asclGold/10 border border-asclGold/30 rounded-full px-3 py-1 text-asclGold text-xs font-bold uppercase tracking-widest">
+                        🏆 SEASON 3 SIGN-UPS ACTIVE
+                    </div>
+                    
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight uppercase">
+                        Abuja's Premier <span class="text-asclGreen">Championship Snooker</span> Tournament
+                    </h2>
+                    
+                    <p class="text-sm md:text-base text-gray-400 leading-relaxed">
+                        Join Nigeria's elite cue specialists in the Aminisa Snooker Club League (ASCL). Real-time automated roster registration, live performance statistics, EPBSA-certified officiating, and dynamic player profile verification badges.
+                    </p>
+
+                    <!-- Stats Ribbon -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5">
+                        <div>
+                            <span class="block text-xl font-bold text-white">₦1,500,000</span>
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">1st Place Prize</span>
+                        </div>
+                        <div>
+                            <span class="block text-xl font-bold text-asclGold">₦50,000</span>
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Registration Entry</span>
+                        </div>
+                        <div>
+                            <span class="block text-xl font-bold text-asclGreen">10 Players</span>
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Elite Group Stage</span>
+                        </div>
+                        <div>
+                            <span class="block text-xl font-bold text-white">Zenith Bank</span>
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Fiduciary Partner</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+                        <button onclick="switchTab('register')" class="bg-asclGreen hover:bg-emerald-600 text-white text-xs font-extrabold uppercase tracking-widest px-6 py-4 rounded-lg shadow-lg hover:shadow-emerald-900/30 transition duration-200 text-center">
+                            SUBMIT ENVELOPE ROSTER
+                        </button>
+                        <button onclick="switchTab('league')" class="bg-transparent hover:bg-white/5 border border-asclGold/50 text-asclGold text-xs font-extrabold uppercase tracking-widest px-6 py-4 rounded-lg transition duration-200 text-center">
+                            VIEW LIVE STANDINGS <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cash Prizes & Awards -->
+            <div>
+                <h3 class="text-lg font-black tracking-wide uppercase border-b border-asclGreen pb-2 mb-6">
+                    💰 TOURNAMENT PRIZE MATRIX
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- 1st -->
+                    <div class="bg-asclCard border border-asclGold/20 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold transition-all">
+                        <span class="absolute top-4 right-4 text-3xl opacity-20">🏆</span>
+                        <span class="text-[9px] font-bold text-asclGold uppercase tracking-widest">1st Place (Champion)</span>
+                        <h4 class="text-xl font-black text-white mt-1">₦1,500,000</h4>
+                        <p class="text-xs text-gray-400 mt-2">Ultimate Abuja bragging rights, official gold grand trophy, and elite club status membership.</p>
+                    </div>
+                    <!-- 2nd -->
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold/30 transition-all">
+                        <span class="absolute top-4 right-4 text-3xl opacity-25">🥈</span>
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">2nd Place (Runner-Up)</span>
+                        <h4 class="text-xl font-black text-white mt-1">₦750,000</h4>
+                        <p class="text-xs text-gray-400 mt-2">Prestigious tournament silver medal certificate, Direct group seed placement for the next calendar tour stage.</p>
+                    </div>
+                    <!-- 3rd -->
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold/30 transition-all">
+                        <span class="absolute top-4 right-4 text-3xl opacity-25">🥉</span>
+                        <span class="text-[9px] font-bold text-amber-600 uppercase tracking-widest">3rd Place (Runner)</span>
+                        <h4 class="text-xl font-black text-white mt-1">₦350,000</h4>
+                        <p class="text-xs text-gray-400 mt-2">Bronze championship medal medallion, tournament custom branded performance graphite cue stick.</p>
+                    </div>
+                    <!-- Break -->
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold/30 transition-all">
+                        <span class="absolute top-4 right-4 text-3xl opacity-25">🎯</span>
+                        <span class="text-[9px] font-bold text-asclGreen uppercase tracking-widest">Highest Break Sequence</span>
+                        <h4 class="text-xl font-black text-white mt-1">₦150,000</h4>
+                        <p class="text-xs text-gray-400 mt-2">Special cash bonus awarded to any rostered player who records the highest single break sequence exceeding 50.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div>
+                <h3 class="text-lg font-black tracking-wide uppercase border-b border-asclGreen pb-2 mb-6">
+                    ⚡ TOURNAMENT OPERATIONS & TECH
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="flex items-start space-x-3">
+                        <div class="p-2.5 bg-asclGreen/10 border border-asclGreen/30 rounded-lg text-asclGreen">
+                            <i class="fa-solid fa-gavel"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Professional Officiating</h4>
+                            <p class="text-xs text-gray-400 mt-1 leading-relaxed">EPBSA-trained and local Abuja expert board referees officiating all tournament brackets.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="p-2.5 bg-asclGreen/10 border border-asclGreen/30 rounded-lg text-asclGreen">
+                            <i class="fa-solid fa-tv"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">HD Standard Broadcasts</h4>
+                            <p class="text-xs text-gray-400 mt-1 leading-relaxed">Multi-camera YouTube and Facebook Streams with real-time digital scoring boards layout.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="p-2.5 bg-asclGreen/10 border border-asclGreen/30 rounded-lg text-asclGreen">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Elite Play Arena</h4>
+                            <p class="text-xs text-gray-400 mt-1 leading-relaxed">Premium steel block cushions tables dressed with tournament high-speed wool speedcloth.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="p-2.5 bg-asclGreen/10 border border-asclGreen/30 rounded-lg text-asclGreen">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-white">Roster Performance Cards</h4>
+                            <p class="text-xs text-gray-400 mt-1 leading-relaxed">Personal player metrics charts: potting margins, average frame duration, safety rates.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div>
+                <h3 class="text-lg font-black tracking-wide uppercase border-b border-asclGreen pb-2 mb-6">
+                    🎙️ CHAMPIONSHIP PERSPECTIVES
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-6 flex flex-col justify-between">
+                        <p class="text-xs italic text-gray-300 leading-relaxed">
+                            "Our mission with ASCL is simple: raise snooker playing standards, and establish Abuja as a premium snooker sporting cluster in West Africa. This registration module elevates the professionalism of our league."
+                        </p>
+                        <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-asclGold text-black flex items-center justify-center font-bold text-xs">
+                                A
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-asclGold">Aminu Aminu</h4>
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">ASCL Founder & Snooker Master Advocate</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-6 flex flex-col justify-between">
+                        <p class="text-xs italic text-gray-300 leading-relaxed">
+                            "The structural competitive intensity of ASCL is unmatched. Highly organized, elite refereeing, and premium table fast conditions. If you cue snooker in Abuja, ASC is the place to be."
+                        </p>
+                        <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-asclGold text-black flex items-center justify-center font-bold text-xs">
+                                W
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-asclGold">Captain Wale</h4>
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">Reigning Season 2 Bronze Champion</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== REGISTRATION SECTION ==================== -->
+        <section id="section-register" class="hidden max-w-2xl mx-auto">
+            <div id="register-form-box" class="bg-asclCard border border-asclGold/15 rounded-2xl p-6 md:p-8 shadow-2xl space-y-6">
+                <div class="border-b border-white/5 pb-4">
+                    <span class="text-[10px] font-bold text-asclGold uppercase tracking-widest leading-none">REGISTRATION PROTOCOL</span>
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight mt-1 uppercase">ASCL PLAYER ROSTER ENVELOPE</h2>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Fill the form and submit. Note: Official regulatory fee is ₦50,000, payable to Zenith Bank (1012948102). Verify transaction screenshots below.</p>
+                </div>
+
+                <form id="ascl-registration-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Full Name -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Full Name (As in Passport)</label>
+                            <input type="text" id="reg-fullname" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white" placeholder="John Doe">
+                        </div>
+                        <!-- Cue Alias -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Cue Alias (Nickname - Optional)</label>
+                            <input type="text" id="reg-nickname" class="w-full px-3 py-2 text-sm rounded-lg form-input text-white" placeholder="'The Machine'">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Email -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Email Address</label>
+                            <input type="email" id="reg-email" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white" placeholder="john@example.com">
+                        </div>
+                        <!-- WhatsApp -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">WhatsApp / Phone Number</label>
+                            <input type="text" id="reg-whatsapp" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white" placeholder="+234 803 ...">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Date of Birth -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Date of Birth</label>
+                            <input type="date" id="reg-dob" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white">
+                        </div>
+                        <!-- Skill Level -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Cueist Skill Level</label>
+                            <select id="reg-skill" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard">
+                                <option value="Novice">Novice Cueist</option>
+                                <option value="Intermediate" selected>Intermediate League</option>
+                                <option value="Semi-Pro">Semi-Professional</option>
+                                <option value="Pro Master">Pro Tournament Master</option>
+                            </select>
+                        </div>
+                        <!-- Cue Hand -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Preferred Hand</label>
+                            <select id="reg-hand" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard">
+                                <option value="Right-Handed" selected>Right-Handed</option>
+                                <option value="Left-Handed">Left-Handed</option>
+                                <option value="Ambidextrous">Ambidextrous</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Residential Area -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Abuja Residential Area</label>
+                        <select id="reg-residence" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard">
+                            <option value="Maitama" selected>Maitama CP</option>
+                            <option value="Wuse 2">Wuse 2 District</option>
+                            <option value="Garki">Garki Cantonment</option>
+                            <option value="Gwarinpa">Gwarinpa Estate</option>
+                            <option value="Apo">Apo District</option>
+                            <option value="Asokoro">Asokoro Peak</option>
+                            <option value="Lokogoma">Lokogoma Area</option>
+                        </select>
+                    </div>
+
+                    <!-- File Uploads UI Custom Render for Website High Fidelity -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Passport File -->
+                        <div class="border border-dashed border-asclGold/20 hover:border-asclGold/50 rounded-lg p-4 bg-[#0A0A0A]/40 text-center cursor-pointer transition relative" onclick="triggerFileInput('file-passport')">
+                            <i class="fa-solid fa-user-circle text-2xl text-asclGold opacity-70 mb-1.5"></i>
+                            <h4 class="text-xs font-black uppercase text-white">Passport Photo</h4>
+                            <p class="text-[9px] text-gray-400 mt-0.5 leading-tight">Click/Drop Face Silhouette File<br>Supports JPG / PNG (Max 4MB)</p>
+                            <input type="file" id="file-passport" accept="image/*" class="hidden" onchange="previewFile(this, 'passport-preview-text', 'passport-thumb')">
+                            <div class="text-[10px] text-asclGreen font-sans mt-2 font-bold hidden" id="passport-preview-text">
+                                <i class="fa-solid fa-check-circle mr-1"></i> Loaded
+                            </div>
+                            <!-- Mini Thumbnail Preview -->
+                            <img id="passport-thumb" class="w-12 h-12 object-cover rounded border border-asclGreen absolute bottom-2 right-2 hidden">
+                        </div>
+
+                        <!-- Payment Receipt File -->
+                        <div class="border border-dashed border-asclGold/20 hover:border-asclGold/50 rounded-lg p-4 bg-[#0A0A0A]/40 text-center cursor-pointer transition relative" onclick="triggerFileInput('file-receipt')">
+                            <i class="fa-solid fa-receipt text-2xl text-asclGold opacity-70 mb-1.5"></i>
+                            <h4 class="text-xs font-black uppercase text-white">₦50,000 Receipt Proof</h4>
+                            <p class="text-[9px] text-gray-400 mt-0.5 leading-tight">Upload Zenith Bank Transfer Bill<br>Required for Roster approval</p>
+                            <input type="file" id="file-receipt" accept="image/*" class="hidden" onchange="previewFile(this, 'receipt-preview-text', 'receipt-thumb')">
+                            <div class="text-[10px] text-asclGreen font-sans mt-2 font-bold hidden" id="receipt-preview-text">
+                                <i class="fa-solid fa-check-circle mr-1"></i> Loaded
+                            </div>
+                            <!-- Mini Thumbnail Preview -->
+                            <img id="receipt-thumb" class="w-12 h-12 object-cover rounded border border-asclGreen absolute bottom-2 right-2 hidden">
+                        </div>
+                    </div>
+
+                    <!-- Submit Action Button -->
+                    <button type="submit" class="w-full bg-asclGreen hover:bg-emerald-600 text-white font-extrabold uppercase tracking-widest py-4 rounded-lg shadow-lg hover:shadow-emerald-950/40 transition duration-200">
+                        SUBMIT OFFICIAL ENVELOPE
+                    </button>
+                </form>
+            </div>
+
+            <!-- SUCCESS REDIRECT CARD INTERACTIVE SCREEN -->
+            <div id="register-success-box" class="hidden bg-asclCard border border-asclGreen rounded-2xl p-6 md:p-8 shadow-3xl text-center space-y-6">
+                <div class="w-16 h-16 bg-asclGreen/10 border-2 border-asclGreen rounded-full flex items-center justify-center mx-auto text-asclGreen animate-bounce">
+                    <i class="fa-solid fa-check text-2xl"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold text-asclGreen uppercase tracking-widest">TRANSACTION ENVELOPE SECURED</span>
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight mt-1 text-white uppercase">REGISTRATION COMMITTED</h2>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Your application has been safely registered on the blockchain roster ledger. Your status is initially <span class="text-asclGold font-bold uppercase">Pending Evaluation</span>. Admin reviews typically resolve in 60 minutes.</p>
+                </div>
+
+                <!-- High Fidelity Digital Athlete Badge -->
+                <div class="max-w-sm mx-auto bg-gradient-to-b from-[#111] to-asclCard border border-asclGold/35 rounded-xl p-6 text-left relative overflow-hidden shadow-2xl">
+                    <div class="absolute top-0 right-0 bg-asclGold/10 border-b border-l border-asclGold/20 rounded-bl px-2.5 py-1 text-[8px] font-bold text-asclGold tracking-widest uppercase">
+                        SEASON 3 ATHLETE
+                    </div>
+
+                    <!-- Badge Header -->
+                    <div class="flex items-center space-x-3 border-b border-white/5 pb-3">
+                        <div class="w-7 h-7 rounded-full bg-asclGreen border border-asclGold flex items-center justify-center text-white font-black text-xs">
+                            8
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-black text-white leading-none">ASCL ABUJA ATHLETE CARD</h3>
+                            <span class="text-[7px] text-gray-500 uppercase tracking-widest">AMINISA SNOOKER CLUB OFFICIAL</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge Middle Profile -->
+                    <div class="flex items-center space-x-4 py-4">
+                        <div class="w-16 h-16 rounded-lg bg-asclGray border border-asclGreen overflow-hidden flex items-center justify-center relative">
+                            <!-- Live Rendered Image Avatar or Silhouette -->
+                            <img id="badge-photo" class="w-full h-full object-cover hidden">
+                            <span id="badge-silhouette" class="text-3xl">👤</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 id="badge-name" class="text-sm font-black text-white leading-tight uppercase">JASON BOURNE</h4>
+                            <p id="badge-nickname" class="text-[10px] text-asclGold font-semibold italic">"The Marksman"</p>
+                            <p id="badge-dob-area" class="text-[9px] text-gray-400">DOB: 12-05-1995 • Abuja (Maitama CP)</p>
+                            <!-- Unique Athlete ID -->
+                            <div class="inline-block bg-asclGreen/10 border border-asclGreen/30 rounded px-1.5 py-0.5 text-[10px] text-asclGreen font-mono font-bold" id="badge-unique-id">
+                                ID: ASCL-10492-Z
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fineprint & Tech barcode representation -->
+                    <div class="border-t border-white/5 pt-3 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[7px] text-gray-500 uppercase tracking-wider font-bold">ROSTER CLASSIFICATION</span>
+                            <span id="badge-specs" class="text-[9px] font-bold text-white uppercase tracking-wider">RIGHT HANDED • INTERMEDIATE</span>
+                        </div>
+                        <!-- Mini Barcode/QR visualization using styling -->
+                        <div class="flex items-center space-x-1 border border-white/10 px-1 py-0.5 rounded bg-[#0A0A0A]">
+                            <div class="w-[2px] h-6 bg-white"></div>
+                            <div class="w-[1px] h-6 bg-white"></div>
+                            <div class="w-[3px] h-6 bg-white"></div>
+                            <div class="w-[1px] h-6 bg-white"></div>
+                            <div class="w-[2px] h-6 bg-white"></div>
+                            <div class="w-[1px] h-6 bg-white p-0.5"></div>
+                            <div class="w-[3px] h-6 bg-white"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Done/Nav Switch Button -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button onclick="switchTab('home')" class="flex-1 bg-asclGreen hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition">
+                        RETURN HOME
+                    </button>
+                    <button onclick="switchTab('admin')" class="flex-1 bg-asclGray hover:bg-[#252525] text-asclGold border border-asclGold/30 text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition">
+                        GOTO SECURE KERNEL REVIEW
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== LEAGUE SECTION ==================== -->
+        <section id="section-league" class="hidden space-y-6">
+            <!-- Navigation Header for sub-tabs -->
+            <div class="flex items-center justify-start border-b border-white/5 space-x-4 mb-6">
+                <button onclick="switchLeagueTab('standings')" id="lbl-standings" class="py-2 px-1 text-xs font-bold tracking-widest uppercase border-b-2 border-asclGreen text-white transition-colors">
+                    STANDING STANDS
+                </button>
+                <button onclick="switchLeagueTab('fixtures')" id="lbl-fixtures" class="py-2 px-1 text-xs font-bold tracking-widest uppercase border-b-2 border-transparent text-gray-400 hover:text-white transition-colors">
+                    TOURNAMENT FIXTURES
+                </button>
+                <button onclick="switchLeagueTab('leaderboard')" id="lbl-leaderboard" class="py-2 px-1 text-xs font-bold tracking-widest uppercase border-b-2 border-transparent text-gray-400 hover:text-white transition-colors">
+                    LEADERBOARDS
+                </button>
+            </div>
+
+            <!-- SUB-TAB: STANDINGS STANDS -->
+            <div id="league-standings" class="space-y-4">
+                <div class="bg-asclCard border border-white/5 rounded-xl overflow-x-auto shadow-2xl">
+                    <table class="w-full text-left text-xs md:text-sm">
+                        <thead class="bg-[#0F0F0F] text-gray-400 font-extrabold uppercase tracking-wider border-b border-white/5">
+                            <tr>
+                                <th class="px-4 py-3 text-center w-12">RANK</th>
+                                <th class="px-4 py-3">PLAYER ATHLETE NAME</th>
+                                <th class="px-4 py-3 text-center">PLD</th>
+                                <th class="px-4 py-3 text-center text-emerald-400">WON</th>
+                                <th class="px-4 py-3 text-center text-red-400">LST</th>
+                                <th class="px-4 py-3 text-center">FRAMES (W-L)</th>
+                                <th class="px-4 py-3 text-center text-asclGold">PTS</th>
+                                <th class="px-4 py-3 text-center">FORM STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-table-body" class="divide-y divide-white/5">
+                            <!-- Dynamic Content Injected By JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SUB-TAB: TOURNAMENT FIXTURES -->
+            <div id="league-fixtures" class="hidden space-y-8">
+                <!-- Upcoming Rounds -->
+                <div>
+                    <h3 class="text-xs font-black tracking-widest uppercase text-asclGold mb-3 flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-asclGold mr-2 animate-ping"></span> UPCOMING CALENDAR ROUND FIXTURES
+                    </h3>
+                    <div id="fixtures-upcoming-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Injected -->
+                    </div>
+                </div>
+
+                <!-- Completed Rounds -->
+                <div>
+                    <h3 class="text-xs font-black tracking-widest uppercase text-emerald-400 mb-3 flex items-center">
+                        <i class="fa-solid fa-check-circle mr-2"></i> COMPLETED ROUND RECAPS
+                    </h3>
+                    <div id="fixtures-completed-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Injected -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-TAB: LEADERBOARDS -->
+            <div id="league-leaderboard" class="hidden space-y-4 max-w-xl mx-auto">
+                <div class="bg-asclCard border border-white/5 rounded-xl p-5 shadow-2xl space-y-4">
+                    <div class="text-center border-b border-white/5 pb-3">
+                        <h3 class="text-sm font-black text-asclGold uppercase tracking-widest">ASCL SEASON RATING POINTS</h3>
+                        <p class="text-[10px] text-gray-500 mt-1">Reflects aggregated performance multipliers across all offline structures</p>
+                    </div>
+
+                    <div id="leaderboard-rating-list" class="space-y-2.5">
+                        <!-- Dynamic Leaderboard Content Injected By JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ADMIN SECTION ==================== -->
+        <section id="section-admin" class="hidden">
+            <!-- ADMIN LOCK GATEWAY GATE -->
+            <div id="admin-lock-gateway" class="max-w-md mx-auto bg-asclCard border border-asclGold/25 rounded-2xl p-6 shadow-3xl text-center space-y-6">
+                <i class="fa-solid fa-lock text-4xl text-asclGold animate-pulse"></i>
+                <div>
+                    <h2 class="text-base font-black tracking-widest uppercase">SECURE ADMIN PORTAL</h2>
+                    <p class="text-[10px] text-gray-400 mt-1.5 leading-relaxed">Authorization required to evaluate payment receipts, approve/reject registrations, and sync Abuja rosters. Default passphrase: <span class="text-asclGold font-mono">admin</span></p>
+                </div>
+
+                <div class="space-y-4">
+                    <input type="password" id="admin-passphrase-input" class="w-full px-3 py-2 text-sm rounded-lg form-input text-center placeholder-gray-600 font-mono" placeholder="•••••••••">
+                    <p id="admin-auth-error" class="hidden text-[10px] text-red-500 font-semibold uppercase"><i class="fa-solid fa-exclamation-triangle mr-1"></i> Invalid passphrase. Try again.</p>
+                    
+                    <button onclick="attemptAdminAuth()" class="w-full bg-asclGreen hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition-colors">
+                        ELEVATE INTEGRITY ACCESS
+                    </button>
+
+                    <button onclick="forceBypassAuth()" class="text-[10px] text-asclGold hover:underline tracking-wider font-extrabold uppercase mt-2 block mx-auto">
+                        DEBUG BYPASS INSTANT ACCESS
+                    </button>
+                </div>
+            </div>
+
+            <!-- ADMIN DASHBOARD CONSOLE (HIDDEN BY DEFAULT) -->
+            <div id="admin-dashboard-console" class="hidden space-y-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between border-b border-white/5 pb-4">
+                    <div>
+                        <h2 class="text-xl font-black text-white uppercase tracking-tight">ASCL CENTRAL MANAGER DASHBOARD</h2>
+                        <span class="text-[10px] font-bold text-gray-400">Evaluate financial transfers, verify athletes passport indices, print offline records.</span>
+                    </div>
+                    <button onclick="logoutAdmin()" class="bg-asclGray hover:bg-[#252525] text-red-400 border border-red-500/10 px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition">
+                        <i class="fa-solid fa-sign-out-alt mr-1"></i> LOCKOUT
+                    </button>
+                </div>
+
+                <!-- Stats grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-4 text-center">
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Aggregate Records</span>
+                        <h3 id="stat-total" class="text-2xl font-black text-white mt-1">0</h3>
+                    </div>
+                    <div class="bg-asclCard border border-asclGold/20 rounded-xl p-4 text-center">
+                        <span class="text-[9px] font-bold text-asclGold uppercase tracking-widest">Pending Check</span>
+                        <h3 id="stat-pending" class="text-2xl font-black text-asclGold mt-1">0</h3>
+                    </div>
+                    <div class="bg-asclCard border border-emerald-500/20 rounded-xl p-4 text-center">
+                        <span class="text-[9px] font-bold text-[#10C469] uppercase tracking-widest">Roster Settled</span>
+                        <h3 id="stat-approved" class="text-2xl font-black text-[#10C469] mt-1">0</h3>
+                    </div>
+                    <div class="bg-asclCard border border-red-500/20 rounded-xl p-4 text-center">
+                        <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest">Rejected / Refund</span>
+                        <h3 id="stat-rejected" class="text-2xl font-black text-red-500 mt-1">0</h3>
+                    </div>
+                </div>
+
+                <!-- Filters & CSV Export -->
+                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-4">
+                    <div class="relative flex-grow">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 pointer-events-none">
+                            <i class="fa-solid fa-search text-xs"></i>
+                        </span>
+                        <input type="text" id="admin-search-query" onkeyup="filterAdminRoster()" class="w-full px-3 py-2.5 pl-9 text-xs rounded-lg form-input text-white" placeholder="Search athlete names, IDs, Whatsapp, residences...">
+                    </div>
+                    <button onclick="downloadAsCsv()" class="bg-asclCard hover:bg-[#1C1C1C] border border-asclGold/50 text-asclGold text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-lg flex items-center justify-center space-x-2 transition">
+                        <i class="fa-solid fa-download"></i> <span>EXPORT REGISTER CSV</span>
+                    </button>
+                </div>
+
+                <!-- Applicants Queue list representation -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black uppercase text-asclGold tracking-widest"><i class="fa-solid fa-address-book"></i> ATHLETE REGISTRATION QUEUE</h3>
+                    <div id="admin-applicants-root" class="space-y-4">
+                        <!-- Dynamic Cards Injected via Javascript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 3. FOOTER SECTION -->
+    <footer class="bg-[#0F0F0F] border-t border-asclGold/15 mt-12 py-10">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-3">
+                <h4 class="text-sm font-black text-white uppercase tracking-wider">AMINISA SNOOKER LEAGUE</h4>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Abuja's ultimate physical and digital championship cueists tournament. Real-time stats tracking, highly verified dynamic profile credentials, automated registration rosters, and premium physical trophies in Nigeria's Capital.
+                </p>
+            </div>
+            <div class="space-y-3">
+                <h4 class="text-xs font-black text-asclGold uppercase tracking-wider">PORTAL GENERAL ENQUIRIES</h4>
+                <p class="text-xs text-lightGray font-semibold leading-relaxed">
+                    ⚙️ Secretariat Office • Wuse II, Abuja<br>
+                    ✉️ info@aminisasnooker.com<br>
+                    📞 +234 803 123 4567<br>
+                    💬 WhatsApp Elite Cueists Group CP
+                </p>
+            </div>
+            <div class="space-y-3">
+                <h4 class="text-xs font-black text-asclGold uppercase tracking-wider font-semibold">FIDUCIARY CLEARANCE DETAILS</h4>
+                <p class="text-xs text-lightGray leading-relaxed">
+                    Ensure payment transfers are directed explicitly to the designated account:<br>
+                    <strong>🏦 Zenith Bank Plc • Nigeria</strong><br>
+                    <strong>🔢 Account Number: 1012948102</strong><br>
+                    <strong>👤 Acct Name: Aminisa Snooker Club League</strong>
+                </p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-[10px] text-gray-600 font-medium">© 2026 ASCL Abuja. Standard Web-Portal Layout Interface. All Rights Reserved.</p>
+            <div class="flex space-x-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                <a href="#" class="hover:text-asclGold">Rules & Conduct</a>
+                <a href="#" class="hover:text-asclGold">League Constitution</a>
+                <a href="#" class="hover:text-asclGold">Support Center</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ==================== HIGHLAND DIALOG ZOOM ATTACHMENT MODAL ==================== -->
+    <div id="modal-container" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-asclCard border border-asclGold/60 rounded-xl p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <h4 id="modal-title" class="text-xs font-black uppercase text-asclGold tracking-widest">Attachment Preview</h4>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <!-- Image Viewport -->
+            <div id="modal-image-root" class="hidden w-full h-48 bg-asclGray rounded-lg border border-white/5 overflow-hidden flex items-center justify-center">
+                <img id="modal-zoomed-image" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Silhouette Silhouette Passport Viewport -->
+            <div id="modal-passport-silhouette-root" class="hidden w-full h-48 bg-asclGray rounded-lg border border-asclGreen/40 flex flex-col items-center justify-center text-center">
+                <span class="text-5xl">👤</span>
+                <span class="block text-xs font-bold text-white mt-1 uppercase" id="modal-passport-fullname">Jason Bourne</span>
+                <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">ASCL Registered Athlete Silhouette</span>
+            </div>
+
+            <!-- Receipt Layout Viewport -->
+            <div id="modal-receipt-root" class="hidden bg-white text-black p-4 rounded-lg border border-gray-300 font-sans shadow-lg uppercase leading-tight text-[11px] space-y-2">
+                <div class="text-center font-black border-b border-gray-300 pb-1.5 mb-2">
+                    <div class="text-[9px] text-gray-600">ZENITH BANK NIGERIA PLC</div>
+                    <div class="text-[12px]">OFFICIAL TRANSACTION RECEIPT</div>
+                </div>
+                <div>
+                    <span class="block text-[7px] text-gray-500 font-black">PAYMENT TO BENEFICIARY:</span>
+                    <span class="block font-bold">AMINISA SNOOKER CLUB LEAGUE (ASCL)</span>
+                </div>
+                <div>
+                    <span class="block text-[7px] text-gray-500 font-black">BENEFICIARY ACCOUNT:</span>
+                    <span class="block font-bold">ZENITH BANK • 1012948102</span>
+                </div>
+                <div>
+                    <span class="block text-[7px] text-gray-500 font-black">SENDER TRANSFER COG:</span>
+                    <span class="block font-bold text-xs" id="modal-receipt-sender">JOHN DOE</span>
+                </div>
+                <div>
+                    <span class="block text-[7px] text-gray-500 font-black">AMOUNT PAID COMPLIANCE:</span>
+                    <span class="block font-black text-emerald-600 text-xs">₦50,000.00</span>
+                </div>
+                <div>
+                    <span class="block text-[7px] text-gray-500 font-black">TRANSACTION HASH INDICES:</span>
+                    <span class="block font-bold text-[8px] font-mono text-gray-700" id="modal-receipt-hash">TXN-ASCL-10492-Z-849510</span>
+                </div>
+                <div class="flex items-center justify-between border-t border-gray-200 pt-2 text-[8px] text-emerald-600 font-black">
+                    <span>TRANSFER REF COMPLETED</span>
+                    <i class="fa-solid fa-check-circle text-xs"></i>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-asclGreen hover:bg-emerald-600 text-white font-extrabold uppercase text-xs py-2.5 rounded-lg transition-colors">
+                CLOSE ATTACHMENT REVIEW
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ==================== WEB JS LOGIC CORE ==================== -->
+    <script>
+        // Static App State matching the Android codebase structure exactly
+        const ASCL_DATA = {
+            standings: [
+                { rank: 1, name: "Wale 'The Sniper' Adeleke", played: 12, won: 10, lost: 2, fw: 42, fl: 21, pts: 30, form: ["W", "W", "W", "L", "W"] },
+                { rank: 2, name: "Chukwuma Okafor", played: 12, won: 9, lost: 3, fw: 39, fl: 24, pts: 27, form: ["W", "W", "L", "W", "W"] },
+                { rank: 3, name: "Sani Bello Usman", played: 12, won: 8, lost: 4, fw: 35, fl: 27, pts: 24, form: ["L", "W", "W", "W", "L"] },
+                { rank: 4, name: "Tunde 'Cushion' Williams", played: 12, won: 7, lost: 5, fw: 33, fl: 29, pts: 21, form: ["W", "L", "W", "L", "W"] },
+                { rank: 5, name: "Ibrahim 'The Master' Haruna", played: 12, won: 7, lost: 5, fw: 31, fl: 30, pts: 21, form: ["L", "W", "L", "W", "W"] },
+                { rank: 6, name: "Daniel 'Double-Kiss' Effiong", played: 12, won: 6, lost: 6, fw: 28, fl: 28, pts: 18, form: ["W", "L", "W", "W", "L"] },
+                { rank: 7, name: "Nze Kevin Kalu", played: 12, won: 5, lost: 7, fw: 25, fl: 32, pts: 15, form: ["L", "W", "L", "L", "W"] },
+                { rank: 8, name: "Mustapha Gombe", played: 12, won: 4, lost: 8, fw: 22, fl: 35, pts: 12, form: ["W", "L", "L", "L", "L"] },
+                { rank: 9, name: "Victor 'Side-Spin' George", played: 12, won: 3, lost: 9, fw: 18, fl: 38, pts: 9, form: ["L", "L", "W", "L", "L"] },
+                { rank: 10, name: "Kunle Jinadu", played: 12, won: 1, lost: 11, fw: 12, fl: 44, pts: 3, form: ["L", "L", "L", "L", "L"] }
+            ],
+            fixtures: [
+                { id: 1, round: "Upcoming - Round 13", playerA: "Wale 'The Sniper' Adeleke", playerB: "Sani Bello Usman", scoreA: null, scoreB: null, date: "June 12, 2026", time: "17:00", venue: "Aminisa Club House, Abuja (Table 1)", completed: false },
+                { id: 2, round: "Upcoming - Round 13", playerA: "Chukwuma Okafor", playerB: "Tunde 'Cushion' Williams", scoreA: null, scoreB: null, date: "June 12, 2026", time: "19:00", venue: "Aminisa Club House, Abuja (Table 2)", completed: false },
+                { id: 3, round: "Upcoming - Round 13", playerA: "Ibrahim 'The Master' Haruna", playerB: "Daniel 'Double-Kiss' Effiong", scoreA: null, scoreB: null, date: "June 13, 2026", time: "16:00", venue: "Aminisa Club House, Abuja (Table 1)", completed: false },
+                { id: 4, round: "Upcoming - Round 13", playerA: "Nze Kevin Kalu", playerB: "Mustapha Gombe", scoreA: null, scoreB: null, date: "June 13, 2026", time: "18:20", venue: "Aminisa Club House, Abuja (Table 2)", completed: false },
+                
+                { id: 5, round: "Completed - Round 12", playerA: "Wale 'The Sniper' Adeleke", playerB: "Kunle Jinadu", scoreA: 4, scoreB: 1, date: "May 28, 2026", time: "17:00", venue: "Aminisa Club House, Abuja (Table 1)", completed: true },
+                { id: 6, round: "Completed - Round 12", playerA: "Chukwuma Okafor", playerB: "Victor 'Side-Spin' George", scoreA: 4, scoreB: 0, date: "May 28, 2026", time: "19:30", venue: "Aminisa Club House, Abuja (Table 2)", completed: true },
+                { id: 7, round: "Completed - Round 12", playerA: "Sani Bello Usman", playerB: "Mustapha Gombe", scoreA: 4, scoreB: 2, date: "May 29, 2026", time: "16:00", venue: "Aminisa Club House, Abuja (Table 1)", completed: true },
+                { id: 8, round: "Completed - Round 12", playerA: "Tunde 'Cushion' Williams", playerB: "Daniel 'Double-Kiss' Effiong", scoreA: 3, scoreB: 4, date: "May 29, 2026", time: "18:45", venue: "Aminisa Club House, Abuja (Table 2)", completed: true }
+            ],
+            leaderboards: [
+                { rank: 1, name: "Wale 'The Sniper' Adeleke", rating: 2390, count: 102, residence: "Maitama" },
+                { rank: 2, name: "Chukwuma Okafor", rating: 2310, count: 84, residence: "Wuse 2" },
+                { rank: 3, name: "Sani Bello Usman", rating: 2280, count: 91, residence: "Apo" },
+                { rank: 4, name: "Tunde 'Cushion' Williams", rating: 2210, count: 110, residence: "Gwarinpa" },
+                { rank: 5, name: "Ibrahim 'The Master' Haruna", rating: 2190, count: 75, residence: "Garki" }
+            ]
+        };
+
+        // Storage initialization for submitted registrations
+        let registrations = JSON.parse(localStorage.getItem('ascl_registrations')) || [];
+
+        // Seed default registrations for testing initially
+        if (registrations.length === 0) {
+            registrations = [
+                {
+                    id: 1,
+                    fullName: "Jason Bourne",
+                    nickname: "The Marksman",
+                    email: "jason@bourne.com",
+                    whatsapp: "+234 803 111 2222",
+                    dob: "1994-08-15",
+                    skillLevel: "Semi-Pro",
+                    preferredCueHand: "Right-Handed",
+                    residentialArea: "Maitama CP",
+                    uniquePlayerId: "ASCL-10492-Z",
+                    registrationDate: "2026-05-31",
+                    status: "Pending",
+                    passportData: "", // Silhouetted
+                    hashValue: 849510
+                },
+                {
+                    id: 2,
+                    fullName: "Sarah Williams",
+                    nickname: "Slick Cue",
+                    email: "sarah@williams.com",
+                    whatsapp: "+234 812 345 6789",
+                    dob: "1998-04-12",
+                    skillLevel: "Pro Master",
+                    preferredCueHand: "Left-Handed",
+                    residentialArea: "Wuse 2 District",
+                    uniquePlayerId: "ASCL-83921-X",
+                    registrationDate: "2026-05-31",
+                    status: "Approved",
+                    passportData: "",
+                    hashValue: 471928
+                }
+            ];
+            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+        }
+
+        let isAuthorized = false;
+
+        // 1. TABS NAVIGATION CONTROL
+        function switchTab(tabId) {
+            // Hide all tab sections
+            document.getElementById('section-home').classList.add('hidden');
+            document.getElementById('section-register').classList.add('hidden');
+            document.getElementById('section-league').classList.add('hidden');
+            document.getElementById('section-admin').classList.add('hidden');
+
+            // Reset navigation header labels & mobile nav labels
+            const tabs = ['home', 'register', 'league', 'admin'];
+            tabs.forEach(item => {
+                const navBtn = document.getElementById(`nav-${item}`);
+                const mNavBtn = document.getElementById(`mobile-nav-${item}`);
+                if (item === tabId) {
+                    if (navBtn) {
+                        navBtn.classList.remove('text-gray-400', 'hover:text-white');
+                        navBtn.classList.add('text-asclGreen');
+                    }
+                    if (mNavBtn) {
+                        mNavBtn.classList.remove('text-gray-400');
+                        mNavBtn.classList.add('text-asclGreen');
+                    }
+                } else {
+                    if (navBtn) {
+                        navBtn.classList.remove('text-asclGreen');
+                        navBtn.classList.add('text-gray-400', 'hover:text-white');
+                    }
+                    if (mNavBtn) {
+                        mNavBtn.classList.remove('text-asclGreen');
+                        mNavBtn.classList.add('text-gray-400');
+                    }
+                }
+            });
+
+            // Show current section of the index tree
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+
+            // Hook customized renders on view action
+            if (tabId === 'league') {
+                renderStandings();
+                renderFixtures();
+                renderLeaderboard();
+            } else if (tabId === 'admin') {
+                checkAdminState();
+            }
+        }
+
+        // Sub and sub-league tabs
+        function switchLeagueTab(subTabId) {
+            document.getElementById('league-standings').classList.add('hidden');
+            document.getElementById('league-fixtures').classList.add('hidden');
+            document.getElementById('league-leaderboard').classList.add('hidden');
+
+            const subTabs = ['standings', 'fixtures', 'leaderboard'];
+            subTabs.forEach(tab => {
+                const tabBtn = document.getElementById(`lbl-${tab}`);
+                if (tab === subTabId) {
+                    tabBtn.classList.remove('border-transparent', 'text-gray-400');
+                    tabBtn.classList.add('border-asclGreen', 'text-white');
+                } else {
+                    tabBtn.classList.remove('border-asclGreen', 'text-white');
+                    tabBtn.classList.add('border-transparent', 'text-gray-400');
+                }
+            });
+
+            document.getElementById(`league-${subTabId}`).classList.remove('hidden');
+        }
+
+        // 2. FILE INPUT TRIGGER UTILITIES
+        function triggerFileInput(id) {
+            document.getElementById(id).click();
+        }
+
+        let passportBase64 = "";
+        let receiptBase64 = "";
+
+        function previewFile(input, labelId, thumbId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64 = e.target.result;
+                    if (input.id === 'file-passport') passportBase64 = base64;
+                    if (input.id === 'file-receipt') receiptBase64 = base64;
+
+                    // Update UI representation label and show green verified state
+                    const label = document.getElementById(labelId);
+                    label.classList.remove('hidden');
+
+                    const thumb = document.getElementById(thumbId);
+                    thumb.src = base64;
+                    thumb.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 3. REGISTRATION FORM HANDLING
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('reg-fullname').value;
+            const nickname = document.getElementById('reg-nickname').value || null;
+            const email = document.getElementById('reg-email').value;
+            const whatsapp = document.getElementById('reg-whatsapp').value;
+            const dob = document.getElementById('reg-dob').value;
+            const skillLevel = document.getElementById('reg-skill').value;
+            const preferredCueHand = document.getElementById('reg-hand').value;
+            const residentialArea = document.getElementById('reg-residence').value;
+
+            // Generate high-fidelity custom identifier structures
+            const uniqueRand = Math.floor(10000 + Math.random() * 90000);
+            const athleteId = `ASCL-${uniqueRand}-${fullName.slice(0,1).toUpperCase()}`;
+            const randHash = Math.floor(100000 + Math.random() * 900000);
+
+            const registration = {
+                id: registrations.length + 1,
+                fullName: fullName,
+                nickname: nickname,
+                email: email,
+                whatsapp: whatsapp,
+                dob: dob,
+                skillLevel: skillLevel,
+                preferredCueHand: preferredCueHand,
+                residentialArea: residentialArea,
+                uniquePlayerId: athleteId,
+                registrationDate: new Date().toISOString().split('T')[0],
+                status: "Pending",
+                passportData: passportBase64,
+                receiptData: receiptBase64,
+                hashValue: randHash
+            };
+
+            registrations.unshift(registration);
+            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+
+            // Load athlete data successfully to view redirect badge structures
+            document.getElementById('badge-name').innerText = fullName;
+            document.getElementById('badge-nickname').innerText = nickname ? `"${nickname}"` : '"Cue Master"';
+            document.getElementById('badge-dob-area').innerText = `DOB: ${dob} • Abuja (${residentialArea})`;
+            document.getElementById('badge-unique-id').innerText = `ID: ${athleteId}`;
+            document.getElementById('badge-specs').innerText = `${preferredCueHand} • ${skillLevel}`;
+
+            const badgePhoto = document.getElementById('badge-photo');
+            const badgeSilhouette = document.getElementById('badge-silhouette');
+            if (passportBase64) {
+                badgePhoto.src = passportBase64;
+                badgePhoto.classList.remove('hidden');
+                badgeSilhouette.classList.add('hidden');
+            } else {
+                badgePhoto.classList.add('hidden');
+                badgeSilhouette.classList.remove('hidden');
+            }
+
+            // Toggle visual panels of form success indicators
+            document.getElementById('register-form-box').classList.add('hidden');
+            document.getElementById('register-success-box').classList.remove('hidden');
+
+            // Reset inputs
+            document.getElementById('ascl-registration-form').reset();
+            passportBase64 = "";
+            receiptBase64 = "";
+            document.getElementById('passport-preview-text').classList.add('hidden');
+            document.getElementById('passport-thumb').classList.add('hidden');
+            document.getElementById('receipt-preview-text').classList.add('hidden');
+            document.getElementById('receipt-thumb').classList.add('hidden');
+        }
+
+        // 4. LEAGUE CENTRAL DISPLAY GENERATORS
+        function renderStandings() {
+            const tbody = document.getElementById('standings-table-body');
+            tbody.innerHTML = '';
+            
+            ASCL_DATA.standings.forEach(item => {
+                let formHtml = '';
+                item.form.forEach(f => {
+                    if (f === 'W') {
+                        formHtml += `<span class="inline-block w-4 h-4 rounded-full bg-emerald-500 text-[10px] leading-none text-white font-extrabold text-center align-middle md:pt-0.5 shadow">W</span> `;
+                    } else {
+                        formHtml += `<span class="inline-block w-4 h-4 rounded-full bg-red-500 text-[10px] leading-none text-white font-extrabold text-center align-middle md:pt-0.5 shadow">L</span> `;
+                    }
+                });
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-white/[0.02]">
+                        <td class="px-4 py-3.5 text-center font-bold text-gray-400">${item.rank}</td>
+                        <td class="px-4 py-3.5 font-bold text-white uppercase">${item.name}</td>
+                        <td class="px-4 py-3.5 text-center text-gray-300">${item.played}</td>
+                        <td class="px-4 py-3.5 text-center font-bold text-emerald-400">${item.won}</td>
+                        <td class="px-4 py-3.5 text-center text-red-400">${item.lost}</td>
+                        <td class="px-4 py-3.5 text-center text-gray-300">${item.fw} - ${item.fl}</td>
+                        <td class="px-4 py-3.5 text-center font-black text-asclGold">${item.pts}</td>
+                        <td class="px-4 py-3.5 text-center">${formHtml}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderFixtures() {
+            const upcomingList = document.getElementById('fixtures-upcoming-list');
+            const completedList = document.getElementById('fixtures-completed-list');
+
+            upcomingList.innerHTML = '';
+            completedList.innerHTML = '';
+
+            ASCL_DATA.fixtures.forEach(item => {
+                if (!item.completed) {
+                    upcomingList.innerHTML += `
+                        <div class="bg-asclCard border border-asclGold/15 rounded-xl p-4 flex flex-col justify-between space-y-4 hover:border-asclGold/40 transition">
+                            <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                <span class="text-[9px] font-bold text-asclGold uppercase tracking-widest">${item.round}</span>
+                                <span class="text-[10px] text-gray-500"><i class="fa-regular fa-clock mr-1"></i> ${item.time}</span>
+                            </div>
+                            <div class="flex items-center justify-between py-1">
+                                <div class="w-2/5 font-black uppercase text-xs text-white truncate text-left">${item.playerA}</div>
+                                <div class="text-[9px] bg-white/5 border border-white/10 text-gray-400 px-2 py-0.5 rounded font-black font-mono">VS</div>
+                                <div class="w-2/5 font-black uppercase text-xs text-white truncate text-right">${item.playerB}</div>
+                            </div>
+                            <div class="flex items-center justify-between text-[9px] text-gray-400">
+                                <span>📅 ${item.date}</span>
+                                <span class="truncate max-w-[180px]">📍 ${item.venue}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    completedList.innerHTML += `
+                        <div class="bg-[#0F0F0F] border border-white/5 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                            <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">${item.round}</span>
+                                <span class="text-[10px] text-emerald-500 font-bold"><i class="fa-solid fa-circle-check"></i> OFFICIAL RECAP</span>
+                            </div>
+                            <div class="flex items-center justify-between py-1">
+                                <div class="w-1/3 font-black uppercase text-xs text-gray-300 truncate text-left">${item.playerA}</div>
+                                <div class="w-1/3 text-center flex items-center justify-center space-x-2">
+                                    <span class="text-sm font-black text-white bg-asclCard px-2 py-1 border border-white/5 rounded">${item.scoreA}</span>
+                                    <span class="text-gray-600">:</span>
+                                    <span class="text-sm font-black text-white bg-asclCard px-2 py-1 border border-white/5 rounded">${item.scoreB}</span>
+                                </div>
+                                <div class="w-1/3 font-black uppercase text-xs text-gray-300 truncate text-right">${item.playerB}</div>
+                            </div>
+                            <div class="flex items-center justify-between text-[9px] text-gray-500">
+                                <span>📅 ${item.date}</span>
+                                <span>📍 ${item.venue.split(',')[0]}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function renderLeaderboard() {
+            const root = document.getElementById('leaderboard-rating-list');
+            root.innerHTML = '';
+
+            ASCL_DATA.leaderboards.forEach(item => {
+                root.innerHTML += `
+                    <div class="flex items-center justify-between bg-asclDark p-3.5 rounded-lg border border-white/5 hover:border-asclGold/25 transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-asclGreen border border-asclGold flex items-center justify-center text-[10px] font-black text-white">
+                                ${item.rank}
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-white uppercase leading-tight">${item.name}</h4>
+                                <span class="text-[9px] text-gray-500 uppercase tracking-widest">Abuja • ${item.residence} CP</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs font-black text-asclGold">${item.rating} PTS</span>
+                            <span class="text-[8px] text-gray-500 uppercase font-black">${item.count} TOTAL SEASONS</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 5. SECURE ADMIN CREDENTIAL WORKERS
+        function checkAdminState() {
+            if (isAuthorized) {
+                document.getElementById('admin-lock-gateway').classList.add('hidden');
+                document.getElementById('admin-dashboard-console').classList.remove('hidden');
+                renderAdminRoster();
+            } else {
+                document.getElementById('admin-lock-gateway').classList.remove('hidden');
+                document.getElementById('admin-dashboard-console').classList.add('hidden');
+            }
+        }
+
+        function attemptAdminAuth() {
+            const input = document.getElementById('admin-passphrase-input').value;
+            if (input.toLowerCase() === 'admin') {
+                isAuthorized = true;
+                document.getElementById('admin-auth-error').classList.add('hidden');
+                checkAdminState();
+            } else {
+                document.getElementById('admin-auth-error').classList.remove('hidden');
+            }
+        }
+
+        function forceBypassAuth() {
+            isAuthorized = true;
+            document.getElementById('admin-auth-error').classList.add('hidden');
+            checkAdminState();
+        }
+
+        function logoutAdmin() {
+            isAuthorized = false;
+            document.getElementById('admin-passphrase-input').value = '';
+            checkAdminState();
+        }
+
+        // 6. ADMIN CENTRAL ROSTER ACTIONS
+        function renderAdminRoster() {
+            const root = document.getElementById('admin-applicants-root');
+            root.innerHTML = '';
+
+            // Calc stats dynamically
+            let total = registrations.length;
+            let pending = registrations.filter(x => x.status === 'Pending').length;
+            let approved = registrations.filter(x => x.status === 'Approved').length;
+            let rejected = registrations.filter(x => x.status === 'Rejected').length;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-pending').innerText = pending;
+            document.getElementById('stat-approved').innerText = approved;
+            document.getElementById('stat-rejected').innerText = rejected;
+
+            if (registrations.length === 0) {
+                root.innerHTML = `
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-8 text-center text-gray-500">
+                        <i class="fa-solid fa-users text-4xl opacity-20 mb-2"></i>
+                        <h4 class="text-xs uppercase tracking-wider font-bold">Roster ledger is entirely empty</h4>
+                        <p class="text-[10px] mt-0.5">Approved registrations will appear here when athletes sign up.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            registrations.forEach(player => {
+                let statusColor = 'text-asclGold border-asclGold/30 bg-asclGold/5';
+                if (player.status === 'Approved') statusColor = 'text-emerald-400 border-emerald-400/30 bg-emerald-400/5';
+                if (player.status === 'Rejected') statusColor = 'text-red-400 border-red-400/30 bg-red-400/5';
+
+                let actionHtml = '';
+                if (player.status === 'Pending') {
+                    actionHtml = `
+                        <div class="grid grid-cols-2 gap-3 mt-4">
+                            <button onclick="updatePlayerStatus(${player.id}, 'Rejected')" class="bg-transparent hover:bg-red-500/10 border border-red-500 text-red-500 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
+                                <i class="fa-solid fa-times-circle mr-1"></i> REJECT APPLICATION
+                            </button>
+                            <button onclick="updatePlayerStatus(${player.id}, 'Approved')" class="bg-asclGreen hover:bg-emerald-600 text-white py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition">
+                                <i class="fa-solid fa-check-circle mr-1"></i> APPROVE ATHTLETE
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    actionHtml = `
+                        <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-4 text-[11px]">
+                            <span class="font-extrabold uppercase ${player.status === 'Approved' ? 'text-emerald-400' : 'text-red-400'}">STATUS COMMITTED AS: ${player.status}</span>
+                            <button onclick="updatePlayerStatus(${player.id}, 'Pending')" class="text-gray-500 hover:text-white uppercase font-extrabold text-[9px] tracking-wider transition">
+                                [RESET DECISION <i class="fa-solid fa-rotate-left ml-0.5"></i>]
+                            </button>
+                        </div>
+                    `;
+                }
+
+                root.innerHTML += `
+                    <div class="bg-asclCard border border-white/5 rounded-xl p-5 hover:border-asclGold/15 transition space-y-3 shadow-lg admin-card-item" data-search="${player.fullName.toLowerCase()} ${player.uniquePlayerId.toLowerCase()} ${player.whatsapp}">
+                        <div class="flex items-start justify-between border-b border-white/5 pb-2.5">
+                            <div>
+                                <h4 class="text-sm font-black text-white uppercase tracking-tight flex items-center">
+                                    ${player.fullName}
+                                    ${player.nickname ? `<span class="text-asclGold text-xs font-semibold ml-2 italic">"${player.nickname}"</span>` : ''}
+                                </h4>
+                                <span class="text-[9px] text-gray-500 uppercase tracking-widest font-black">Registered Roster indices • DOB ${player.dob}</span>
+                            </div>
+                            <span class="px-2 py-0.5 border rounded text-[10px] font-mono font-bold leading-none ${statusColor}">
+                                ${player.uniquePlayerId}
+                            </span>
+                        </div>
+
+                        <!-- Info details grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                            <div>
+                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">EMAIL ADDRESS</span>
+                                <span class="font-semibold text-gray-200 truncate block">${player.email}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">WHATSAPP / MOBILE</span>
+                                <span class="font-semibold text-gray-200 block">${player.whatsapp}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">ABUJA RESIDENCE</span>
+                                <span class="font-semibold text-gray-200 block">${player.residentialArea}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">SKILL / CUE HAND</span>
+                                <span class="font-semibold text-gray-200 block truncate">${player.preferredCueHand} (${player.skillLevel})</span>
+                            </div>
+                        </div>
+
+                        <!-- Attachments Row -->
+                        <div class="bg-[#050505]/60 border border-white/5 rounded-lg p-2.5 flex items-center justify-start space-x-4">
+                            <span class="text-[9px] font-extrabold text-gray-500 uppercase tracking-wider">Review Attachments:</span>
+                            
+                            <button onclick="zoomAttachment(${player.id}, 'passport')" class="bg-asclGray hover:bg-[#252525] border border-asclGold/20 text-asclGold text-[9px] font-bold uppercase px-3 py-1.5 rounded flex items-center space-x-1 transition shadow">
+                                <i class="fa-solid fa-id-badge"></i> <span>VIEW PASSPORT</span>
+                            </button>
+                            
+                            <button onclick="zoomAttachment(${player.id}, 'receipt')" class="bg-asclGray hover:bg-[#252525] border border-asclGold/20 text-asclGold text-[9px] font-bold uppercase px-3 py-1.5 rounded flex items-center space-x-1 transition shadow">
+                                <i class="fa-solid fa-receipt"></i> <span>TRANSFER RECEIPT</span>
+                            </button>
+                        </div>
+
+                        ${actionHtml}
+                    </div>
+                `;
+            });
+        }
+
+        // Toggle state approval logic
+        function updatePlayerStatus(playerId, nextStatus) {
+            registrations = registrations.map(player => {
+                if (player.id === playerId) {
+                    player.status = nextStatus;
+                }
+                return player;
+            });
+            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            renderAdminRoster();
+        }
+
+        // Deep Search Filters in Admin
+        function filterAdminRoster() {
+            const query = document.getElementById('admin-search-query').value.toLowerCase();
+            const cards = document.querySelectorAll('.admin-card-item');
+
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-search');
+                if (searchData.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // DOWNLOAD CSV WRITER CAPABILITY
+        function downloadAsCsv() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID,Full Name,Cue Alias,Email,WhatsApp,Date of Birth,Skill Level,Cue Hand,Residence Area,Registered Date,Status,Ref Hash\n";
+
+            registrations.forEach(r => {
+                const row = [
+                    r.uniquePlayerId,
+                    `"${r.fullName}"`,
+                    `"${r.nickname || ''}"`,
+                    r.email,
+                    r.whatsapp,
+                    r.dob,
+                    r.skillLevel,
+                    r.preferredCueHand,
+                    r.residentialArea,
+                    r.registrationDate,
+                    r.status,
+                    `TXN-${r.hashValue}`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `ASCL-Abuja-Athletes-Roster-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 7. HIGH FIDELITY ZOOM ATTACHMENTS DIALOG MODAL CONTROLLER
+        function zoomAttachment(playerId, type) {
+            const player = registrations.find(x => x.id === playerId);
+            if (!player) return;
+
+            const modal = document.getElementById('modal-container');
+            const imgRoot = document.getElementById('modal-image-root');
+            const zoomedImg = document.getElementById('modal-zoomed-image');
+            const passportSilhouette = document.getElementById('modal-passport-silhouette-root');
+            const passportFullname = document.getElementById('modal-passport-fullname');
+            const receiptRoot = document.getElementById('modal-receipt-root');
+            const receiptSender = document.getElementById('modal-receipt-sender');
+            const receiptHash = document.getElementById('modal-receipt-hash');
+
+            // Hide all potential viewport slots first
+            imgRoot.classList.add('hidden');
+            passportSilhouette.classList.add('hidden');
+            receiptRoot.classList.add('hidden');
+
+            document.getElementById('modal-title').innerText = type === 'passport' ? 'ATHLETE PASSPORT ID' : 'ZENITH TRANSFER RECEIPT';
+
+            if (type === 'passport') {
+                if (player.passportData) {
+                    zoomedImg.src = player.passportData;
+                    imgRoot.classList.remove('hidden');
+                } else {
+                    passportFullname.innerText = player.fullName;
+                    passportSilhouette.classList.remove('hidden');
+                }
+            } else {
+                if (player.receiptData) {
+                    zoomedImg.src = player.receiptData;
+                    imgRoot.classList.remove('hidden');
+                } else {
+                    receiptSender.innerText = player.fullName.toUpperCase();
+                    receiptHash.innerText = `TXN-${player.uniquePlayerId}-${player.hashValue}`;
+                    receiptRoot.classList.remove('hidden');
+                }
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
