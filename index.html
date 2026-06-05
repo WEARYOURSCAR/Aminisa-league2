@@ -240,6 +240,181 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Interactive Spectator Ticket Booking Portal -->
+                <div class="mt-8 bg-asclCard border border-asclGold/30 rounded-xl p-6 relative overflow-hidden shadow-2xl">
+                    <div class="absolute top-0 right-0 bg-asclGold/10 border-b border-l border-asclGold/20 rounded-bl px-2.5 py-1 text-[8px] font-bold text-asclGold tracking-widest uppercase">
+                        SECURE PAYSTACK CHECKOUT
+                    </div>
+                    
+                    <div class="border-b border-white/5 pb-4 mb-6">
+                        <span class="text-[9px] font-bold text-asclGold uppercase tracking-widest leading-none">SPECTATOR TICKETS</span>
+                        <h3 class="text-xl font-black text-white mt-1 uppercase">BOOK VIP MATCH DAY & SEASON PASSES</h3>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">Select your plan, choose single or partner passes, and get dynamic digital credentials instantly, processed securely via Paystack.</p>
+                    </div>
+
+                    <!-- TICKET STATE SWITCH CONTAINER -->
+                    <div id="ticket-form-section">
+                        <div class="space-y-4">
+                            <!-- Package Select -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">1. Select Your Pass Tier</label>
+                                <div class="space-y-2">
+                                    <!-- Option 1 -->
+                                    <label class="flex items-start p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/5 cursor-pointer transition">
+                                        <input type="radio" name="ticket-tier" value="single" checked onchange="updateTicketPrice()" class="mt-1 mr-3 accent-asclGreen">
+                                        <div>
+                                            <span class="block text-sm font-bold text-white">VIP Single Match Day Pass</span>
+                                            <span class="block text-xs text-asclGold font-bold mt-0.5">₦3,000 Single • ₦5,000 Couple</span>
+                                            <span class="block text-[10px] text-gray-400 mt-1">Catered ringside leather seats for any single battle day.</span>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- Option 2 -->
+                                    <label class="flex items-start p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/5 cursor-pointer transition">
+                                        <input type="radio" name="ticket-tier" value="weekend" onchange="updateTicketPrice()" class="mt-1 mr-3 accent-asclGreen">
+                                        <div>
+                                            <span class="block text-sm font-bold text-white">VIP Weekend Pass (3 Match Days)</span>
+                                            <span class="block text-xs text-asclGold font-bold mt-0.5">₦6,000 Single • ₦10,000 Couple</span>
+                                            <span class="block text-[10px] text-gray-400 mt-1">Covers three intense weekend rounds with premium beverage coupon credits.</span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Option 3 -->
+                                    <label class="flex items-start p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/5 cursor-pointer transition">
+                                        <input type="radio" name="ticket-tier" value="season" onchange="updateTicketPrice()" class="mt-1 mr-3 accent-asclGreen">
+                                        <div>
+                                            <span class="block text-sm font-bold text-white">VIP Season Pass (12 Match Days)</span>
+                                            <span class="block text-xs text-asclGold font-bold mt-0.5">₦25,000 Single • ₦40,000 Couple</span>
+                                            <span class="block text-[10px] text-gray-400 mt-1">Full seasonal clearance, premium branded kit cap as a spectator, and final access.</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Plan variation -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">2. Pass Variation</label>
+                                <div class="grid grid-cols-2 gap-3" id="plan-variation-boxes">
+                                    <button type="button" onclick="setTicketPlan('single')" id="btn-plan-single" class="p-3 bg-asclGreen/10 border border-asclGreen rounded-lg text-white font-bold text-xs flex items-center justify-center space-x-2">
+                                        <i class="fa-solid fa-user text-xs"></i> <span>Single Entry</span>
+                                    </button>
+                                    <button type="button" onclick="setTicketPlan('couple')" id="btn-plan-couple" class="p-3 bg-white/5 border border-white/10 rounded-lg text-gray-400 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-white/10">
+                                        <i class="fa-solid fa-user-group text-xs"></i> <span>Couple / Premium Partner</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Fields -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Full Name</label>
+                                    <input type="text" id="ticket-holder-name" placeholder="e.g. Issa Abolaji" class="w-full px-3 py-2 text-sm rounded-lg text-white bg-white/5 border border-white/10 focus:border-asclGreen focus:outline-none">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Phone Number</label>
+                                    <input type="text" id="ticket-holder-phone" placeholder="e.g. +234 902 257 2296" class="w-full px-3 py-2 text-sm rounded-lg text-white bg-white/5 border border-white/10 focus:border-asclGreen focus:outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Summary Row -->
+                            <div class="bg-black/40 border border-white/5 p-4 rounded-xl flex items-center justify-between">
+                                <div>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Total Transaction Amount</span>
+                                    <span id="label-ticket-total" class="block text-2xl font-black text-asclGold">₦3,000</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Billing Merchant</span>
+                                    <span class="block text-xs font-bold text-[#09A5DB]">Paystack Fiduciary Partner</span>
+                                </div>
+                            </div>
+
+                            <!-- Submit -->
+                            <button type="button" onclick="processTicketCheckout()" class="w-full py-4 bg-[#09A5DB] hover:bg-[#0791c2] text-white font-black uppercase text-xs tracking-widest rounded-lg shadow-lg flex items-center justify-center space-x-2 transition">
+                                <i class="fa-solid fa-receipt text-sm"></i>
+                                <span>PAY WITH PAYSTACK</span>
+                            </button>
+                            <p id="ticket-error" class="text-xs text-red-500 font-bold tracking-wide text-center hidden"></p>
+                        </div>
+                    </div>
+
+                    <!-- SUCCESS PASS DIGITAL VIEW (HIDDEN BY DEFAULT) -->
+                    <div id="ticket-success-section" class="hidden">
+                        <div class="max-w-sm mx-auto bg-gradient-to-b from-[#111] to-asclCard border-2 border-asclGold rounded-xl p-5 text-left relative overflow-hidden shadow-2xl">
+                            <!-- Design Banner -->
+                            <div class="absolute top-0 right-0 bg-[#00A651]/10 border-b border-l border-asclGreen/20 rounded-bl px-2.5 py-1 text-[8px] font-bold text-asclGreen tracking-widest uppercase">
+                                VERIFIED SPEC-PASS
+                            </div>
+                            
+                            <!-- Header -->
+                            <div class="flex items-center space-x-3 border-b border-white/5 pb-3">
+                                <img src="app/src/main/res/drawable/img_ascl_logo.png" alt="ASCL Logo" class="w-8 h-8 object-contain rounded border border-asclGold/25">
+                                <div>
+                                    <h3 class="text-xs font-black text-white leading-none">ASCL SPECTATOR ACCESS CARD</h3>
+                                    <span class="text-[7px] text-gray-500 uppercase tracking-widest">AMINISA SNOOKER CHAMPIONSHIP</span>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Meta Info -->
+                            <div class="mt-4 space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">HOLDER</span>
+                                    <span id="badge-ticket-name" class="text-[10px] font-bold text-white uppercase">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">PHONE</span>
+                                    <span id="badge-ticket-phone" class="text-[10px] font-bold text-white">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">CATEGORY</span>
+                                    <span id="badge-ticket-category" class="text-[10px] font-bold text-asclGold uppercase">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">GATEWAY REF</span>
+                                    <span id="badge-ticket-ref" class="text-[9px] font-mono font-bold text-gray-300">-</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white/5 pt-2">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">AMOUNT</span>
+                                    <span id="badge-ticket-price" class="text-[11px] font-black text-asclGreen">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase">ARENA</span>
+                                    <span class="text-[9px] text-white font-bold">Mix & Mingle Palms Mall, Ilorin</span>
+                                </div>
+                            </div>
+
+                            <!-- Barcode -->
+                            <div class="mt-5 bg-white p-2 rounded flex justify-center">
+                                <div class="flex space-x-0.5 h-7 items-center opacity-90">
+                                    <div class="w-[3px] h-full bg-black"></div>
+                                    <div class="w-[1px] h-full bg-black"></div>
+                                    <div class="w-[4px] h-full bg-black"></div>
+                                    <div class="w-[2px] h-full bg-black"></div>
+                                    <div class="w-[1px] h-full bg-black"></div>
+                                    <div class="w-[5px] h-full bg-black"></div>
+                                    <div class="w-[1px] h-full bg-black"></div>
+                                    <div class="w-[3px] h-full bg-black"></div>
+                                    <div class="w-[2px] h-full bg-black"></div>
+                                    <div class="w-[6px] h-full bg-black"></div>
+                                    <div class="w-[1px] h-full bg-black"></div>
+                                    <div class="w-[4px] h-full bg-black"></div>
+                                    <div class="w-[2px] h-full bg-black"></div>
+                                    <div class="w-[1px] h-full bg-black"></div>
+                                </div>
+                            </div>
+                            <div class="text-[7px] text-center text-gray-500 font-bold tracking-wider mt-2.5">
+                                PAYSTACK TRANSACTION APPROVED • PRESENT AT THE ARENA GATE
+                            </div>
+                        </div>
+
+                        <!-- Reset Button -->
+                        <div class="mt-5 max-w-sm mx-auto">
+                            <button onclick="resetTicketBooking()" class="w-full py-3 bg-white/5 hover:bg-white/10 text-xs font-bold text-gray-300 uppercase tracking-widest border border-white/10 rounded-lg transition text-center">
+                                BOOK ANOTHER SPECTATOR TICKET
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Features -->
@@ -1326,6 +1501,96 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // ------------------ SPECTATOR TICKETING STATE ------------------
+        let selectedTicketPlan = 'single'; // 'single' | 'couple'
+
+        function setTicketPlan(plan) {
+            selectedTicketPlan = plan;
+            
+            // Adjust active styles of plan variation buttons
+            const btnSingle = document.getElementById('btn-plan-single');
+            const btnCouple = document.getElementById('btn-plan-couple');
+            
+            if (plan === 'single') {
+                btnSingle.className = "p-3 bg-asclGreen/10 border border-asclGreen rounded-lg text-white font-bold text-xs flex items-center justify-center space-x-2";
+                btnCouple.className = "p-3 bg-white/5 border border-white/10 rounded-lg text-gray-400 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-white/10";
+            } else {
+                btnSingle.className = "p-3 bg-white/5 border border-white/10 rounded-lg text-gray-400 font-bold text-xs flex items-center justify-center space-x-2 hover:bg-white/10";
+                btnCouple.className = "p-3 bg-asclGreen/10 border border-asclGreen rounded-lg text-white font-bold text-xs flex items-center justify-center space-x-2";
+            }
+            updateTicketPrice();
+        }
+
+        function calculateTicketCost() {
+            const checkedRadio = document.querySelector('input[name="ticket-tier"]:checked');
+            if (!checkedRadio) return 3000;
+            const tierVal = checkedRadio.value;
+            
+            if (tierVal === 'single') {
+                return selectedTicketPlan === 'couple' ? 5000 : 3000;
+            } else if (tierVal === 'weekend') {
+                return selectedTicketPlan === 'couple' ? 10000 : 6000;
+            } else if (tierVal === 'season') {
+                return selectedTicketPlan === 'couple' ? 40000 : 25000;
+            }
+            return 3000;
+        }
+
+        function updateTicketPrice() {
+            const finalCost = calculateTicketCost();
+            document.getElementById('label-ticket-total').innerText = '₦' + finalCost.toLocaleString();
+        }
+
+        function processTicketCheckout() {
+            const nameField = document.getElementById('ticket-holder-name').value.trim();
+            const phoneField = document.getElementById('ticket-holder-phone').value.trim();
+            const errorElement = document.getElementById('ticket-error');
+
+            if (!nameField || !phoneField) {
+                errorElement.innerText = "Please input both your Full Name and Phone Number to complete ticket purchase.";
+                errorElement.classList.remove('hidden');
+                return;
+            }
+            errorElement.classList.add('hidden');
+
+            // Find tier name
+            const checkedRadio = document.querySelector('input[name="ticket-tier"]:checked');
+            const tierVal = checkedRadio ? checkedRadio.value : 'single';
+            let categoryText = "VIP Single Match Day";
+            if (tierVal === 'weekend') categoryText = "VIP Weekend Pass (3 Match Days)";
+            else if (tierVal === 'season') categoryText = "VIP Season Pass (12 Match Days)";
+
+            if (selectedTicketPlan === 'couple') {
+                categoryText += " - Couple Plan";
+            } else {
+                categoryText += " - Single Entry";
+            }
+
+            const finalCostText = '₦' + calculateTicketCost().toLocaleString();
+            const randomRef = `TKT-PAYSTACK-${Math.floor(10000 + Math.random() * 90000)}`;
+
+            // Populate badge elements
+            document.getElementById('badge-ticket-name').innerText = nameField;
+            document.getElementById('badge-ticket-phone').innerText = phoneField;
+            document.getElementById('badge-ticket-category').innerText = categoryText;
+            document.getElementById('badge-ticket-ref').innerText = randomRef;
+            document.getElementById('badge-ticket-price').innerText = finalCostText;
+
+            // Trigger success section switcher
+            document.getElementById('ticket-form-section').classList.add('hidden');
+            document.getElementById('ticket-success-section').classList.remove('hidden');
+        }
+
+        function resetTicketBooking() {
+            document.getElementById('ticket-holder-name').value = '';
+            document.getElementById('ticket-holder-phone').value = '';
+            document.getElementById('ticket-error').classList.add('hidden');
+            
+            document.getElementById('ticket-form-section').classList.remove('hidden');
+            document.getElementById('ticket-success-section').classList.add('hidden');
+            setTicketPlan('single');
         }
 
         // 7. HIGH FIDELITY ZOOM ATTACHMENTS DIALOG MODAL CONTROLLER

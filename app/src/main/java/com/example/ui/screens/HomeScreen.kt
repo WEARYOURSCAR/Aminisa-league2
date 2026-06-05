@@ -44,6 +44,16 @@ fun HomeScreen(
     // Countdown state calculated from the target date of June 15, 2026
     var timeLeft by remember { mutableStateOf(calculateTimeLeft()) }
 
+    var spectatorName by remember { mutableStateOf("") }
+    var spectatorPhone by remember { mutableStateOf("") }
+    var selectedTicketTypeIndex by remember { mutableStateOf(0) }
+    var isCoupleTicket by remember { mutableStateOf(false) }
+    var isBookingConfirmed by remember { mutableStateOf(false) }
+    var bookingReference by remember { mutableStateOf("") }
+    var bookingTicketTypePaid by remember { mutableStateOf("") }
+    var bookingPricePaid by remember { mutableStateOf("") }
+    var bookingClientName by remember { mutableStateOf("") }
+
     // Start a coroutine to update the ticking clock
     LaunchedEffect(Unit) {
         while (true) {
@@ -387,55 +397,366 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    Text(
-                        text = "Access live arena games and grand showcase tour brackets with our special single or partner tickets:",
-                        color = Color.White.copy(alpha = 0.85f),
-                        fontSize = 12.sp,
-                        lineHeight = 17.sp,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    )
+                    if (isBookingConfirmed) {
+                        // --- VERIFIED TICKET CARD STYLING ---
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFF0B0B0B), RoundedCornerShape(12.dp))
+                                .border(1.5.dp, Color(0xFFD4AF37), RoundedCornerShape(12.dp))
+                                .padding(16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(6.dp)
+                                            .background(Color(0xFF00A651), CircleShape)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "PAYSTACK FIDUCIARY VERIFIED",
+                                        color = Color(0xFF00A651),
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.Black,
+                                        letterSpacing = 1.sp
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .background(Color(0xFF09A5DB).copy(alpha = 0.15f), RoundedCornerShape(4.dp))
+                                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                                ) {
+                                    Text(
+                                        text = "PASS",
+                                        color = Color(0xFF09A5DB),
+                                        fontSize = 8.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
 
-                    val venueTicketsList = listOf(
-                        Triple("VIP Single Match Day", "₦3,000 Single • ₦5,000 Couple", "Access to any single matchday action with fully catered seats."),
-                        Triple("VIP Weekend Pass (3 Match Days)", "₦6,000 Single • ₦10,000 Couple", "Covers 3 scheduled high-tension match days over the weekend."),
-                        Triple("VIP Season Pass (12 Match Days)", "₦25,000 Single • ₦40,000 Couple", "Ultimate seasonal pass covering all 12 match days and the grand final event.")
-                    )
+                            Spacer(modifier = Modifier.height(12.dp))
 
-                    venueTicketsList.forEach { (ticketTitle, pricing, ticketDesc) ->
+                            Text(
+                                text = "ASCL SEASON 1 SPECTATOR PASS",
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Black,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Ticket Details List
+                            Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "HOLDER NAME", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = bookingClientName.uppercase(), color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "PHONE NUMBER", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = spectatorPhone, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "PASS CATEGORY", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = bookingTicketTypePaid, color = Color(0xFFD4AF37), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "TRANSACTION REF", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = bookingReference, color = Color.LightGray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "AMOUNT PAID", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = bookingPricePaid, color = Color(0xFF00A651), fontSize = 12.sp, fontWeight = FontWeight.Black)
+                                }
+                                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                    Text(text = "ARENA VENUE", color = Color.Gray, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(text = "Mix & Mingle Lounge, Ilorin", color = Color.White, fontSize = 10.sp)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Graphical Barcode/QR Mock
+                            Row(
+                                modifier = Modifier
+                                    .background(Color.White, RoundedCornerShape(4.dp))
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                // Draw a barcode representation using simple spacing
+                                val barcodeTheme = listOf(4, 2, 8, 3, 1, 6, 2, 5, 2, 7)
+                                Row(modifier = Modifier.height(30.dp)) {
+                                    barcodeTheme.forEach { width ->
+                                        Box(
+                                            modifier = Modifier
+                                                .width(width.dp)
+                                                .fillMaxHeight()
+                                                .background(Color.Black)
+                                        )
+                                        Spacer(modifier = Modifier.width(2.dp))
+                                    }
+                                }
+                            }
+                            Text(
+                                text = "TAP TO DOWNLOAD OR SCAN AT ENTRY",
+                                color = Color.Gray,
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(top = 8.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Button(
+                                onClick = {
+                                    isBookingConfirmed = false
+                                    spectatorName = ""
+                                    spectatorPhone = ""
+                                    selectedTicketTypeIndex = 0
+                                    isCoupleTicket = false
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
+                                shape = RoundedCornerShape(8.dp),
+                                modifier = Modifier.fillMaxWidth().height(42.dp)
+                            ) {
+                                Text("BOOK ANOTHER SPECTATOR PASS", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            }
+                        }
+                    } else {
+                        // --- TICKET BOOKING FORM ---
+                        Text(
+                            text = "Access live arena games and grand showcase tour brackets with our special single or partner tickets:",
+                            color = Color.White.copy(alpha = 0.85f),
+                            fontSize = 12.sp,
+                            lineHeight = 17.sp,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+
+                        val venueTicketsList = listOf(
+                            Triple("VIP Single Match Day", "₦3,000 Single • ₦5,000 Couple", "Access to any single matchday action with fully catered seats."),
+                            Triple("VIP Weekend Pass (3 Match Days)", "₦6,000 Single • ₦10,000 Couple", "Covers 3 scheduled high-tension match days over the weekend."),
+                            Triple("VIP Season Pass (12 Match Days)", "₦25,000 Single • ₦40,000 Couple", "Ultimate seasonal pass covering all 12 match days and the grand final event.")
+                        )
+
+                        venueTicketsList.forEachIndexed { idx, (ticketTitle, pricing, ticketDesc) ->
+                            val borderCol = if (selectedTicketTypeIndex == idx) Color(0xFFD4AF37) else Color.Transparent
+                            val bgCol = if (selectedTicketTypeIndex == idx) Color(0xFF00A651).copy(alpha = 0.08f) else Color.Transparent
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(bgCol)
+                                    .border(1.dp, borderCol, RoundedCornerShape(8.dp))
+                                    .clickable { selectedTicketTypeIndex = idx }
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                RadioButton(
+                                    selected = selectedTicketTypeIndex == idx,
+                                    onClick = { selectedTicketTypeIndex = idx },
+                                    colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF00A651))
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Column {
+                                    Text(
+                                        text = ticketTitle,
+                                        color = Color.White,
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(
+                                        text = pricing,
+                                        color = Color(0xFFD4AF37),
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.padding(vertical = 2.dp)
+                                    )
+                                    Text(
+                                        text = ticketDesc,
+                                        color = Color.Gray,
+                                        fontSize = 11.sp,
+                                        lineHeight = 14.sp
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(6.dp))
+                        }
+
+                        HorizontalDivider(color = Color.White.copy(alpha = 0.08f), modifier = Modifier.padding(vertical = 12.dp))
+
+                        // Pass Type (Single vs Couple)
+                        Text(
+                            text = "PASS VARIATION GROUP PLAN",
+                            color = Color.White,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Single Plan Box
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(if (!isCoupleTicket) Color(0xFF00A651).copy(alpha = 0.15f) else Color.Transparent)
+                                    .border(1.dp, if (!isCoupleTicket) Color(0xFF00A651) else Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                    .clickable { isCoupleTicket = false }
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RadioButton(
+                                    selected = !isCoupleTicket,
+                                    onClick = { isCoupleTicket = false },
+                                    colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF00A651))
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(text = "Single Entry", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+
+                            // Couple Plan Box
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(if (isCoupleTicket) Color(0xFF00A651).copy(alpha = 0.15f) else Color.Transparent)
+                                    .border(1.dp, if (isCoupleTicket) Color(0xFF00A651) else Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                    .clickable { isCoupleTicket = true }
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RadioButton(
+                                    selected = isCoupleTicket,
+                                    onClick = { isCoupleTicket = true },
+                                    colors = RadioButtonDefaults.colors(selectedColor = Color(0xFF00A651))
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(text = "Couple / Partner", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Customer Information Fields
+                        OutlinedTextField(
+                            value = spectatorName,
+                            onValueChange = { spectatorName = it },
+                            label = { Text("Spectator Full Name") },
+                            placeholder = { Text("Enter your name for ticket") },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color(0xFF00A651),
+                                unfocusedBorderColor = Color.Gray.copy(alpha = 0.4f),
+                                focusedLabelColor = Color(0xFF00A651),
+                                unfocusedLabelColor = Color.Gray,
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        OutlinedTextField(
+                            value = spectatorPhone,
+                            onValueChange = { spectatorPhone = it },
+                            label = { Text("Phone Number") },
+                            placeholder = { Text("e.g. +234 902 257 2296") },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color(0xFF00A651),
+                                unfocusedBorderColor = Color.Gray.copy(alpha = 0.4f),
+                                focusedLabelColor = Color(0xFF00A651),
+                                unfocusedLabelColor = Color.Gray,
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Calculate amount
+                        val ticketAmountValue = when (selectedTicketTypeIndex) {
+                            0 -> if (isCoupleTicket) 5000 else 3000
+                            1 -> if (isCoupleTicket) 10000 else 6000
+                            2 -> if (isCoupleTicket) 40000 else 25000
+                            else -> 3000
+                        }
+
+                        val selectedCategoryName = when (selectedTicketTypeIndex) {
+                            0 -> if (isCoupleTicket) "VIP Single Match Day (Couple)" else "VIP Single Match Day (Single)"
+                            1 -> if (isCoupleTicket) "VIP Weekend Pass (Couple)" else "VIP Weekend Pass (Single)"
+                            2 -> if (isCoupleTicket) "VIP Season Pass (Couple)" else "VIP Season Pass (Single)"
+                            else -> "VIP Day Pass"
+                        }
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 6.dp),
-                            verticalAlignment = Alignment.Top
+                                .background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(8.dp))
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(top = 5.dp)
-                                    .size(6.dp)
-                                    .background(Color(0xFF00A651), CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
                             Column {
-                                Text(
-                                    text = ticketTitle,
-                                    color = Color.White,
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = pricing,
-                                    color = Color(0xFFD4AF37),
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(vertical = 2.dp)
-                                )
-                                Text(
-                                    text = ticketDesc,
-                                    color = Color.Gray,
-                                    fontSize = 11.sp,
-                                    lineHeight = 14.sp
-                                )
+                                Text(text = "TOTAL TICKET CHARGE", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "₦%,d".format(ticketAmountValue), color = Color(0xFFD4AF37), fontSize = 18.sp, fontWeight = FontWeight.Black)
                             }
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text(text = "GATEWAY PARTNER", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "Paystack Checkout", color = Color(0xFF09A5DB), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Error message warning or submit button
+                        var bookingFeedbackError by remember { mutableStateOf("") }
+                        if (bookingFeedbackError.isNotEmpty()) {
+                            Text(
+                                text = bookingFeedbackError,
+                                color = Color.Red,
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        }
+
+                        Button(
+                            onClick = {
+                                if (spectatorName.trim().isEmpty() || spectatorPhone.trim().isEmpty()) {
+                                    bookingFeedbackError = "Please fill in both your Full Name and Phone Number to buy a ticket."
+                                } else {
+                                    bookingFeedbackError = ""
+                                    bookingClientName = spectatorName
+                                    bookingTicketTypePaid = selectedCategoryName
+                                    bookingPricePaid = "₦%,d".format(ticketAmountValue)
+                                    bookingReference = "TKT-PAYSTACK-%05d".format((10000..99999).random())
+                                    isBookingConfirmed = true
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF09A5DB)),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp)
+                        ) {
+                            Icon(imageVector = Icons.Default.Payment, contentDescription = "Paystack Billing Icon", tint = Color.White)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("PAY WITH PAYSTACK", fontSize = 13.sp, fontWeight = FontWeight.Black, color = Color.White)
                         }
                     }
                 }
