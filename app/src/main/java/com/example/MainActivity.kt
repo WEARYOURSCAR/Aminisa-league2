@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -248,15 +250,13 @@ fun WebHeaderBar(
                     .clickable { onTabSelected("Home") }
                     .padding(vertical = 4.dp)
             ) {
-                Box(
+                Image(
+                    painter = painterResource(id = R.drawable.img_ascl_logo),
+                    contentDescription = "ASCL Logo",
                     modifier = Modifier
-                        .size(30.dp)
-                        .background(Color(0xFF00A651), CircleShape)
-                        .border(1.5.dp, Color(0xFFD4AF37), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("8", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                }
+                        .size(36.dp)
+                        .border(1.dp, Color(0xFFD4AF37).copy(alpha = 0.5f), RoundedCornerShape(4.dp))
+                )
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
