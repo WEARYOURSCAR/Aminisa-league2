@@ -1,6 +1,6 @@
 {
   "name": "Aminisa Snooker League",
-  "description": "The official registration and management app for the Aminisa Snooker Club League (ASCL), Abuja's premier snooker competition.",
+  "description": "The official registration and management app for the Aminisa Snooker Club League (ASCL), Ilorin's premier snooker competition.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -325,7 +325,7 @@ fun HomeScreen(
                     val audienceGifts = listOf(
                         Pair("₦50,000 Spectator Award", "Lucky sweepstake draws for actively cheering snooker spectators in attendance."),
                         Pair("Complimentary Meal Tickets", "Access buffet meal coupons at the arena bar during live semi-final brackets."),
-                        Pair("Platinum & Gold Match Passes", "VIP priority seated tickets for the highly anticipated ASCL grand finals."),
+                        Pair("VIP Match Passes", "VIP priority seated tickets for the highly anticipated ASCL grand finals."),
                         Pair("Prestige Branded ASCL Clothing", "Official custom branded tournament shirts, caps, and premium cue merchandise.")
                     )
 
@@ -352,6 +352,85 @@ fun HomeScreen(
                                 )
                                 Text(
                                     text = giftDesc,
+                                    color = Color.Gray,
+                                    fontSize = 11.sp,
+                                    lineHeight = 14.sp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- VENUE TICKETS ---
+            Text(
+                text = "🎟️ VENUE ENTRY & DAY TICKETS",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp
+            )
+            HorizontalDivider(color = Color(0xFFD4AF37), modifier = Modifier.padding(top = 6.dp, bottom = 16.dp), thickness = 2.dp)
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+                    .border(1.dp, Color(0xFF00A651).copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF141414)),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Access live arena games and grand showcase tour brackets with our special single or partner tickets:",
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontSize = 12.sp,
+                        lineHeight = 17.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    val venueTicketsList = listOf(
+                        Triple("VIP Single Match Day", "₦3,000 Single • ₦5,000 Couple", "Access to any single matchday action with fully catered seats."),
+                        Triple("VIP Weekend Pass (3 Match Days)", "₦6,000 Single • ₦10,000 Couple", "Covers 3 scheduled high-tension match days over the weekend."),
+                        Triple("VIP Season Pass (12 Match Days)", "₦25,000 Single • ₦40,000 Couple", "Ultimate seasonal pass covering all 12 match days and the grand final event.")
+                    )
+
+                    venueTicketsList.forEach { (ticketTitle, pricing, ticketDesc) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(top = 5.dp)
+                                    .size(6.dp)
+                                    .background(Color(0xFF00A651), CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = ticketTitle,
+                                    color = Color.White,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = pricing,
+                                    color = Color(0xFFD4AF37),
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(vertical = 2.dp)
+                                )
+                                Text(
+                                    text = ticketDesc,
                                     color = Color.Gray,
                                     fontSize = 11.sp,
                                     lineHeight = 14.sp
@@ -461,13 +540,13 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = "Aminisa Snooker Arena",
+                    text = "Mix and Mingle Lounge",
                     color = Color(0xFFD4AF37),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Plot 1047, Snooker Central House, Ademola Adetokunbo Crescent, Wuse 2, Abuja, Nigeria.",
+                    text = "At the Palms Mall, Ilorin, Kwara State, Nigeria.",
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 13.sp,
                     lineHeight = 18.sp,
@@ -478,14 +557,14 @@ fun HomeScreen(
 
                 Button(
                     onClick = {
-                        val gmmIntentUri = Uri.parse("geo:9.0734,7.4913?q=Wuse+2+Abuja+Nigeria")
+                        val gmmIntentUri = Uri.parse("geo:8.4799,4.5421?q=The+Palms+Mall+Ilorin")
                         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                         mapIntent.setPackage("com.google.android.apps.maps")
                         if (mapIntent.resolveActivity(context.packageManager) != null) {
                             context.startActivity(mapIntent)
                         } else {
                             // Fallback web url
-                            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://maps.google.com/?q=Wuse+2+Abuja+Nigeria"))
+                            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://maps.google.com/?q=Mix+and+Mingle+Lounge+The+Palms+Mall+Ilorin"))
                             context.startActivity(webIntent)
                         }
                     },
@@ -646,7 +725,7 @@ fun HomeScreen(
                     .padding(vertical = 4.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                val sponsors = listOf("ABUJA METRO CLUB", "CUE MASTER GLOBAL", "EMERALD SNOOKER HUB", "GOLDEN BREAK COFFEE", "ELITE CUE APPAREL")
+                val sponsors = listOf("ILORIN METRO CLUB", "CUE MASTER GLOBAL", "EMERALD SNOOKER HUB", "GOLDEN BREAK COFFEE", "ELITE CUE APPAREL")
                 sponsors.forEach { sponsor ->
                     Box(
                         modifier = Modifier
@@ -685,7 +764,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Official League Management Platform • Abuja, Nigeria",
+                        text = "Official League Management Platform • Ilorin, Nigeria",
                         color = Color.Gray,
                         fontSize = 11.sp
                     )
@@ -693,13 +772,13 @@ fun HomeScreen(
 
                     Row(horizontalArrangement = Arrangement.Center, multiplier = 1f) {
                         IconButton(onClick = {
-                            val u = Uri.parse("tel:+2348000000000")
+                            val u = Uri.parse("tel:+2349022572296")
                             context.startActivity(Intent(Intent.ACTION_DIAL, u))
                         }) {
                             Icon(imageVector = Icons.Default.Phone, contentDescription = "Phone", tint = Color(0xFF00A651))
                         }
                         IconButton(onClick = {
-                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:info@ascl.com"))
+                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:ASCLOFFICIAL26@GMAIL.COM"))
                             context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
                         }) {
                             Icon(imageVector = Icons.Default.Email, contentDescription = "Email", tint = Color(0xFF00A651))

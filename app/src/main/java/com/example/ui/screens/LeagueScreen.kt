@@ -43,7 +43,7 @@ fun LeagueScreen(
             letterSpacing = 1.sp
         )
         Text(
-            text = "Official results, tables, and fixtures for Abuja's premier tournament.",
+            text = "Official results, tables, and fixtures for Ilorin's premier tournament.",
             color = Color.Gray,
             fontSize = 11.sp,
             modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
@@ -443,7 +443,7 @@ fun LeaderboardTab(isWebsiteMode: Boolean = false) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 2.dp)) {
                             Icon(imageVector = Icons.Default.Room, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(10.dp))
                             Spacer(modifier = Modifier.width(3.dp))
-                            Text(text = "Abuja Arena • Resident: ${rating.residence}", color = Color.Gray, fontSize = 9.sp)
+                            Text(text = "Ilorin Arena • Resident: ${rating.residence}", color = Color.Gray, fontSize = 9.sp)
                         }
                     }
 

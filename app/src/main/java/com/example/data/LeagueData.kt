@@ -41,13 +41,13 @@ data class LeagueFeature(
 object LeagueData {
     val prizes = listOf(
         PrizeItem("1st Place (Champion)", "₦500,000 + Deluxe Pack", "Includes ₦500,000 cash, custom branded shirt, cap, and a premium snooker stick.", "🏆"),
-        PrizeItem("2nd Place (Runner-Up)", "₦300,000 + Deluxe Pack", "Includes ₦300,000 cash with the same premium branded shirt, cap, and a snooker stick.", "🥈"),
+        PrizeItem("2nd Place (Runner-Up)", "₦300,000 + Deluxe Pack", "Includes ₦300,000 cash with custom branded shirt, cap, and a snooker stick.", "🥈"),
         PrizeItem("3rd Place (Third-Runner)", "₦100,000 + Perks", "Includes ₦100,000 cash along with other tournament miscellaneous gifts.", "🥉"),
         PrizeItem("Highest Tournament Break", "₦50,000 Award Bonus", "Awarded to the player with the single highest break sequence above 50.", "🎯")
     )
 
     val features = listOf(
-        LeagueFeature("Professional Officiating", "EPBSA & local master certified referees officiate all tournament bracket and group stage fixtures.", "Gavel"),
+        LeagueFeature("Professional Officiating", "Trained & local master certified referees officiate all tournament bracket and group stage fixtures.", "Gavel"),
         LeagueFeature("HD Stream & Live Scores", "Matches are streamed live on official ASCL platforms with professional overlay scoreboards.", "Tv"),
         LeagueFeature("Premium Venue Playing Arena", "Games played on elite standard steel-block cushions with high-speed tournament green felt.", "LocationOn"),
         LeagueFeature("State Dashboard Records", "Dynamic tracking of cueing stats, average frame durations, pot success, and historical break points.", "Star")
@@ -67,19 +67,19 @@ object LeagueData {
     )
 
     val fixtures = listOf(
-        Fixture(1, "Upcoming - Round 13", "Wale 'The Sniper' Adeleke", "Sani Bello Usman", null, null, "June 12, 2026", "17:00", "Aminisa Club House, Abuja (Table 1)", false),
-        Fixture(2, "Upcoming - Round 13", "Chukwuma Okafor", "Tunde 'Cushion' Williams", null, null, "June 12, 2026", "19:00", "Aminisa Club House, Abuja (Table 2)", false),
-        Fixture(3, "Upcoming - Round 13", "Ibrahim 'The Master' Haruna", "Daniel 'Double-Kiss' Effiong", null, null, "June 13, 2026", "16:00", "Aminisa Club House, Abuja (Table 1)", false),
-        Fixture(4, "Upcoming - Round 13", "Nze Kevin Kalu", "Mustapha Gombe", null, null, "June 13, 2026", "18:20", "Aminisa Club House, Abuja (Table 2)", false),
+        Fixture(1, "Upcoming - Round 13", "Wale 'The Sniper' Adeleke", "Sani Bello Usman", null, null, "June 12, 2026", "17:00", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 1)", false),
+        Fixture(2, "Upcoming - Round 13", "Chukwuma Okafor", "Tunde 'Cushion' Williams", null, null, "June 12, 2026", "19:00", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 2)", false),
+        Fixture(3, "Upcoming - Round 13", "Ibrahim 'The Master' Haruna", "Daniel 'Double-Kiss' Effiong", null, null, "June 13, 2026", "16:00", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 1)", false),
+        Fixture(4, "Upcoming - Round 13", "Nze Kevin Kalu", "Mustapha Gombe", null, null, "June 13, 2026", "18:20", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 2)", false),
         
-        Fixture(5, "Completed - Round 12", "Wale 'The Sniper' Adeleke", "Kunle Jinadu", 4, 1, "May 28, 2026", "17:00", "Aminisa Club House, Abuja (Table 1)", true),
-        Fixture(6, "Completed - Round 12", "Chukwuma Okafor", "Victor 'Side-Spin' George", 4, 0, "May 28, 2026", "19:30", "Aminisa Club House, Abuja (Table 2)", true),
-        Fixture(7, "Completed - Round 12", "Sani Bello Usman", "Mustapha Gombe", 4, 2, "May 29, 2026", "16:00", "Aminisa Club House, Abuja (Table 1)", true),
-        Fixture(8, "Completed - Round 12", "Tunde 'Cushion' Williams", "Daniel 'Double-Kiss' Effiong", 3, 4, "May 29, 2026", "18:45", "Aminisa Club House, Abuja (Table 2)", true)
+        Fixture(5, "Completed - Round 12", "Wale 'The Sniper' Adeleke", "Kunle Jinadu", 4, 1, "May 28, 2026", "17:00", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 1)", true),
+        Fixture(6, "Completed - Round 12", "Chukwuma Okafor", "Victor 'Side-Spin' George", 4, 0, "May 28, 2026", "19:30", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 2)", true),
+        Fixture(7, "Completed - Round 12", "Sani Bello Usman", "Mustapha Gombe", 4, 2, "May 29, 2026", "16:00", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 1)", true),
+        Fixture(8, "Completed - Round 12", "Tunde 'Cushion' Williams", "Daniel 'Double-Kiss' Effiong", 3, 4, "May 29, 2026", "18:45", "Mix and Mingle Lounge, Palms Mall Ilorin (Table 2)", true)
     )
     
     val testimonials = listOf(
-        Pair("Aminu Aminu", "ASCL Founder & Snooker Enthusiast:\n'Our mission with ASCL is simple: raise snooker playing standards, and establish Abuja as a premium snooker sporting cluster in West Africa. This registration module elevates the professionalism of our league.'"),
-        Pair("Captain Wale", "Reigning Season 2 Bronze Champion:\n'The structural competitive intensity of ASCL is unmatched. Highly organized, elite refereeing, and premium table fast conditions. If you cue snooker in Abuja, ASC is the place to be.'")
+        Pair("Issa Ameenullah Abolaji", "ASCL Founder & Snooker Enthusiast:\n'Our mission with ASCL is simple: raise snooker playing standards, and establish Ilorin as a premium snooker sporting cluster in Nigeria. This registration module elevates the professionalism of our league.'"),
+        Pair("Captain Wale", "Reigning Season 1 Bronze Champion:\n'The structural competitive intensity of ASCL is unmatched. Highly organized, elite refereeing, and premium table fast conditions. If you cue snooker in Ilorin, ASC is the place to be.'")
     )
 }

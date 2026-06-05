@@ -269,7 +269,7 @@ fun WebHeaderBar(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(modifier = Modifier.size(6.dp).background(Color(0xFF10C469), CircleShape))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "OFFICIAL WEB PORTAL • ABUJA CP", color = Color(0xFFD4AF37), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                        Text(text = "OFFICIAL WEB PORTAL • ILORIN PREMIER", color = Color(0xFFD4AF37), fontSize = 9.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }

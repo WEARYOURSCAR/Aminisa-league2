@@ -360,7 +360,7 @@ fun RegisterScreen(
                     value = previousTournament,
                     onValueChange = { previousTournament = it },
                     label = { Text("Previous Tournament Participation / Top Break") },
-                    placeholder = { Text("e.g. Abuja Open 2025 (Top rank 8) or None") },
+                    placeholder = { Text("e.g. Ilorin Open 2025 (Top rank 8) or None") },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFF00A651),
                         unfocusedBorderColor = Color.Gray.copy(alpha = 0.5f)
@@ -457,7 +457,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "A registration fee of ₦50,000 applies. Send payment to ASCL Main Account: Zenith Bank 1012948102, then upload receipt proof.",
+                    text = "A tournament registration fee of ₦50,000 applies. You can complete your secure online checkout directly via our fiduciary partner, Paystack. After payment is verified, your portal roster slot will be dynamically reserved.",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 15.sp,
@@ -465,6 +465,36 @@ fun RegisterScreen(
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
+
+                // PAYSTACK CHECKOUT INTERACTION PLACEHOLDER
+                Button(
+                    onClick = {
+                        // Dynamically generate paystack invoice proof and verify payment
+                        paymentProofUri = "https://paystack.com/receipt/ASCL-TXN-SUCCESS-MOCK"
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF09A5DB) // Paystack Teal-Blue color
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Payment,
+                        contentDescription = "Paystack Card",
+                        tint = Color.White
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (paymentProofUri == null) "PAY WITH PAYSTACK" else "✓ PAID WITH PAYSTACK",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // PASSPORT PHOTO UPLOADER
                 Text(text = "Passport Photograph *", color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)

@@ -42,7 +42,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Abuja's ultimate championship cueists tournament. Real-time standings tracking, verified profiles, automated registration rosters, and premium physical trophies in Nigeria's capital.",
+                    text = "Ilorin's ultimate championship cueists tournament. Real-time standings tracking, verified profiles, automated registration rosters, and premium physical trophies.",
                     color = Color.Gray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp
@@ -60,7 +60,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "• Entry Slot Fee: ₦50,000\n• Zenith Bank: 1012948102\n• Launch Date: June 15, 2026\n• Location: Wuse 2, Abuja",
+                    text = "• Entry Slot Fee: ₦50,000\n• Partner: Paystack\n• Launch Date: June 15, 2026\n• Location: Palms Mall, Ilorin",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp
@@ -78,7 +78,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "✉️ info@aminisasnooker.com\n📞 +234 803 123 4567\n💬 Elite Cueists Team • Wuse",
+                    text = "✉️ ASCLOFFICIAL26@GMAIL.COM\n📞 +2349022572296\n💬 Elite Cueists Team • Ilorin",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp
@@ -96,7 +96,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "© 2026 ASCL Abuja. Standard Web-Portal Layout Interface. All Rights Reserved.",
+                text = "© 2026 ASCL Ilorin. Standard Web-Portal Layout Interface. All Rights Reserved.",
                 color = Color.DarkGray,
                 fontSize = 10.sp
             )

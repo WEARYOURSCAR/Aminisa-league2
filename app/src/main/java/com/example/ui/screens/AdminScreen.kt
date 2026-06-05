@@ -539,14 +539,14 @@ fun AdminScreen(
                             colors = CardDefaults.cardColors(containerColor = Color.White)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text(text = "ZENITH BANK NIGERIA PLC", color = Color.DarkGray, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "PAYSTACK GATEWAY MERCHANT", color = Color.DarkGray, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                 Text(text = "OFFICIAL TRANSACTION RECEIPT", color = Color.Black, fontSize = 13.sp, fontWeight = FontWeight.Black)
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Divider(color = Color.LightGray)
                                 Spacer(modifier = Modifier.height(12.dp))
                                 
                                 ReceiptField(label = "PAYMENT TO", value = "AMINISA SNOOKER CLUB LEAGUE (ASCL)")
-                                ReceiptField(label = "BENEFICIARY ACCOUNT", value = "Zenith Bank • 1012948102")
+                                ReceiptField(label = "PAYMENT CHANNEL", value = "Paystack Online Transfer/Card")
                                 ReceiptField(label = "SENDER NAME", value = player.fullName.uppercase())
                                 ReceiptField(label = "AMOUNT PAID", value = "₦50,000.00")
                                 ReceiptField(label = "TRANSACTION REF", value = "TXN-${player.uniquePlayerId}-${player.id * 8931}")
