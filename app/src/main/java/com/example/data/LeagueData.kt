@@ -40,10 +40,10 @@ data class LeagueFeature(
 
 object LeagueData {
     val prizes = listOf(
-        PrizeItem("1st Place (Champion)", "₦1,500,000 + Gold Trophy", "Ultimate bragging rights, official tournament trophy, and elite club membership.", "🏆"),
-        PrizeItem("2nd Place (Runner-Up)", "₦750,000 + Silver Medal", "Prestigious second place medal and direct seed into next tournament.", "🥈"),
-        PrizeItem("3rd Place (Third-Runner)", "₦350,000 + Bronze Medal", "Bronze championship medal and tournament official cue asset accessory.", "🥉"),
-        PrizeItem("Highest Tournament Break", "₦150,000 Award Bonus", "Awarded to the player with the single highest break sequence above 50.", "🎯")
+        PrizeItem("1st Place (Champion)", "₦500,000 + Deluxe Pack", "Includes ₦500,000 cash, custom branded shirt, cap, and a premium snooker stick.", "🏆"),
+        PrizeItem("2nd Place (Runner-Up)", "₦300,000 + Deluxe Pack", "Includes ₦300,000 cash with the same premium branded shirt, cap, and a snooker stick.", "🥈"),
+        PrizeItem("3rd Place (Third-Runner)", "₦100,000 + Perks", "Includes ₦100,000 cash along with other tournament miscellaneous gifts.", "🥉"),
+        PrizeItem("Highest Tournament Break", "₦50,000 Award Bonus", "Awarded to the player with the single highest break sequence above 50.", "🎯")
     )
 
     val features = listOf(

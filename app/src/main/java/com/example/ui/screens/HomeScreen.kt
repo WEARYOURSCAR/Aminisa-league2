@@ -288,6 +288,79 @@ fun HomeScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- AUDIENCE GIFTS ---
+            Text(
+                text = "🎁 SPECTATOR & AUDIENCE GIFTS",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp
+            )
+            HorizontalDivider(color = Color(0xFFD4AF37), modifier = Modifier.padding(top = 6.dp, bottom = 16.dp), thickness = 2.dp)
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+                    .border(1.dp, Color(0xFFD4AF37).copy(alpha = 0.2f), RoundedCornerShape(12.dp)),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF141414)),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "We value our fans! Stand a chance to win prestige awards and exclusive spectator gifts during our live championship matches and grand final draws:",
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontSize = 12.sp,
+                        lineHeight = 17.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    val audienceGifts = listOf(
+                        Pair("₦50,000 Spectator Award", "Lucky sweepstake draws for actively cheering snooker spectators in attendance."),
+                        Pair("Complimentary Meal Tickets", "Access buffet meal coupons at the arena bar during live semi-final brackets."),
+                        Pair("Platinum & Gold Match Passes", "VIP priority seated tickets for the highly anticipated ASCL grand finals."),
+                        Pair("Prestige Branded ASCL Clothing", "Official custom branded tournament shirts, caps, and premium cue merchandise.")
+                    )
+
+                    audienceGifts.forEach { (giftTitle, giftDesc) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(top = 5.dp)
+                                    .size(6.dp)
+                                    .background(Color(0xFFD4AF37), CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = giftTitle,
+                                    color = Color.White,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = giftDesc,
+                                    color = Color.Gray,
+                                    fontSize = 11.sp,
+                                    lineHeight = 14.sp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // --- 4. LEAGUE FEATURES ---

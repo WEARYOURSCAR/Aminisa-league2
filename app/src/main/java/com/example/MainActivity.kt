@@ -280,10 +280,10 @@ fun WebHeaderBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 val navigationTabs = listOf(
-                    Triple("Home", Icons.Default.Home, "HOME"),
-                    Triple("Register", Icons.Default.AppRegistration, "ROSTER ENVELOPE"),
-                    Triple("League", Icons.Default.EmojiEvents, "LEAGUE CENTRAL"),
-                    Triple("Admin", Icons.Default.AdminPanelSettings, "SECURE KERNEL")
+                    Triple("Home", Icons.Default.Home, "Home"),
+                    Triple("Register", Icons.Default.AppRegistration, "Register"),
+                    Triple("League", Icons.Default.EmojiEvents, "League"),
+                    Triple("Admin", Icons.Default.AdminPanelSettings, "Admin")
                 )
 
                 navigationTabs.forEach { (tabId, icon, label) ->
