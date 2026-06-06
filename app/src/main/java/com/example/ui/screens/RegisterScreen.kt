@@ -457,7 +457,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "A tournament registration fee of ₦50,000 applies. You can complete your secure online checkout directly via our fiduciary partner, Paystack. After payment is verified, your portal roster slot will be dynamically reserved.",
+                    text = "A tournament registration fee of ₦25,000 applies. You can complete your secure online checkout directly via our fiduciary partner, Paystack. After payment is verified, your portal roster slot will be dynamically reserved.",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 15.sp,

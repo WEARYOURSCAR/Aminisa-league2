@@ -60,7 +60,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "• Entry Slot Fee: ₦50,000\n• Partner: Paystack\n• Launch Date: June 15, 2026\n• Location: Palms Mall, Ilorin",
+                    text = "• Entry Slot Fee: ₦25,000\n• Partner: Paystack\n• Launch Date: June 15, 2026\n• Location: Palms Mall, Ilorin",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp
@@ -78,7 +78,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "✉️ ASCLOFFICIAL26@GMAIL.COM\n📞 +2349022572296\n💬 Elite Cueists Team • Ilorin",
+                    text = "✉️ asclofficial26@gmail.com\n📞 +2349022572296\n💬 Elite Cueists Team • Ilorin",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp

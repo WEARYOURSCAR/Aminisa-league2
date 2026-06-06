@@ -1099,7 +1099,7 @@ fun HomeScreen(
                             Icon(imageVector = Icons.Default.Phone, contentDescription = "Phone", tint = Color(0xFF00A651))
                         }
                         IconButton(onClick = {
-                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:ASCLOFFICIAL26@GMAIL.COM"))
+                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:asclofficial26@gmail.com"))
                             context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
                         }) {
                             Icon(imageVector = Icons.Default.Email, contentDescription = "Email", tint = Color(0xFF00A651))
