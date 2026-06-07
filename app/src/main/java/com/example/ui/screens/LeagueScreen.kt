@@ -90,11 +90,60 @@ fun LeagueScreen(
 }
 
 @Composable
+fun PreSeasonBanner(
+    title: String,
+    description: String,
+    icon: String,
+    bannerColor: Color = Color(0xFFD4AF37)
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 4.dp)
+            .border(0.5.dp, bannerColor.copy(alpha = 0.3f), RoundedCornerShape(8.dp)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF141414)),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(text = icon, fontSize = 16.sp, modifier = Modifier.padding(end = 8.dp))
+            Column {
+                Text(
+                    text = title,
+                    color = bannerColor,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = description,
+                    color = Color.LightGray,
+                    fontSize = 10.sp,
+                    lineHeight = 14.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun StandingsTab(isWebsiteMode: Boolean = false) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
+        item {
+            PreSeasonBanner(
+                title = "INAUGURAL SEASON 1 PRE-SEASON PREPARATION",
+                description = "Aminisa Snooker Club League (ASCL) is currently in its roster-building stage for the upcoming launch. Live match records and standing logs will compute dynamically once the championship commences on July 1, 2026. Ranks displayed below show indicative showcase seeding profiles.",
+                icon = "📢",
+                bannerColor = Color(0xFFD4AF37)
+            )
+        }
+
         item {
             // Table Header row
             Row(
@@ -227,6 +276,15 @@ fun FixturesTab(isWebsiteMode: Boolean = false) {
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
+        item {
+            PreSeasonBanner(
+                title = "DRAFT SHEET SCHEDULING IN PROGRESS",
+                description = "Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on June 30, 2026. Outlined templates are illustrated below for reference.",
+                icon = "🗓️",
+                bannerColor = Color(0xFF00A651)
+            )
+        }
+
         items(LeagueData.fixtures) { fixture ->
             Card(
                 modifier = Modifier
@@ -379,20 +437,29 @@ fun FixturesTab(isWebsiteMode: Boolean = false) {
 @Composable
 fun LeaderboardTab(isWebsiteMode: Boolean = false) {
     val rankingData = listOf(
-        RatingEntry(1, "Wale 'The Sniper' Adeleke", 2390, 102, "Maitama"),
-        RatingEntry(2, "Chukwuma Okafor", 2310, 84, "Wuse 2"),
-        RatingEntry(3, "Sani Bello Usman", 2250, 78, "Gwarinpa"),
-        RatingEntry(4, "Tunde 'Cushion' Williams", 2180, 92, "Asokoro"),
-        RatingEntry(5, "Ibrahim 'The Master' Haruna", 2140, 71, "Garki"),
-        RatingEntry(6, "Daniel 'Double-Kiss' Effiong", 2090, 68, "Wuse 1"),
-        RatingEntry(7, "Nze Kevin Kalu", 1980, 62, "Maitama"),
-        RatingEntry(8, "Mustapha Gombe", 1910, 54, "Asokoro")
+        RatingEntry(1, "Wale 'The Sniper' Adeleke", 2390, 102, "GRA"),
+        RatingEntry(2, "Chukwuma Okafor", 2310, 84, "Adewole"),
+        RatingEntry(3, "Sani Bello Usman", 2250, 78, "GRA"),
+        RatingEntry(4, "Tunde 'Cushion' Williams", 2180, 92, "Tanke"),
+        RatingEntry(5, "Ibrahim 'The Master' Haruna", 2140, 71, "Sango"),
+        RatingEntry(6, "Daniel 'Double-Kiss' Effiong", 2090, 68, "Fate"),
+        RatingEntry(7, "Nze Kevin Kalu", 1980, 62, "GRA"),
+        RatingEntry(8, "Mustapha Gombe", 1910, 54, "Sabo Oke")
     )
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
+        item {
+            PreSeasonBanner(
+                title = "CUE QUALITY VALUES CALIBRATION",
+                description = "All athletes' official league Qualifying Points (QP) and peak match metrics are scheduled for live initialization once professional arena action begins. Showcase rankings below represent pre-season exhibitions.",
+                icon = "🏆",
+                bannerColor = Color(0xFFD4AF37)
+            )
+        }
+
         items(rankingData) { rating ->
             Card(
                 modifier = Modifier
