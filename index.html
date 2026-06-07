@@ -145,6 +145,31 @@
                         Join Nigeria's elite cue specialists in the Aminisa Snooker Club League (ASCL) in Ilorin. Real-time automated roster registration, live performance statistics, trained officiating, and dynamic player profile verification badges.
                     </p>
 
+                    <!-- Real-time Countdown Timer matching the App -->
+                    <div class="bg-black/40 border border-white/5 p-4 rounded-xl max-w-md space-y-3">
+                        <div class="text-[9px] font-bold text-asclGold uppercase tracking-widest text-center">
+                            ⏳ REGISTRATION DEADLINE CLOSING IN
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div class="bg-asclCard p-2 rounded border border-white/10 shadow-md">
+                                <span id="web-timer-days" class="block text-2xl font-black text-white">00</span>
+                                <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider">DAYS</span>
+                            </div>
+                            <div class="bg-asclCard p-2 rounded border border-white/10 shadow-md">
+                                <span id="web-timer-hours" class="block text-2xl font-black text-white">00</span>
+                                <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider">HOURS</span>
+                            </div>
+                            <div class="bg-asclCard p-2 rounded border border-white/10 shadow-md">
+                                <span id="web-timer-mins" class="block text-2xl font-black text-white">00</span>
+                                <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider">MINS</span>
+                            </div>
+                            <div class="bg-asclCard p-2 rounded border border-white/10 shadow-md">
+                                <span id="web-timer-secs" class="block text-2xl font-black text-asclGreen">00</span>
+                                <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider">SECS</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Stats Ribbon -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5">
                         <div>
@@ -572,9 +597,18 @@
                             <option value="Adewole">Adewole Estate</option>
                             <option value="Tanke">Tanke / UNILORIN Area</option>
                             <option value="Sango">Sango Quarter</option>
-                            <option value="Iponrin">Iponrin Community</option>
-                            <option value="Oja Oba">Oja Oba Historic Sector</option>
+                            <option value="Fate">Fate / Basin Area</option>
+                            <option value="Gaa Akanbi">Gaa Akanbi</option>
+                            <option value="Taiwo Road">Taiwo Road / Taiwo Isale</option>
+                            <option value="Sabo Oke">Sabo Oke</option>
+                            <option value="Sawmill">Sawmill Area</option>
+                            <option value="Oke Oyi">Oke Oyi</option>
+                            <option value="Irewolede">Irewolede Estate</option>
+                            <option value="Unity">Unity / Challenge Area</option>
+                            <option value="Baboko">Baboko</option>
                             <option value="Asa Dam">Asa Dam Road</option>
+                            <option value="Oloje">Oloje Quarter</option>
+                            <option value="Oja Oba">Oja Oba Historic Sector</option>
                         </select>
                     </div>
 
@@ -996,7 +1030,7 @@
                     dob: "1994-08-15",
                     skillLevel: "Semi-Pro",
                     preferredCueHand: "Right-Handed",
-                    residentialArea: "Maitama CP",
+                    residentialArea: "GRA Ilorin",
                     uniquePlayerId: "ASCL-10492-Z",
                     registrationDate: "2026-05-31",
                     status: "Pending",
@@ -1012,7 +1046,7 @@
                     dob: "1998-04-12",
                     skillLevel: "Pro Master",
                     preferredCueHand: "Left-Handed",
-                    residentialArea: "Wuse 2 District",
+                    residentialArea: "Adewole Estate",
                     uniquePlayerId: "ASCL-83921-X",
                     registrationDate: "2026-05-31",
                     status: "Approved",
@@ -1416,7 +1450,7 @@
                                 <span class="font-semibold text-gray-200 block">${player.whatsapp}</span>
                             </div>
                             <div>
-                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">ABUJA RESIDENCE</span>
+                                <span class="block text-[8px] text-gray-500 font-bold uppercase tracking-wider">ILORIN RESIDENCE</span>
                                 <span class="font-semibold text-gray-200 block">${player.residentialArea}</span>
                             </div>
                             <div>
@@ -1639,6 +1673,41 @@
         function closeModal() {
             document.getElementById('modal-container').classList.add('hidden');
         }
+
+        // 8. REAL-TIME COUNTDOWN TIMER (TAG JUNE 30, 2026)
+        function updateWebCountdown() {
+            const targetDate = new Date("June 30, 2026 23:59:59").getTime();
+            
+            function tick() {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+                
+                let days = 0, hours = 0, minutes = 0, seconds = 0;
+                
+                if (difference > 0) {
+                    days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                }
+                
+                const dEl = document.getElementById('web-timer-days');
+                const hEl = document.getElementById('web-timer-hours');
+                const mEl = document.getElementById('web-timer-mins');
+                const sEl = document.getElementById('web-timer-secs');
+                
+                if (dEl) dEl.innerText = String(days).padStart(2, '0');
+                if (hEl) hEl.innerText = String(hours).padStart(2, '0');
+                if (mEl) mEl.innerText = String(minutes).padStart(2, '0');
+                if (sEl) sEl.innerText = String(seconds).padStart(2, '0');
+            }
+            
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', updateWebCountdown);
     </script>
 </body>
 </html>

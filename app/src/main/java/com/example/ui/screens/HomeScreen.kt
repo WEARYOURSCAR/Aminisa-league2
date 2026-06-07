@@ -41,7 +41,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
-    // Countdown state calculated from the target date of June 15, 2026
+    // Countdown state calculated from the target date of June 30, 2026
     var timeLeft by remember { mutableStateOf(calculateTimeLeft()) }
 
     var spectatorName by remember { mutableStateOf("") }
@@ -1136,7 +1136,7 @@ private fun calculateTimeLeft(): Tuple4<Int, Int, Int, Int> {
     val deadline = Calendar.getInstance().apply {
         set(Calendar.YEAR, 2026)
         set(Calendar.MONTH, Calendar.JUNE) // June is month index 5
-        set(Calendar.DAY_OF_MONTH, 15)
+        set(Calendar.DAY_OF_MONTH, 30)
         set(Calendar.HOUR_OF_DAY, 23)
         set(Calendar.MINUTE, 59)
         set(Calendar.SECOND, 59)

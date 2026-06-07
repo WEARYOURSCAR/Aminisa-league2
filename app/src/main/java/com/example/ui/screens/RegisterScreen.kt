@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -259,7 +260,7 @@ fun RegisterScreen(
                 OutlinedTextField(
                     value = residentialArea,
                     onValueChange = { residentialArea = it },
-                    label = { Text("Residential Area * (e.g. Wuse 2, Maitama)") },
+                    label = { Text("Residential Area * (e.g. GRA, Tanke, Fate, Adewole)") },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFF00A651),
                         unfocusedBorderColor = Color.Gray.copy(alpha = 0.5f)
@@ -267,6 +268,33 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(text = "Popular areas in Ilorin (Tap to select):", color = Color.Gray, fontSize = 10.sp)
+                Spacer(modifier = Modifier.height(4.dp))
+                androidx.compose.foundation.lazy.LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    items(listOf("GRA", "Tanke", "Fate", "Adewole", "Sango", "Gaa Akanbi", "Sabo Oke", "Sawmill")) { area ->
+                        val isSelected = residentialArea.trim().equals(area, ignoreCase = true)
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    if (isSelected) Color(0xFF00A651) else Color.White.copy(alpha = 0.05f),
+                                    RoundedCornerShape(4.dp)
+                                )
+                                .border(
+                                    0.5.dp,
+                                    if (isSelected) Color(0xFF00A651) else Color.Gray.copy(alpha = 0.3f),
+                                    RoundedCornerShape(4.dp)
+                                )
+                                .clickable { residentialArea = area }
+                                .padding(horizontal = 8.dp, vertical = 5.dp)
+                        ) {
+                            Text(text = area, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
             }
         }
 
