@@ -135,6 +135,63 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    fun importPlayerToken(token: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                var rawToken = token.trim()
+                if (rawToken.contains("import_token=")) {
+                    rawToken = rawToken.substringAfter("import_token=").substringBefore("&")
+                }
+                // Decode from base64
+                val decodedBytes = android.util.Base64.decode(rawToken, android.util.Base64.DEFAULT)
+                val decodedString = String(decodedBytes, Charsets.UTF_8)
+                val json = org.json.JSONObject(decodedString)
+
+                val uniquePlayerId = json.getString("uniquePlayerId")
+                
+                // Avoid duplicates in the db
+                val exists = registrations.value.any { 
+                    it.uniquePlayerId == uniquePlayerId || 
+                    (it.fullName.equals(json.getString("fullName"), ignoreCase = true) && 
+                     it.email.equals(json.getString("email"), ignoreCase = true)) 
+                }
+
+                if (exists) {
+                    onError("Athlete is already present on this device's roster.")
+                    return@launch
+                }
+
+                val player = PlayerRegistration(
+                    uniquePlayerId = uniquePlayerId,
+                    fullName = json.getString("fullName"),
+                    nickname = if (json.has("nickname") && !json.isNull("nickname")) json.getString("nickname") else null,
+                    dob = json.getString("dob"),
+                    gender = if (json.has("gender")) json.getString("gender") else "Male",
+                    phone = if (json.has("phone")) json.getString("phone") else json.optString("whatsapp", ""),
+                    whatsapp = json.getString("whatsapp"),
+                    email = json.getString("email"),
+                    residentialArea = json.getString("residentialArea"),
+                    experienceYears = if (json.has("experienceYears")) json.getInt("experienceYears") else 2,
+                    preferredCueHand = json.getString("preferredCueHand"),
+                    previousTournament = if (json.has("previousTournament")) json.getString("previousTournament") else "",
+                    skillLevel = json.getString("skillLevel"),
+                    emergencyName = if (json.has("emergencyName")) json.getString("emergencyName") else "Emergency",
+                    emergencyRelationship = if (json.has("emergencyRelationship")) json.getString("emergencyRelationship") else "Friend",
+                    emergencyPhone = if (json.has("emergencyPhone")) json.getString("emergencyPhone") else "",
+                    passportPhotoUri = if (json.has("passportPhotoUri")) json.optString("passportPhotoUri", null) else null,
+                    paymentProofUri = if (json.has("paymentProofUri")) json.optString("paymentProofUri", null) else null,
+                    status = if (json.has("status")) json.getString("status") else "Pending",
+                    registrationDate = if (json.has("registrationDateLong")) json.getLong("registrationDateLong") else System.currentTimeMillis()
+                )
+
+                repository.importPlayer(player)
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e.localizedMessage ?: "Invalid transfer token layout.")
+            }
+        }
+    }
+
     fun downloadRegistrationsAsCsv(context: Context) {
         val list = registrations.value
         if (list.isEmpty()) {

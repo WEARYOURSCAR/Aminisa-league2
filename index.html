@@ -711,6 +711,30 @@
                     </div>
                 </div>
 
+                <!-- Share Option Panel -->
+                <div class="bg-[#0A0A0A]/80 border border-dashed border-asclGold/30 rounded-xl p-4 mt-4 text-left space-y-3">
+                    <h4 class="text-xs font-black text-asclGold uppercase tracking-wider flex items-center">
+                        <span class="mr-1.5">⚡</span> SECURE CROSS-DEVICE SYNC & SHARING
+                    </h4>
+                    <p class="text-[10px] text-gray-400 leading-normal">
+                        Roster entries are saved securely in your phone/browser sandbox. To show up on the Admin's dashboard on another computer or phone, simply send them your <strong>Instant Import Link</strong> below or copy your transfer token!
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        <button onclick="shareWhatsAppLink()" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-bold uppercase py-2.5 px-3 rounded-lg transition flex items-center justify-center space-x-2">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> <span>WHATSAPP SHARE TO ADMIN</span>
+                        </button>
+                        <button onclick="copyTransferLink()" class="bg-asclCard hover:bg-[#1E1E1E] text-asclGold border border-asclGold/30 text-[10px] font-bold uppercase py-2.5 px-3 rounded-lg transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-link"></i> <span>COPY INSTANT SYNC LINK</span>
+                        </button>
+                        <button onclick="copyAthleteToken()" class="bg-[#141414] hover:bg-[#1E1E1E] text-gray-300 border border-white/5 text-[9px] font-bold uppercase py-2 rounded-lg transition flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-copy"></i> <span>COPY RAW OFFLINE CODE</span>
+                        </button>
+                        <button onclick="downloadAthleteFile()" class="bg-[#141414] hover:bg-[#1E1E1E] text-gray-300 border border-white/5 text-[9px] font-bold uppercase py-2 rounded-lg transition flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-file-arrow-down"></i> <span>DOWNLOAD PACKET FILE</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Done/Nav Switch Button -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-2">
                     <button onclick="switchTab('home')" class="flex-1 bg-asclGreen hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition">
@@ -866,6 +890,18 @@
                     </button>
                 </div>
 
+                <!-- Safe Sandbox Architecture Explanation Banner -->
+                <div class="bg-asclGold/5 border border-asclGold/20 rounded-xl p-4 flex items-start space-x-3">
+                    <span class="text-base">🔒</span>
+                    <div>
+                        <h4 class="text-xs font-black text-asclGold tracking-wider uppercase">SECURE DEVICE-LOCAL SANDBOX & CROSS-DEVICE SYNC</h4>
+                        <p class="text-[10px] text-gray-400 mt-1 leading-relaxed">
+                            To ensure 100% data privacy and lightning-fast offline operation, all participant envelopes are saved securely inside each user's individual browser / app sandbox cache. 
+                            <br><span class="text-white font-bold">registered by friends on other devices:</span> Simply ask them to tap <strong>"Copy Transfer Token"</strong> or <strong>"Download Packet"</strong> on their registration success screen, then tap the green <strong>"Import Guest Packet"</strong> button below to instantly load their entry!
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Stats grid -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-asclCard border border-white/5 rounded-xl p-4 text-center">
@@ -886,7 +922,7 @@
                     </div>
                 </div>
 
-                <!-- Filters & CSV Export -->
+                <!-- Filters & CSV Export & Import -->
                 <div class="flex flex-col md:flex-row items-stretch md:items-center gap-4">
                     <div class="relative flex-grow">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 pointer-events-none">
@@ -894,9 +930,14 @@
                         </span>
                         <input type="text" id="admin-search-query" onkeyup="filterAdminRoster()" class="w-full px-3 py-2.5 pl-9 text-xs rounded-lg form-input text-white" placeholder="Search athlete names, IDs, Whatsapp, residences...">
                     </div>
-                    <button onclick="downloadAsCsv()" class="bg-asclCard hover:bg-[#1C1C1C] border border-asclGold/50 text-asclGold text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-lg flex items-center justify-center space-x-2 transition">
-                        <i class="fa-solid fa-download"></i> <span>EXPORT REGISTER CSV</span>
-                    </button>
+                    <div class="flex gap-2 flex-wrap sm:flex-nowrap">
+                        <button onclick="triggerImportDialog()" class="bg-asclCard hover:bg-[#1C1C1C] border border-asclGreen/50 text-asclGreen text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-lg flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> <span>IMPORT GUEST PACKET</span>
+                        </button>
+                        <button onclick="downloadAsCsv()" class="bg-asclCard hover:bg-[#1C1C1C] border border-asclGold/50 text-asclGold text-xs font-bold uppercase tracking-wider px-5 py-3 rounded-lg flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-download"></i> <span>EXPORT REGISTER CSV</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Applicants Queue list representation -->
@@ -1187,6 +1228,170 @@
         }
 
         // 3. REGISTRATION FORM HANDLING
+        let lastRegisteredAthlete = null;
+
+        function getAthleteToken(playerObj) {
+            const transferObj = {
+                fullName: playerObj.fullName,
+                nickname: playerObj.nickname,
+                email: playerObj.email,
+                whatsapp: playerObj.whatsapp,
+                dob: playerObj.dob,
+                skillLevel: playerObj.skillLevel,
+                preferredCueHand: playerObj.preferredCueHand,
+                residentialArea: playerObj.residentialArea,
+                uniquePlayerId: playerObj.uniquePlayerId,
+                registrationDate: playerObj.registrationDate,
+                hashValue: playerObj.hashValue
+            };
+            return btoa(unescape(encodeURIComponent(JSON.stringify(transferObj))));
+        }
+
+        function shareWhatsAppLink() {
+            if (!lastRegisteredAthlete) {
+                alert("No active registration found.");
+                return;
+            }
+            const token = getAthleteToken(lastRegisteredAthlete);
+            const baseUrl = window.location.href.split('?')[0];
+            const importUrl = baseUrl + "?import_token=" + token;
+            const message = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) roster packet! Tap this link to instantly import me into your app's manager console:\n\n👉 ${importUrl}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function copyTransferLink() {
+            if (!lastRegisteredAthlete) {
+                alert("No active registration found.");
+                return;
+            }
+            const token = getAthleteToken(lastRegisteredAthlete);
+            const baseUrl = window.location.href.split('?')[0];
+            const importUrl = baseUrl + "?import_token=" + token;
+            navigator.clipboard.writeText(importUrl).then(() => {
+                alert("🎒 Success! Direct Import Link copied to clipboard!\n\nJust send this link to your League Admin. Once they open it, you'll be added instantly on their screen!");
+            }).catch(err => {
+                prompt("Copy this Direct Import Link for your admin:", importUrl);
+            });
+        }
+
+        function copyAthleteToken() {
+            if (!lastRegisteredAthlete) {
+                alert("No registration found to export.");
+                return;
+            }
+            const transferObj = {
+                fullName: lastRegisteredAthlete.fullName,
+                nickname: lastRegisteredAthlete.nickname,
+                email: lastRegisteredAthlete.email,
+                whatsapp: lastRegisteredAthlete.whatsapp,
+                dob: lastRegisteredAthlete.dob,
+                skillLevel: lastRegisteredAthlete.skillLevel,
+                preferredCueHand: lastRegisteredAthlete.preferredCueHand,
+                residentialArea: lastRegisteredAthlete.residentialArea,
+                uniquePlayerId: lastRegisteredAthlete.uniquePlayerId,
+                registrationDate: lastRegisteredAthlete.registrationDate,
+                hashValue: lastRegisteredAthlete.hashValue
+            };
+            const token = btoa(unescape(encodeURIComponent(JSON.stringify(transferObj))));
+            navigator.clipboard.writeText(token).then(() => {
+                alert("🎒 Success! Athlete Transfer Token copied to clipboard!\n\nShare this code with your league admin via WhatsApp/Email. They can import it instantly on their dashboard!");
+            }).catch(err => {
+                prompt("Copy this Transfer Token and share with your league admin:", token);
+            });
+        }
+
+        function downloadAthleteFile() {
+            if (!lastRegisteredAthlete) {
+                alert("No registration found.");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lastRegisteredAthlete, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `ASCL-Roster-Packet-${lastRegisteredAthlete.fullName.replace(/\s+/g, '_')}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function triggerImportDialog() {
+            const choose = confirm("🎒 IMPORT GUEST PLAYER ROSTER\n\nWould you like to import a downloaded athlete JSON file?\n\n- Click [OK] to select a .json file\n- Click [Cancel] to paste an Athlete Transfer Token instead");
+            if (choose) {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.json';
+                fileInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(evt) {
+                            try {
+                                const importedPlayer = JSON.parse(evt.target.result);
+                                if (!importedPlayer.fullName || !importedPlayer.uniquePlayerId) {
+                                    alert("Invalid Roster File content. Make sure it contains correct registration fields.");
+                                    return;
+                                }
+                                importPlayerObject(importedPlayer);
+                            } catch (err) {
+                                alert("Failed to parse JSON Roster File: " + err.message);
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                fileInput.click();
+            } else {
+                const token = prompt("Paste the Athlete Transfer Token here:");
+                if (token && token.trim() !== "") {
+                    try {
+                        const cleanToken = token.trim();
+                        const decodedStr = decodeURIComponent(escape(atob(cleanToken)));
+                        const importedPlayer = JSON.parse(decodedStr);
+                        if (!importedPlayer.fullName || !importedPlayer.uniquePlayerId) {
+                            alert("Invalid Token. Make sure it is copied directly from their successful registration page.");
+                            return;
+                        }
+                        importPlayerObject(importedPlayer);
+                    } catch (err) {
+                        alert("Failed to decode token. Please ensure it is a valid Transfer Token copied from the portal.");
+                    }
+                }
+            }
+        }
+
+        function importPlayerObject(player) {
+            const hasDuplicate = registrations.some(x => x.uniquePlayerId === player.uniquePlayerId || (x.fullName.toLowerCase() === player.fullName.toLowerCase() && x.email.toLowerCase() === player.email.toLowerCase()));
+            if (hasDuplicate) {
+                alert(`Athlete "${player.fullName}" (${player.uniquePlayerId}) is already present in your Admin Roster list.`);
+                return;
+            }
+
+            const rosterItem = {
+                id: registrations.length + 1,
+                fullName: player.fullName,
+                nickname: player.nickname || null,
+                email: player.email,
+                whatsapp: player.whatsapp,
+                dob: player.dob,
+                skillLevel: player.skillLevel,
+                preferredCueHand: player.preferredCueHand,
+                residentialArea: player.residentialArea,
+                uniquePlayerId: player.uniquePlayerId,
+                registrationDate: player.registrationDate || new Date().toISOString().split('T')[0],
+                status: player.status || "Pending",
+                passportData: player.passportData || "",
+                receiptData: player.receiptData || "",
+                hashValue: player.hashValue || Math.floor(100000 + Math.random() * 900000)
+            };
+
+            registrations.unshift(rosterItem);
+            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            
+            // Re-render admin dashboard roster
+            renderAdminRoster();
+            alert(`🎉 Success! Roster synchronized successfully.\n\nAthlete "${rosterItem.fullName}" (${rosterItem.uniquePlayerId}) has been imported and added into your administrative database.`);
+        }
+
         function handleFormSubmit(e) {
             e.preventDefault();
 
@@ -1222,6 +1427,7 @@
                 hashValue: randHash
             };
 
+            lastRegisteredAthlete = registration;
             registrations.unshift(registration);
             localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
 
@@ -1736,8 +1942,37 @@
             setInterval(tick, 1000);
         }
 
+        // 9. AUTOMATIC DEEP-LINK URL IMPORT SYSTEM
+        function checkUrlParamsForImport() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get('import_token');
+                if (token && token.trim() !== "") {
+                    const cleanToken = token.trim();
+                    const decodedStr = decodeURIComponent(escape(atob(cleanToken)));
+                    const importedPlayer = JSON.parse(decodedStr);
+                    if (importedPlayer && importedPlayer.fullName && importedPlayer.uniquePlayerId) {
+                        // Clear the query parameters from browser URL bar smoothly to keep it tidy
+                        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                        window.history.replaceState({ path: newUrl }, '', newUrl);
+
+                        // Trigger import
+                        setTimeout(() => {
+                            importPlayerObject(importedPlayer);
+                            switchTab('admin');
+                        }, 800);
+                    }
+                }
+            } catch(e) {
+                console.error("Auto deep-link import failed:", e);
+            }
+        }
+
         // Initialize on load
-        window.addEventListener('DOMContentLoaded', updateWebCountdown);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateWebCountdown();
+            checkUrlParamsForImport();
+        });
     </script>
 </body>
 </html>

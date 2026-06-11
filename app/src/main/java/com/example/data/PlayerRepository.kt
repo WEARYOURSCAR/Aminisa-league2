@@ -59,6 +59,10 @@ class PlayerRepository(private val playerDao: PlayerDao) {
         playerDao.updateRegistrationStatus(id, status)
     }
 
+    suspend fun importPlayer(registration: PlayerRegistration) {
+        playerDao.insertRegistration(registration)
+    }
+
     suspend fun getCount(): Int {
         return playerDao.getCount()
     }

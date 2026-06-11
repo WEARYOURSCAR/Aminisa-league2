@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,7 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -213,6 +217,118 @@ fun SuccessRedirectScreen(
             Icon(imageVector = Icons.Default.Forum, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "JOIN OFFICIAL ASCL COMMUNITY", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // PRE-CALCULATE SYNC TOKEN & DEEP LINK
+        val clipboardManager = LocalClipboardManager.current
+        val playerTokenString = remember(player) {
+            try {
+                val json = org.json.JSONObject().apply {
+                    put("fullName", player.fullName)
+                    put("nickname", player.nickname ?: "")
+                    put("email", player.email)
+                    put("whatsapp", player.whatsapp)
+                    put("phone", player.phone)
+                    put("dob", player.dob)
+                    put("skillLevel", player.skillLevel)
+                    put("preferredCueHand", player.preferredCueHand)
+                    put("residentialArea", player.residentialArea)
+                    put("uniquePlayerId", player.uniquePlayerId)
+                    put("registrationDateLong", player.registrationDate)
+                    put("experienceYears", player.experienceYears)
+                    put("gender", player.gender)
+                    put("status", player.status)
+                }
+                android.util.Base64.encodeToString(
+                    json.toString().toByteArray(Charsets.UTF_8),
+                    android.util.Base64.NO_WRAP
+                )
+            } catch (e: Exception) {
+                ""
+            }
+        }
+        val syncUrl = "https://ais-pre-2uf3zlbqqnj2r7oqqovky5-243795209081.europe-west2.run.app/?import_token=$playerTokenString"
+
+        // SHARE SYNC LINK VIA WHATSAPP/OTHER CHANNELS
+        Button(
+            onClick = {
+                try {
+                    val message = "Hi Admin, here is my Aminisa Snooker Club League (ASCL) roster packet! Tap this link to instantly import me into your app's manager console:\n\n👉 $syncUrl"
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, message)
+                    }
+                    context.startActivity(Intent.createChooser(shareIntent, "Share import link via"))
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Failed to share link: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF00A651),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(48.dp)
+        ) {
+            Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "SHARE INSTANT TRANSFER LINK", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // GRID OF COPYING UTILITIES
+        Row(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = {
+                    try {
+                        clipboardManager.setText(AnnotatedString(syncUrl))
+                        Toast.makeText(context, "🎒 Link copied! Send this to your admin so they can import you instantly.", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to copy link: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF141414),
+                    contentColor = Color(0xFFD4AF37)
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(44.dp)
+                    .border(0.5.dp, Color(0xFFD4AF37).copy(0.3f), RoundedCornerShape(8.dp))
+            ) {
+                Text(text = "COPY SYNC LINK", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+            }
+
+            Button(
+                onClick = {
+                    try {
+                        clipboardManager.setText(AnnotatedString(playerTokenString))
+                        Toast.makeText(context, "🎒 Raw offline code copied to clipboard!", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to copy token: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF141414),
+                    contentColor = Color.Gray
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(44.dp)
+                    .border(0.5.dp, Color.Gray.copy(0.3f), RoundedCornerShape(8.dp))
+            ) {
+                Text(text = "COPY RAW CODE", fontSize = 10.sp, fontWeight = FontWeight.Bold)
+            }
         }
 
         Spacer(modifier = Modifier.height(10.dp))

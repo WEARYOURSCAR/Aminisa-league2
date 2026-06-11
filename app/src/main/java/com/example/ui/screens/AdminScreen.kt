@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.widget.Toast
 import androidx.compose.ui.window.Dialog
 import com.example.data.PlayerRegistration
 import com.example.ui.LeagueViewModel
@@ -159,6 +160,103 @@ fun AdminScreen(
         }
     } else {
         // RENDER SECURE ADMIN DASHBOARD
+        var showImportDialog by remember { mutableStateOf(false) }
+        var importTokenInput by remember { mutableStateOf("") }
+        var importError by remember { mutableStateOf<String?>(null) }
+
+        if (showImportDialog) {
+            AlertDialog(
+                onDismissRequest = { 
+                    showImportDialog = false
+                    importTokenInput = ""
+                    importError = null
+                },
+                title = {
+                    Text(
+                        text = "IMPORT PLAYER PACKET",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                },
+                text = {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = "Paste the Athlete Transfer Token shared by your player or friend below to register them on this device's roster context:",
+                            color = Color.LightGray,
+                            fontSize = 11.sp,
+                            lineHeight = 15.sp
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        OutlinedTextField(
+                            value = importTokenInput,
+                            onValueChange = { 
+                                importTokenInput = it
+                                importError = null
+                            },
+                            placeholder = { Text("Paste Token here...", color = Color.Gray, fontSize = 11.sp) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color(0xFF00A651),
+                                unfocusedBorderColor = Color.Gray.copy(0.4f),
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White
+                            ),
+                            modifier = Modifier.fillMaxWidth().height(100.dp),
+                            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 10.sp, fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
+                        )
+                        if (importError != null) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = importError!!,
+                                color = Color.Red,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if (importTokenInput.isNotBlank()) {
+                                viewModel.importPlayerToken(
+                                    token = importTokenInput,
+                                    onSuccess = {
+                                        showImportDialog = false
+                                        importTokenInput = ""
+                                        importError = null
+                                        Toast.makeText(context, "🎉 Player imported successfully into local roster database!", Toast.LENGTH_LONG).show()
+                                    },
+                                    onError = { err ->
+                                        importError = err
+                                    }
+                                )
+                            } else {
+                                importError = "Please paste a token before submitting."
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A651))
+                    ) {
+                        Text("IMPORT", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showImportDialog = false
+                            importTokenInput = ""
+                            importError = null
+                        },
+                        colors = ButtonDefaults.textButtonColors(contentColor = Color.Gray)
+                    ) {
+                        Text("CANCEL", fontSize = 12.sp)
+                    }
+                },
+                containerColor = Color(0xFF141414),
+                shape = RoundedCornerShape(12.dp)
+            )
+        }
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -175,14 +273,14 @@ fun AdminScreen(
                     Text(
                         text = "ADMIN CONTROL PANEL",
                         color = Color.White,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 1.sp
                     )
                     Text(
-                        text = "Approve rosters, evaluate receipts, and manage ASC profile cards.",
+                        text = "Approve rosters, evaluate receipts, and manage ASC profile cards. Tap IMPORT to sync custom transfers.",
                         color = Color.Gray,
-                        fontSize = 11.sp
+                        fontSize = 10.sp
                     )
                 }
 
@@ -215,7 +313,7 @@ fun AdminScreen(
                 OutlinedTextField(
                     value = searchVal,
                     onValueChange = { viewModel.searchQuery.value = it },
-                    placeholder = { Text("Search player name, ID...", fontSize = 12.sp) },
+                    placeholder = { Text("Search player name, ID...", fontSize = 11.sp, color = Color.Gray) },
                     leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFF00A651),
@@ -229,15 +327,27 @@ fun AdminScreen(
                 )
 
                 Button(
+                    onClick = { showImportDialog = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E1E1E)),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color(0xFF00A651).copy(0.5f)),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Upload, contentDescription = "Import Token", tint = Color(0xFF00A651), modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "IMPORT", color = Color(0xFF00A651), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                }
+
+                Button(
                     onClick = { viewModel.downloadRegistrationsAsCsv(context) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E1E1E)),
                     shape = RoundedCornerShape(8.dp),
                     border = BorderStroke(1.dp, Color(0xFFD4AF37).copy(0.5f)),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp)
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp)
                 ) {
-                    Icon(imageVector = Icons.Default.Download, contentDescription = "Export Excel/CSV", tint = Color(0xFFD4AF37), modifier = Modifier.size(18.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(text = "EXPORT CSV", color = Color(0xFFD4AF37), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Icon(imageVector = Icons.Default.Download, contentDescription = "Export CSV", tint = Color(0xFFD4AF37), modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "CSV", color = Color(0xFFD4AF37), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
             }
 
