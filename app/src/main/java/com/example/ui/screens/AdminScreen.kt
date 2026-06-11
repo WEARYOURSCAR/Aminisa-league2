@@ -94,7 +94,7 @@ fun AdminScreen(
                         letterSpacing = 2.sp
                     )
                     Text(
-                        text = "Enter Administrative credentials to review rosters, payments, and approve registration. Default passphrase: admin",
+                        text = "Enter Administrative credentials to review rosters, payments, and approve registration. Default passphrase: ASCLAdmin2026!",
                         color = Color.Gray,
                         fontSize = 11.sp,
                         textAlign = TextAlign.Center,
@@ -130,7 +130,7 @@ fun AdminScreen(
 
                     Button(
                         onClick = {
-                            if (passwordInput.lowercase() == "admin") {
+                            if (passwordInput == "ASCLAdmin2026!") {
                                 isAuthorized = true
                                 authError = false
                             } else {

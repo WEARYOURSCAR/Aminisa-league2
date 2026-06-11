@@ -20,12 +20,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.PlayerRegistration
 import com.example.ui.LeagueViewModel
 import java.util.Calendar
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +63,7 @@ fun RegisterScreen(
     // Custom simulated uploads
     var passportUri by remember { mutableStateOf<String?>(null) }
     var paymentProofUri by remember { mutableStateOf<String?>(null) }
+    var showPaystackCheckout by remember { mutableStateOf(false) }
 
     // Agreements Checkboxes
     var mediaConsent by remember { mutableStateOf(false) }
@@ -497,11 +501,10 @@ fun RegisterScreen(
                 // PAYSTACK CHECKOUT INTERACTION PLACEHOLDER
                 Button(
                     onClick = {
-                        // Dynamically generate paystack invoice proof and verify payment
-                        paymentProofUri = "https://paystack.com/receipt/ASCL-TXN-SUCCESS-MOCK"
+                        showPaystackCheckout = true
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF09A5DB) // Paystack Teal-Blue color
+                        containerColor = if (paymentProofUri == null) Color(0xFF09A5DB) else Color(0xFF00A651) // Paystack Teal-Blue color vs Green-Verified
                     ),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
@@ -509,7 +512,7 @@ fun RegisterScreen(
                         .height(48.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Payment,
+                        imageVector = if (paymentProofUri == null) Icons.Default.Payment else Icons.Default.Check,
                         contentDescription = "Paystack Card",
                         tint = Color.White
                     )
@@ -760,6 +763,409 @@ fun RegisterScreen(
 
         if (isWebsiteMode) {
             WebFooter()
+        }
+    }
+
+    if (showPaystackCheckout) {
+        androidx.compose.ui.window.Dialog(onDismissRequest = { showPaystackCheckout = false }) {
+            var selectedTab by remember { mutableStateOf("card") } // "card", "transfer", "ussd"
+            var checkoutState by remember { mutableStateOf("input") } // "input", "loading", "pin", "otp", "success"
+            var loadingText by remember { mutableStateOf("") }
+            
+            var cardNo by remember { mutableStateOf("4012 8812 3456 7890") }
+            var expiry by remember { mutableStateOf("12/28") }
+            var cvv by remember { mutableStateOf("123") }
+            var pinVal by remember { mutableStateOf("") }
+            var otpVal by remember { mutableStateOf("") }
+            
+            var chosenUssdBank by remember { mutableStateOf("*737*1*2*25000#") }
+
+            val scope = rememberCoroutineScope()
+
+            fun runProgressSimulator(text: String, nextState: String, delay: Long = 1500) {
+                checkoutState = "loading"
+                loadingText = text
+                scope.launch {
+                    kotlinx.coroutines.delay(delay)
+                    checkoutState = nextState
+                }
+            }
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    // Header Area
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFF09A5DB))
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "PAYSTACK GATEWAY",
+                                color = Color.Gray,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.sp
+                            )
+                        }
+                        IconButton(
+                            onClick = { showPaystackCheckout = false },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "₦25,000.00",
+                        color = Color(0xFF00A651),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Black
+                    )
+                    Text(
+                        text = if (email.isNotEmpty()) email else "guest@ascl.com",
+                        color = Color.DarkGray,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    if (checkoutState == "input") {
+                        // TABS row
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            val tabs = listOf(
+                                Triple("card", "Card", Icons.Default.CreditCard),
+                                Triple("transfer", "Transfer", Icons.Default.AccountBalance),
+                                Triple("ussd", "USSD", Icons.Default.PhoneAndroid)
+                            )
+                            tabs.forEach { (id, label, icon) ->
+                                Button(
+                                    onClick = { selectedTab = id },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (selectedTab == id) Color(0xFF09A5DB).copy(alpha = 0.12f) else Color.Transparent,
+                                        contentColor = if (selectedTab == id) Color(0xFF09A5DB) else Color.Gray
+                                    ),
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(38.dp),
+                                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
+                                ) {
+                                    Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(11.dp))
+                                    Spacer(modifier = Modifier.width(3.dp))
+                                    Text(text = label, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        when (selectedTab) {
+                            "card" -> {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(text = "CARD DETAILS", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Gray)
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    OutlinedTextField(
+                                        value = cardNo,
+                                        onValueChange = { cardNo = it },
+                                        label = { Text("Card Number", fontSize = 11.sp) },
+                                        singleLine = true,
+                                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.sp, color = Color.Black),
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedTextColor = Color.Black,
+                                            unfocusedTextColor = Color.Black,
+                                            focusedBorderColor = Color(0xFF09A5DB),
+                                            unfocusedBorderColor = Color.LightGray,
+                                            focusedLabelColor = Color(0xFF09A5DB)
+                                        ),
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedTextField(
+                                            value = expiry,
+                                            onValueChange = { expiry = it },
+                                            label = { Text("Expiry (MM/YY)", fontSize = 11.sp) },
+                                            singleLine = true,
+                                            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.sp, color = Color.Black),
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                focusedTextColor = Color.Black,
+                                                unfocusedTextColor = Color.Black,
+                                                focusedBorderColor = Color(0xFF09A5DB),
+                                                unfocusedBorderColor = Color.LightGray,
+                                                focusedLabelColor = Color(0xFF09A5DB)
+                                            ),
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                        OutlinedTextField(
+                                            value = cvv,
+                                            onValueChange = { cvv = it },
+                                            label = { Text("CVV", fontSize = 11.sp) },
+                                            singleLine = true,
+                                            visualTransformation = PasswordVisualTransformation(),
+                                            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.sp, color = Color.Black),
+                                            colors = OutlinedTextFieldDefaults.colors(
+                                                focusedTextColor = Color.Black,
+                                                unfocusedTextColor = Color.Black,
+                                                focusedBorderColor = Color(0xFF09A5DB),
+                                                unfocusedBorderColor = Color.LightGray,
+                                                focusedLabelColor = Color(0xFF09A5DB)
+                                            ),
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(20.dp))
+
+                                    Button(
+                                        onClick = {
+                                            runProgressSimulator("Verifying Card Credentials...", "pin")
+                                        },
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3BB75E)),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp)
+                                    ) {
+                                        Text(text = "PAY ₦25,000.00", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
+                                    }
+                                }
+                            }
+                            "transfer" -> {
+                                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(text = "BANK TRANSFER DETS", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Gray, modifier = Modifier.align(Alignment.Start))
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color(0xFFF7F9FC), RoundedCornerShape(8.dp))
+                                            .border(0.5.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                                            .padding(12.dp)
+                                    ) {
+                                        Column {
+                                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                                                Text("Wema Bank / Paystack", fontSize = 10.sp, color = Color.DarkGray, fontWeight = FontWeight.Bold)
+                                                Text("LIVE", fontSize = 9.sp, color = Color(0xFF00A651), fontWeight = FontWeight.Bold)
+                                            }
+                                            Spacer(Modifier.height(8.dp))
+                                            Text("Account: 9920199411", fontSize = 13.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                                            Text("Beneficiary: Aminisa Snooker Club League", fontSize = 9.sp, color = Color.Gray)
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(20.dp))
+
+                                    Button(
+                                        onClick = {
+                                            runProgressSimulator("Reconciling Virtual Settlement...", "success", 2000)
+                                        },
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3BB75E)),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp)
+                                    ) {
+                                        Text(text = "I HAVE SENT THE MONEY", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
+                                    }
+                                }
+                            }
+                            "ussd" -> {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(text = "SELECT BANK DIAL CODE", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color.Gray)
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    var expanded by remember { mutableStateOf(false) }
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable { expanded = true }
+                                            .background(Color(0xFFF7F9FC))
+                                            .border(1.dp, Color.LightGray, RoundedCornerShape(4.dp))
+                                            .padding(12.dp)
+                                    ) {
+                                        Text(
+                                            text = when(chosenUssdBank) {
+                                                "*737*1*2*25000#" -> "GTBank - *737*1*2*25000#"
+                                                "*966*25000#" -> "Zenith Bank - *966*25000#"
+                                                "*901*25000#" -> "Access Bank - *901*25000#"
+                                                else -> "UBA Bank - *826*25000#"
+                                            },
+                                            fontSize = 12.sp, color = Color.Black
+                                        )
+                                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                                            DropdownMenuItem(text = { Text("GTBank") }, onClick = { chosenUssdBank = "*737*1*2*25000#"; expanded = false })
+                                            DropdownMenuItem(text = { Text("Zenith Bank") }, onClick = { chosenUssdBank = "*966*25000#"; expanded = false })
+                                            DropdownMenuItem(text = { Text("Access Bank") }, onClick = { chosenUssdBank = "*901*25000#"; expanded = false })
+                                            DropdownMenuItem(text = { Text("UBA Bank") }, onClick = { chosenUssdBank = "*826*25000#"; expanded = false })
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color(0xFFFAF2F2), RoundedCornerShape(6.dp))
+                                            .padding(10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text("Dial: $chosenUssdBank", fontWeight = FontWeight.Bold, color = Color(0xFFA11010), fontSize = 14.sp)
+                                    }
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    Button(
+                                        onClick = {
+                                            runProgressSimulator("Awaiting USSD Callback...", "success")
+                                        },
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3BB75E)),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(44.dp)
+                                    ) {
+                                        Text(text = "I DIALED THE CODE SUCCESS", fontWeight = FontWeight.Bold, fontSize = 11.sp, color = Color.White)
+                                    }
+                                }
+                            }
+                        }
+                    } else if (checkoutState == "loading") {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator(color = Color(0xFF09A5DB))
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(text = loadingText, color = Color.DarkGray, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    } else if (checkoutState == "pin") {
+                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = "Card security PIN required", fontSize = 12.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            Text("Please pass your 4-digit card passcode PIN:", fontSize = 10.sp, color = Color.Gray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            OutlinedTextField(
+                                value = pinVal,
+                                onValueChange = { if (it.length <= 4) pinVal = it },
+                                singleLine = true,
+                                label = { Text("PIN") },
+                                visualTransformation = PasswordVisualTransformation(),
+                                textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Color.Black, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
+                                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.Black, unfocusedTextColor = Color.Black),
+                                modifier = Modifier.width(120.dp)
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Button(
+                                onClick = {
+                                    runProgressSimulator("Transmitting card 3D passcode...", "otp")
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF09A5DB)),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("SUBMIT PIN CODE", fontSize = 11.sp, color = Color.White, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    } else if (checkoutState == "otp") {
+                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = "One-Time Password (OTP)", fontSize = 12.sp, fontWeight = FontWeight.Black, color = Color.Black)
+                            Text("OTP code dispatched to your phone, type here:", fontSize = 10.sp, color = Color.Gray)
+                            Spacer(modifier = Modifier.height(12.dp))
+                            OutlinedTextField(
+                                value = otpVal,
+                                onValueChange = { if (it.length <= 6) otpVal = it },
+                                singleLine = true,
+                                label = { Text("OTP CODE") },
+                                textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Color.Black),
+                                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color.Black, unfocusedTextColor = Color.Black),
+                                modifier = Modifier.width(160.dp)
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Button(
+                                onClick = {
+                                    runProgressSimulator("Finalizing transaction payment...", "success")
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3BB75E)),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("FINALIZE TRANSACTION", fontSize = 11.sp, color = Color.White, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    } else if (checkoutState == "success") {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = Color(0xFF3BB75E),
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(text = "₦25,000 PAYMENT VERIFIED", color = Color(0xFF3BB75E), fontSize = 14.sp, fontWeight = FontWeight.Black)
+                            Text(text = "Roster receipt proof generated automatically!", color = Color.Gray, fontSize = 9.sp)
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Button(
+                                onClick = {
+                                    paymentProofUri = "https://paystack.com/receipt/ASCL-PSTK-" + (100000 + (Math.random() * 900000).toInt())
+                                    showPaystackCheckout = false
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("FINISH & RETURN", fontSize = 11.sp, color = Color.DarkGray, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Divider(color = Color.LightGray.copy(0.4f), thickness = 0.5.dp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = Color(0xFF00A651), modifier = Modifier.size(10.dp))
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("SECURE DEBIT CHECKOUT", fontSize = 7.sp, color = Color.Gray)
+                        }
+                        Text("POWERED BY PAYSTACK", fontSize = 7.sp, fontWeight = FontWeight.Black, color = Color.Gray)
+                    }
+                }
+            }
         }
     }
 }
