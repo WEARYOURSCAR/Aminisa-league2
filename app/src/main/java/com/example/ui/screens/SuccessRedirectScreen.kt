@@ -251,18 +251,16 @@ fun SuccessRedirectScreen(
         }
         val syncUrl = "https://ais-pre-2uf3zlbqqnj2r7oqqovky5-243795209081.europe-west2.run.app/?import_token=$playerTokenString"
 
-        // SHARE SYNC LINK VIA WHATSAPP/OTHER CHANNELS
+        // WHATSAPP SHARE TO ADMIN
         Button(
             onClick = {
                 try {
-                    val message = "Hi Admin, here is my Aminisa Snooker Club League (ASCL) roster packet! Tap this link to instantly import me into your app's manager console:\n\n👉 $syncUrl"
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, message)
-                    }
-                    context.startActivity(Intent.createChooser(shareIntent, "Share import link via"))
+                    val message = "Hi Admin, here is my Aminisa Snooker Club League (ASCL) rooster packet!\n\n👉 $syncUrl"
+                    val encodedMessage = java.net.URLEncoder.encode(message, "UTF-8")
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/2349022572296?text=$encodedMessage"))
+                    context.startActivity(intent)
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Failed to share link: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Could not open WhatsApp. Please contact admin at 2349022572296", Toast.LENGTH_LONG).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -276,7 +274,7 @@ fun SuccessRedirectScreen(
         ) {
             Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "SHARE INSTANT TRANSFER LINK", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(text = "WHATSAPP SHARE TO ADMIN", fontSize = 12.sp, fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(10.dp))

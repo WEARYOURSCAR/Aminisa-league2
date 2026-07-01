@@ -64,7 +64,7 @@
     <header class="sticky top-0 z-50 bg-[#0F0F0F]/90 backdrop-blur-md border-b border-asclGold/15 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <!-- Brand Logo -->
-            <div onclick="switchTab('home')" class="flex items-center space-x-3 cursor-pointer group">
+            <div onclick="handleLogoClick()" class="flex items-center space-x-3 cursor-pointer group">
                 <img src="app/src/main/res/drawable/img_ascl_logo.png" alt="ASCL Logo" class="w-10 h-10 object-contain rounded-lg border border-asclGold/30 bg-asclDark shadow-lg transition duration-300 group-hover:scale-105">
                 <div>
                     <h1 class="text-sm md:text-base font-black tracking-wider leading-none">AMINISA SNOOKER LEAGUE</h1>
@@ -85,9 +85,6 @@
                 </button>
                 <button onclick="switchTab('league')" id="nav-league" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors flex items-center space-x-1.5">
                     <i class="fa-solid fa-trophy text-xs"></i> <span>League</span>
-                </button>
-                <button onclick="switchTab('admin')" id="nav-admin" class="px-3 py-2 rounded-md text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors flex items-center space-x-1.5">
-                    <i class="fa-solid fa-user-shield text-xs"></i> <span>Admin</span>
                 </button>
             </nav>
 
@@ -114,9 +111,6 @@
             </button>
             <button onclick="switchTab('league')" id="mobile-nav-league" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 flex flex-col items-center">
                 <i class="fa-solid fa-trophy mb-0.5 text-sm"></i> League
-            </button>
-            <button onclick="switchTab('admin')" id="mobile-nav-admin" class="py-2 px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 flex flex-col items-center">
-                <i class="fa-solid fa-user-shield mb-0.5 text-sm"></i> Admin
             </button>
         </div>
     </header>
@@ -751,9 +745,6 @@
                     <button onclick="switchTab('home')" class="flex-1 bg-asclGreen hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition">
                         RETURN HOME
                     </button>
-                    <button onclick="switchTab('admin')" class="flex-1 bg-asclGray hover:bg-[#252525] text-asclGold border border-asclGold/30 text-xs font-bold uppercase tracking-wider py-3.5 rounded-lg transition">
-                        GOTO SECURE ADMIN REVIEW
-                    </button>
                 </div>
             </div>
         </section>
@@ -1320,6 +1311,18 @@
         }
 
         let isAuthorized = false;
+        let logoClickCount = 0;
+
+        function handleLogoClick() {
+            logoClickCount++;
+            if (logoClickCount >= 5) {
+                logoClickCount = 0;
+                switchTab('admin');
+                alert("🔑 Secure Admin portal activated!");
+            } else {
+                switchTab('home');
+            }
+        }
 
         // 1. TABS NAVIGATION CONTROL
         function switchTab(tabId) {
@@ -1607,8 +1610,8 @@
             const token = getAthleteToken(lastRegisteredAthlete);
             const baseUrl = window.location.href.split('?')[0];
             const importUrl = baseUrl + "?import_token=" + token;
-            const message = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) roster packet! Tap this link to instantly import me into your app's manager console:\n\n👉 ${importUrl}`;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
+            const message = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) rooster packet!\n\n👉 ${importUrl}`;
+            window.open(`https://wa.me/2349022572296?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         function copyTransferLink() {

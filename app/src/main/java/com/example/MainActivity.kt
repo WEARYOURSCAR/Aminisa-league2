@@ -28,6 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import com.example.data.PlayerRegistration
 import com.example.ui.LeagueViewModel
 import com.example.ui.screens.AdminScreen
@@ -64,6 +66,8 @@ class MainActivity : ComponentActivity() {
                         )
                     } else if (!isWebsiteMode && activeSuccessPlayer == null) {
                         // Mobile App Top Banner with a quick switch to Website Mode
+                        val context = LocalContext.current
+                        var mobileTapCount by remember { mutableStateOf(0) }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -73,7 +77,20 @@ class MainActivity : ComponentActivity() {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("ASCL MOBILE RIDER", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                text = "ASCL MOBILE RIDER",
+                                color = Color.White,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.clickable {
+                                    mobileTapCount++
+                                    if (mobileTapCount >= 5) {
+                                        mobileTapCount = 0
+                                        currentTab = "Admin"
+                                        Toast.makeText(context, "🔑 Secure Admin portal activated!", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
                             Button(
                                 onClick = { isWebsiteMode = true },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E1E1E)),
@@ -158,20 +175,6 @@ class MainActivity : ComponentActivity() {
                                                 unselectedTextColor = Color.Gray
                                             )
                                         )
-
-                                        NavigationBarItem(
-                                            selected = currentTab == "Admin",
-                                            onClick = { currentTab = "Admin" },
-                                            icon = { Icon(imageVector = Icons.Default.AdminPanelSettings, contentDescription = "Admin") },
-                                            label = { Text("Admin", fontSize = 10.sp) },
-                                            colors = NavigationBarItemDefaults.colors(
-                                                selectedIconColor = Color.Black,
-                                                selectedTextColor = Color(0xFF00A651),
-                                                indicatorColor = Color(0xFF00A651),
-                                                unselectedIconColor = Color.Gray,
-                                                unselectedTextColor = Color.Gray
-                                            )
-                                        )
                                     }
                                 }
                             }
@@ -229,6 +232,7 @@ fun WebHeaderBar(
     onTabSelected: (String) -> Unit,
     onToggleMode: (Boolean) -> Unit
 ) {
+    var logoTaps by remember { mutableStateOf(0) }
     Surface(
         color = Color(0xFF0F0F0F),
         modifier = Modifier
@@ -247,7 +251,15 @@ fun WebHeaderBar(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clickable { onTabSelected("Home") }
+                    .clickable { 
+                        logoTaps++
+                        if (logoTaps >= 5) {
+                            logoTaps = 0
+                            onTabSelected("Admin")
+                        } else {
+                            onTabSelected("Home")
+                        }
+                    }
                     .padding(vertical = 4.dp)
             ) {
                 Image(
@@ -282,8 +294,7 @@ fun WebHeaderBar(
                 val navigationTabs = listOf(
                     Triple("Home", Icons.Default.Home, "Home"),
                     Triple("Register", Icons.Default.AppRegistration, "Register"),
-                    Triple("League", Icons.Default.EmojiEvents, "League"),
-                    Triple("Admin", Icons.Default.AdminPanelSettings, "Admin")
+                    Triple("League", Icons.Default.EmojiEvents, "League")
                 )
 
                 navigationTabs.forEach { (tabId, icon, label) ->
