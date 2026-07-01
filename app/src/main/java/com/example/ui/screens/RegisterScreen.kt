@@ -489,7 +489,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "A tournament registration fee of ₦1,000 applies. Our official payment partner is SquadCo. The SquadCo payment link is currently being configured and will be live shortly. For now, you can complete and submit your registration directly, uploading any placeholder image as receipt proof.",
+                    text = "A tournament registration fee of ₦1,000 applies. Our official payment partner is SquadCo. The secure checkout payment link is fully integrated. Tap 'PAY WITH SQUADCO' below to open the official SquadCo payment gateway, make your payment, and then upload your receipt proof below.",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 15.sp,
@@ -498,32 +498,36 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // SQUADCO CHECKOUT (NOT AVAILABLE YET)
+                // SQUADCO CHECKOUT (FULLY ACTIVE)
                 Button(
                     onClick = {
-                        android.widget.Toast.makeText(context, "SquadCo payment integration is coming soon! Registration can be submitted directly for now.", android.widget.Toast.LENGTH_LONG).show()
+                        try {
+                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://pay.squadco.com/SZC4SG"))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            android.widget.Toast.makeText(context, "Could not open browser. Please visit https://pay.squadco.com/SZC4SG", android.widget.Toast.LENGTH_LONG).show()
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF5A5F).copy(alpha = 0.2f),
-                        contentColor = Color(0xFFFF5A5F)
+                        containerColor = Color(0xFFFF5A5F),
+                        contentColor = Color.White
                     ),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
-                        .border(1.dp, Color(0xFFFF5A5F), RoundedCornerShape(8.dp))
                 ) {
                     Icon(
                         imageVector = Icons.Default.Payment,
                         contentDescription = "SquadCo Card",
-                        tint = Color(0xFFFF5A5F)
+                        tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "SQUADCO PAYMENT LINK (COMING SOON)",
+                        text = "PAY WITH SQUADCO",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFF5A5F)
+                        color = Color.White
                     )
                 }
 

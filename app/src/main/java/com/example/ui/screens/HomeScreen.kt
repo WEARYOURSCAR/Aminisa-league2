@@ -532,7 +532,7 @@ fun HomeScreen(
                     } else {
                         // --- TICKET BOOKING FORM ---
                         Text(
-                            text = "Access live arena games and grand showcase tour brackets with our special single or partner tickets:",
+                            text = "VIP Match Day and Season passes are currently NOT available for payment. Instead, spectator passes are completely FREE for the first season to all Kwara State citizens! Select a pass tier below to claim yours:",
                             color = Color.White.copy(alpha = 0.85f),
                             fontSize = 12.sp,
                             lineHeight = 17.sp,
@@ -540,9 +540,9 @@ fun HomeScreen(
                         )
 
                         val venueTicketsList = listOf(
-                            Triple("VIP Single Match Day", "₦3,000 Single • ₦5,000 Couple", "Access to any single matchday action with fully catered seats."),
-                            Triple("VIP Weekend Pass (3 Match Days)", "₦6,000 Single • ₦10,000 Couple", "Covers 3 scheduled high-tension match days over the weekend."),
-                            Triple("VIP Season Pass (12 Match Days)", "₦25,000 Single • ₦40,000 Couple", "Ultimate seasonal pass covering all 12 match days and the grand final event.")
+                            Triple("VIP Single Match Day", "FREE • Kwara Citizen Privilege", "Access to any single matchday action with fully catered seats. (Free for Kwara State citizens)"),
+                            Triple("VIP Weekend Pass (3 Match Days)", "FREE • Kwara Citizen Privilege", "Covers 3 scheduled high-tension match days over the weekend. (Free for Kwara State citizens)"),
+                            Triple("VIP Season Pass (12 Match Days)", "FREE • Kwara Citizen Privilege", "Ultimate seasonal pass covering all 12 match days and the grand final event. (Free for Kwara State citizens)")
                         )
 
                         venueTicketsList.forEachIndexed { idx, (ticketTitle, pricing, ticketDesc) ->
@@ -690,12 +690,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Calculate amount
-                        val ticketAmountValue = when (selectedTicketTypeIndex) {
-                            0 -> if (isCoupleTicket) 5000 else 3000
-                            1 -> if (isCoupleTicket) 10000 else 6000
-                            2 -> if (isCoupleTicket) 40000 else 25000
-                            else -> 3000
-                        }
+                        val ticketAmountValue = 0
 
                         val selectedCategoryName = when (selectedTicketTypeIndex) {
                             0 -> if (isCoupleTicket) "VIP Single Match Day (Couple)" else "VIP Single Match Day (Single)"
@@ -714,11 +709,11 @@ fun HomeScreen(
                         ) {
                             Column {
                                 Text(text = "TOTAL TICKET CHARGE", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                                Text(text = "₦%,d".format(ticketAmountValue), color = Color(0xFFD4AF37), fontSize = 18.sp, fontWeight = FontWeight.Black)
+                                Text(text = "FREE", color = Color(0xFF00A651), fontSize = 18.sp, fontWeight = FontWeight.Black)
                             }
                             Column(horizontalAlignment = Alignment.End) {
-                                Text(text = "GATEWAY PARTNER", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                                Text(text = "SquadCo (Pending)", color = Color(0xFFFF5A5F), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "PRIVILEGE CHANNEL", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "Kwara Citizen Special", color = Color(0xFFD4AF37), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -738,13 +733,13 @@ fun HomeScreen(
                         Button(
                             onClick = {
                                 if (spectatorName.trim().isEmpty() || spectatorPhone.trim().isEmpty()) {
-                                    bookingFeedbackError = "Please fill in both your Full Name and Phone Number to buy a ticket."
+                                    bookingFeedbackError = "Please fill in both your Full Name and Phone Number to claim a free ticket."
                                 } else {
                                     bookingFeedbackError = ""
                                     bookingClientName = spectatorName
                                     bookingTicketTypePaid = selectedCategoryName
-                                    bookingPricePaid = "₦%,d".format(ticketAmountValue)
-                                    bookingReference = "TKT-SQUADCO-%05d".format((10000..99999).random())
+                                    bookingPricePaid = "FREE (Kwara Special)"
+                                    bookingReference = "TKT-KWARA-%05d".format((10000..99999).random())
                                     isBookingConfirmed = true
                                 }
                             },
