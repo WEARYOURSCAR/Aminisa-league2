@@ -239,6 +239,53 @@ fun HomeScreen(
             }
         }
 
+        // --- CHAMPION BULLETIN ---
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .border(1.dp, Color(0xFFFF5A5F).copy(alpha = 0.4f), RoundedCornerShape(12.dp)),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1414)),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(Color(0xFFFF5A5F).copy(alpha = 0.15f), CircleShape)
+                        .padding(10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Campaign,
+                        contentDescription = "Championship Bulletin Icon",
+                        tint = Color(0xFFFF5A5F),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(14.dp))
+                Column {
+                    Text(
+                        text = "CHAMPIONSHIP BULLETIN",
+                        color = Color(0xFFFF5A5F),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Please note that Captain Biola, our reigning champion, will not be participating in this edition. The championship crown is officially up for grabs!",
+                        color = Color.White.copy(alpha = 0.9f),
+                        fontSize = 11.sp,
+                        lineHeight = 16.sp
+                    )
+                }
+            }
+        }
+
         // --- 3. PRIZE POOL STRUCTURE ---
         Column(
             modifier = Modifier
