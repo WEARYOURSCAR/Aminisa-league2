@@ -718,7 +718,7 @@ fun HomeScreen(
                             }
                             Column(horizontalAlignment = Alignment.End) {
                                 Text(text = "GATEWAY PARTNER", color = Color.Gray, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                                Text(text = "Paystack Checkout", color = Color(0xFF09A5DB), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "SquadCo (Pending)", color = Color(0xFFFF5A5F), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -744,19 +744,19 @@ fun HomeScreen(
                                     bookingClientName = spectatorName
                                     bookingTicketTypePaid = selectedCategoryName
                                     bookingPricePaid = "₦%,d".format(ticketAmountValue)
-                                    bookingReference = "TKT-PAYSTACK-%05d".format((10000..99999).random())
+                                    bookingReference = "TKT-SQUADCO-%05d".format((10000..99999).random())
                                     isBookingConfirmed = true
                                 }
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF09A5DB)),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00A651)),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp)
                         ) {
-                            Icon(imageVector = Icons.Default.Payment, contentDescription = "Paystack Billing Icon", tint = Color.White)
+                            Icon(imageVector = Icons.Default.ConfirmationNumber, contentDescription = "Ticket Icon", tint = Color.White)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("PAY WITH PAYSTACK", fontSize = 13.sp, fontWeight = FontWeight.Black, color = Color.White)
+                            Text("BOOK & VIEW SPECTATOR TICKET", fontSize = 13.sp, fontWeight = FontWeight.Black, color = Color.White)
                         }
                     }
                 }
@@ -1135,8 +1135,8 @@ private fun Row(horizontalArrangement: Arrangement.Horizontal, multiplier: Float
 private fun calculateTimeLeft(): Tuple4<Int, Int, Int, Int> {
     val deadline = Calendar.getInstance().apply {
         set(Calendar.YEAR, 2026)
-        set(Calendar.MONTH, Calendar.JUNE) // June is month index 5
-        set(Calendar.DAY_OF_MONTH, 30)
+        set(Calendar.MONTH, Calendar.JULY) // July is month index 6
+        set(Calendar.DAY_OF_MONTH, 3)
         set(Calendar.HOUR_OF_DAY, 23)
         set(Calendar.MINUTE, 59)
         set(Calendar.SECOND, 59)

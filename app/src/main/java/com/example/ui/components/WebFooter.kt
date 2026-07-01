@@ -60,7 +60,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "• Entry Slot Fee: ₦25,000\n• Partner: Paystack\n• Launch Date: June 15, 2026\n• Location: Palms Mall, Ilorin",
+                    text = "• Entry Slot Fee: ₦1,000\n• Partner: SquadCo\n• Launch Date: June 15, 2026\n• Location: Palms Mall, Ilorin",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 16.sp

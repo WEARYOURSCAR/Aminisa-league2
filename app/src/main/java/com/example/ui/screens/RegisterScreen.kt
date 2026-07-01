@@ -489,7 +489,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "A tournament registration fee of ₦25,000 applies. You can complete your secure online checkout directly via our fiduciary partner, Paystack. After payment is verified, your portal roster slot will be dynamically reserved.",
+                    text = "A tournament registration fee of ₦1,000 applies. Our official payment partner is SquadCo. The SquadCo payment link is currently being configured and will be live shortly. For now, you can complete and submit your registration directly, uploading any placeholder image as receipt proof.",
                     color = Color.LightGray,
                     fontSize = 11.sp,
                     lineHeight = 15.sp,
@@ -498,30 +498,32 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // PAYSTACK CHECKOUT INTERACTION PLACEHOLDER
+                // SQUADCO CHECKOUT (NOT AVAILABLE YET)
                 Button(
                     onClick = {
-                        showPaystackCheckout = true
+                        android.widget.Toast.makeText(context, "SquadCo payment integration is coming soon! Registration can be submitted directly for now.", android.widget.Toast.LENGTH_LONG).show()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (paymentProofUri == null) Color(0xFF09A5DB) else Color(0xFF00A651) // Paystack Teal-Blue color vs Green-Verified
+                        containerColor = Color(0xFFFF5A5F).copy(alpha = 0.2f),
+                        contentColor = Color(0xFFFF5A5F)
                     ),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
+                        .border(1.dp, Color(0xFFFF5A5F), RoundedCornerShape(8.dp))
                 ) {
                     Icon(
-                        imageVector = if (paymentProofUri == null) Icons.Default.Payment else Icons.Default.Check,
-                        contentDescription = "Paystack Card",
-                        tint = Color.White
+                        imageVector = Icons.Default.Payment,
+                        contentDescription = "SquadCo Card",
+                        tint = Color(0xFFFF5A5F)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (paymentProofUri == null) "PAY WITH PAYSTACK" else "✓ PAID WITH PAYSTACK",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Black,
-                        color = Color.White
+                        text = "SQUADCO PAYMENT LINK (COMING SOON)",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFF5A5F)
                     )
                 }
 
@@ -841,7 +843,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
-                        text = "₦25,000.00",
+                        text = "₦1,000.00",
                         color = Color(0xFF00A651),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Black
@@ -955,7 +957,7 @@ fun RegisterScreen(
                                             .fillMaxWidth()
                                             .height(44.dp)
                                     ) {
-                                        Text(text = "PAY ₦25,000.00", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
+                                        Text(text = "PAY ₦1,000.00", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.White)
                                     }
                                 }
                             }
@@ -1133,7 +1135,7 @@ fun RegisterScreen(
                                 modifier = Modifier.size(48.dp)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = "₦25,000 PAYMENT VERIFIED", color = Color(0xFF3BB75E), fontSize = 14.sp, fontWeight = FontWeight.Black)
+                            Text(text = "₦1,000 PAYMENT VERIFIED", color = Color(0xFF3BB75E), fontSize = 14.sp, fontWeight = FontWeight.Black)
                             Text(text = "Roster receipt proof generated automatically!", color = Color.Gray, fontSize = 9.sp)
                             Spacer(modifier = Modifier.height(20.dp))
                             Button(

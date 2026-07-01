@@ -279,7 +279,7 @@ fun FixturesTab(isWebsiteMode: Boolean = false) {
         item {
             PreSeasonBanner(
                 title = "DRAFT SHEET SCHEDULING IN PROGRESS",
-                description = "Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on June 30, 2026. Outlined templates are illustrated below for reference.",
+                description = "Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on July 3, 2026. Outlined templates are illustrated below for reference.",
                 icon = "🗓️",
                 bannerColor = Color(0xFF00A651)
             )

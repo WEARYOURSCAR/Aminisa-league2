@@ -173,11 +173,11 @@
                     <!-- Stats Ribbon -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/5">
                         <div>
-                            <span class="block text-xl font-bold text-white">₦500,000</span>
+                            <span class="block text-xl font-bold text-white">₦1,000,000</span>
                             <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">1st Place Prize</span>
                         </div>
                         <div>
-                            <span class="block text-xl font-bold text-asclGold">₦25,000</span>
+                            <span class="block text-xl font-bold text-asclGold">₦1,000</span>
                             <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Registration Entry</span>
                         </div>
                         <div>
@@ -185,7 +185,7 @@
                             <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Championship Roster</span>
                         </div>
                         <div>
-                            <span class="block text-xl font-bold text-white">Paystack</span>
+                            <span class="block text-xl font-bold text-white">SquadCo</span>
                             <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500">Fiduciary Partner</span>
                         </div>
                     </div>
@@ -211,21 +211,21 @@
                     <div class="bg-asclCard border border-asclGold/20 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold transition-all">
                         <span class="absolute top-4 right-4 text-3xl opacity-20">🏆</span>
                         <span class="text-[9px] font-bold text-asclGold uppercase tracking-widest">1st Place (Champion)</span>
-                        <h4 class="text-xl font-black text-white mt-1">₦500,000</h4>
+                        <h4 class="text-xl font-black text-white mt-1">₦1,000,000</h4>
                         <p class="text-xs text-gray-400 mt-2">Includes custom branded prestige shirt, championship cap, and a premium professional snooker stick.</p>
                     </div>
                     <!-- 2nd -->
                     <div class="bg-asclCard border border-white/5 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold/30 transition-all">
                         <span class="absolute top-4 right-4 text-3xl opacity-25">🥈</span>
                         <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">2nd Place (Runner-Up)</span>
-                        <h4 class="text-xl font-black text-white mt-1">₦300,000</h4>
+                        <h4 class="text-xl font-black text-white mt-1">₦500,000</h4>
                         <p class="text-xs text-gray-400 mt-2">Includes custom premium branded shirt, cap, and a professional snooker stick.</p>
                     </div>
                     <!-- 3rd -->
                     <div class="bg-asclCard border border-white/5 rounded-xl p-5 relative overflow-hidden group hover:border-asclGold/30 transition-all">
                         <span class="absolute top-4 right-4 text-3xl opacity-25">🥉</span>
                         <span class="text-[9px] font-bold text-amber-600 uppercase tracking-widest">3rd Place (Runner)</span>
-                        <h4 class="text-xl font-black text-white mt-1">₦100,000</h4>
+                        <h4 class="text-xl font-black text-white mt-1">₦250,000</h4>
                         <p class="text-xs text-gray-400 mt-2">Plus other official tournament miscellaneous gifts, special spectator perk vouchers, and souvenirs.</p>
                     </div>
                     <!-- Break -->
@@ -532,7 +532,7 @@
                 <div class="border-b border-white/5 pb-4">
                     <span class="text-[10px] font-bold text-asclGold uppercase tracking-widest leading-none">REGISTRATION PROTOCOL</span>
                     <h2 class="text-xl md:text-2xl font-black tracking-tight mt-1 uppercase">ASCL PLAYER ROSTER ENVELOPE</h2>
-                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Fill the form and submit. Note: Official regulatory fee is ₦25,000, payable via secure Paystack channel. Tap authorization receipt proof below.</p>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Fill the form and submit. Note: Official regulatory fee is ₦1,000, payable via secure SquadCo channel. SquadCo secure payments are integrated below.</p>
                 </div>
 
                 <form id="ascl-registration-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -592,38 +592,21 @@
                     <!-- Residential Area -->
                     <div class="space-y-1">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Ilorin Residential Area</label>
-                        <select id="reg-residence" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard">
-                            <option value="GRA" selected>GRA Ilorin</option>
-                            <option value="Adewole">Adewole Estate</option>
-                            <option value="Tanke">Tanke / UNILORIN Area</option>
-                            <option value="Sango">Sango Quarter</option>
-                            <option value="Fate">Fate / Basin Area</option>
-                            <option value="Gaa Akanbi">Gaa Akanbi</option>
-                            <option value="Taiwo Road">Taiwo Road / Taiwo Isale</option>
-                            <option value="Sabo Oke">Sabo Oke</option>
-                            <option value="Sawmill">Sawmill Area</option>
-                            <option value="Oke Oyi">Oke Oyi</option>
-                            <option value="Irewolede">Irewolede Estate</option>
-                            <option value="Unity">Unity / Challenge Area</option>
-                            <option value="Baboko">Baboko</option>
-                            <option value="Asa Dam">Asa Dam Road</option>
-                            <option value="Oloje">Oloje Quarter</option>
-                            <option value="Oja Oba">Oja Oba Historic Sector</option>
-                        </select>
+                        <input type="text" id="reg-residence" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard" placeholder="e.g. GRA, Tanke, Fate, Adewole, etc.">
                     </div>
 
-                    <!-- Paystack Direct Gateway Option -->
-                    <div class="bg-[#0D0D11] border border-dashed border-[#09A5DB]/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <!-- SquadCo Direct Gateway Option -->
+                    <div class="bg-[#0D0D11] border border-dashed border-[#FF5A5F]/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div class="space-y-1 text-center sm:text-left">
                             <h4 class="text-xs font-black text-white uppercase tracking-wider flex items-center justify-center sm:justify-start">
-                                <span class="mr-1.5">💳</span> SECURE ONLINE PORTAL PAYMENT
+                                <span class="mr-1.5">💳</span> SECURE SQUADCO PORTAL PAYMENT
                             </h4>
                             <p class="text-[10px] text-gray-400 leading-normal">
-                                Tap online checkout to complete payment of <strong>₦25,000</strong> using cards, USSD, or transfers. Successful payment automatically verified without manual approval audit.
+                                The entry fee is <strong>₦1,000</strong>. Secure online payment integration via SquadCo is currently being configured and will be live shortly. You can submit your registration directly.
                             </p>
                         </div>
-                        <button type="button" onclick="openPaystackCheckout()" id="paystack-quick-pay" class="w-full sm:w-auto bg-[#09A5DB] hover:bg-[#0793c2] text-white text-xs font-black uppercase tracking-wider px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition shrink-0">
-                            <i class="fa-solid fa-credit-card"></i> <span>PAY ONLINE NOW</span>
+                        <button type="button" onclick="showSquadcoComingSoonAlert()" id="squadco-quick-pay" class="w-full sm:w-auto bg-[#FF5A5F]/20 border border-[#FF5A5F]/60 text-[#FF5A5F] text-xs font-black uppercase tracking-wider px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition shrink-0 hover:bg-[#FF5A5F]/30">
+                            <i class="fa-solid fa-credit-card"></i> <span>SQUADCO LINK COMING SOON</span>
                         </button>
                     </div>
 
@@ -645,8 +628,8 @@
                         <!-- Payment Receipt File -->
                         <div class="border border-dashed border-asclGold/20 hover:border-asclGold/50 rounded-lg p-4 bg-[#0A0A0A]/40 text-center cursor-pointer transition relative" onclick="triggerFileInput('file-receipt')">
                             <i class="fa-solid fa-receipt text-2xl text-asclGold opacity-70 mb-1.5"></i>
-                            <h4 class="text-xs font-black uppercase text-white">₦25,000 Receipt Proof</h4>
-                            <p class="text-[9px] text-gray-400 mt-0.5 leading-tight">Upload Paystack Receipt Screenshot<br>Or auto-filled via online checkout</p>
+                            <h4 class="text-xs font-black uppercase text-white">₦1,000 Receipt Proof</h4>
+                            <p class="text-[9px] text-gray-400 mt-0.5 leading-tight">Upload SquadCo Receipt Screenshot<br>(Or upload placeholder file for now)</p>
                             <input type="file" id="file-receipt" accept="image/*" class="hidden" onchange="previewFile(this, 'receipt-preview-text', 'receipt-thumb')">
                             <div class="text-[10px] text-asclGreen font-sans mt-2 font-bold hidden" id="receipt-preview-text">
                                 <i class="fa-solid fa-check-circle mr-1"></i> Loaded
@@ -817,7 +800,7 @@
                     <div>
                         <h4 class="text-xs font-black text-asclGreen tracking-wider uppercase">DRAFT SHEET SCHEDULING IN PROGRESS</h4>
                         <p class="text-[10px] text-gray-400 mt-1 leading-relaxed">
-                            Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on <strong>June 30, 2026</strong>. Outlined schedule templates are demonstrated below for reference.
+                            Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on <strong>July 3, 2026</strong>. Outlined schedule templates are demonstrated below for reference.
                         </p>
                     </div>
                 </div>
@@ -1396,6 +1379,14 @@
         // 2. FILE INPUT TRIGGER UTILITIES
         function triggerFileInput(id) {
             document.getElementById(id).click();
+        }
+
+        // ==================== SQUADCO GATEWAY INTEGRATION (COMING SOON) ====================
+        function showSquadcoComingSoonAlert() {
+            showModal(
+                "SquadCo Gateway Coming Soon",
+                "Our new official payment partner is <strong>SquadCo</strong>! The registration fee has changed to <strong>₦1,000</strong>.<br><br>The direct checkout link is currently being finalized. As requested, you do <strong>not</strong> need to pay yet to register. You can submit your registration directly, and we will send the payment link later. Feel free to upload any placeholder image as receipt proof!"
+            );
         }
 
         // ==================== COGNITIVE PAYSTACK GATEWAY INTEGRATION ====================
@@ -2260,9 +2251,9 @@
             document.getElementById('modal-container').classList.add('hidden');
         }
 
-        // 8. REAL-TIME COUNTDOWN TIMER (TAG JUNE 30, 2026)
+        // 8. REAL-TIME COUNTDOWN TIMER (TAG JULY 3, 2026)
         function updateWebCountdown() {
-            const targetDate = new Date("June 30, 2026 23:59:59").getTime();
+            const targetDate = new Date("July 3, 2026 23:59:59").getTime();
             
             function tick() {
                 const now = new Date().getTime();
