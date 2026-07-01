@@ -54,6 +54,42 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
     // Last registered player to display on success screen
     val lastRegisteredPlayer = MutableStateFlow<PlayerRegistration?>(null)
 
+    init {
+        try {
+            val prefs = application.getSharedPreferences("ascl_prefs", Context.MODE_PRIVATE)
+            val jsonStr = prefs.getString("last_player_json", null)
+            if (jsonStr != null) {
+                val json = org.json.JSONObject(jsonStr)
+                val player = PlayerRegistration(
+                    id = json.optInt("id", 0),
+                    uniquePlayerId = json.getString("uniquePlayerId"),
+                    fullName = json.getString("fullName"),
+                    nickname = if (json.has("nickname") && !json.isNull("nickname") && json.getString("nickname").isNotEmpty()) json.getString("nickname") else null,
+                    dob = json.getString("dob"),
+                    gender = if (json.has("gender")) json.getString("gender") else "Male",
+                    phone = json.getString("phone"),
+                    whatsapp = json.getString("whatsapp"),
+                    email = json.getString("email"),
+                    residentialArea = json.getString("residentialArea"),
+                    experienceYears = json.getInt("experienceYears"),
+                    preferredCueHand = json.getString("preferredCueHand"),
+                    previousTournament = json.getString("previousTournament"),
+                    skillLevel = json.getString("skillLevel"),
+                    emergencyName = json.getString("emergencyName"),
+                    emergencyRelationship = json.getString("emergencyRelationship"),
+                    emergencyPhone = json.getString("emergencyPhone"),
+                    passportPhotoUri = if (json.has("passportPhotoUri") && !json.isNull("passportPhotoUri") && json.getString("passportPhotoUri").isNotEmpty()) json.getString("passportPhotoUri") else null,
+                    paymentProofUri = if (json.has("paymentProofUri") && !json.isNull("paymentProofUri") && json.getString("paymentProofUri").isNotEmpty()) json.getString("paymentProofUri") else null,
+                    status = json.getString("status"),
+                    registrationDate = json.getLong("registrationDate")
+                )
+                lastRegisteredPlayer.value = player
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     // Player statistics
     val totalPlayersCount: StateFlow<Int> = registrations
         .combine(registrations) { list, _ -> list.size }
@@ -113,6 +149,35 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                     paymentProofUri = paymentProofUri
                 )
                 lastRegisteredPlayer.value = registeredPlayer
+                try {
+                    val prefs = getApplication<Application>().getSharedPreferences("ascl_prefs", Context.MODE_PRIVATE)
+                    val json = org.json.JSONObject().apply {
+                        put("id", registeredPlayer.id)
+                        put("uniquePlayerId", registeredPlayer.uniquePlayerId)
+                        put("fullName", registeredPlayer.fullName)
+                        put("nickname", registeredPlayer.nickname ?: "")
+                        put("dob", registeredPlayer.dob)
+                        put("gender", registeredPlayer.gender)
+                        put("phone", registeredPlayer.phone)
+                        put("whatsapp", registeredPlayer.whatsapp)
+                        put("email", registeredPlayer.email)
+                        put("residentialArea", registeredPlayer.residentialArea)
+                        put("experienceYears", registeredPlayer.experienceYears)
+                        put("preferredCueHand", registeredPlayer.preferredCueHand)
+                        put("previousTournament", registeredPlayer.previousTournament)
+                        put("skillLevel", registeredPlayer.skillLevel)
+                        put("emergencyName", registeredPlayer.emergencyName)
+                        put("emergencyRelationship", registeredPlayer.emergencyRelationship)
+                        put("emergencyPhone", registeredPlayer.emergencyPhone)
+                        put("passportPhotoUri", registeredPlayer.passportPhotoUri ?: "")
+                        put("paymentProofUri", registeredPlayer.paymentProofUri ?: "")
+                        put("status", registeredPlayer.status)
+                        put("registrationDate", registeredPlayer.registrationDate)
+                    }
+                    prefs.edit().putString("last_player_json", json.toString()).apply()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 onSuccess(registeredPlayer)
             } catch (e: Exception) {
                 Toast.makeText(getApplication(), "Registration failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()

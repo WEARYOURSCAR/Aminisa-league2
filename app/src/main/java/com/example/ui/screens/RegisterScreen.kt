@@ -100,6 +100,43 @@ fun RegisterScreen(
             modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
         )
 
+        val savedPlayerState by viewModel.lastRegisteredPlayer.collectAsState()
+        if (savedPlayerState != null) {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF0D2518)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+                    .border(1.dp, Color(0xFF00A651).copy(0.4f), RoundedCornerShape(8.dp))
+                    .clickable { 
+                        onRegistrationSuccess(savedPlayerState!!)
+                    }
+            ) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Retrieve", tint = Color(0xFF00A651))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "RETRIEVE RECENT REGISTRATION", 
+                            color = Color(0xFF00A651), 
+                            fontSize = 12.sp, 
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "We found a successful registration for ${savedPlayerState?.fullName}. Tap here to retrieve your Player Card and access the WhatsApp share controls.", 
+                            color = Color.LightGray, 
+                            fontSize = 10.sp,
+                            lineHeight = 14.sp
+                        )
+                    }
+                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null, tint = Color.Gray)
+                }
+            }
+        }
+
         if (validationError != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
@@ -182,9 +219,11 @@ fun RegisterScreen(
                             val year = calendar.get(Calendar.YEAR) - 20
                             val month = calendar.get(Calendar.MONTH)
                             val day = calendar.get(Calendar.DAY_OF_MONTH)
-                            DatePickerDialog(context, { _, y, m, d ->
+                            val picker = DatePickerDialog(context, { _, y, m, d ->
                                 dob = "$y-${m + 1}-$d"
-                            }, year, month, day).show()
+                            }, year, month, day)
+                            picker.datePicker.maxDate = System.currentTimeMillis()
+                            picker.show()
                         }) {
                             Icon(imageVector = Icons.Default.CalendarToday, contentDescription = "Select Date", tint = Color(0xFF00A651))
                         }
@@ -717,6 +756,27 @@ fun RegisterScreen(
                 }
 
                 validationError = null
+
+                // Verify DOB is not in the future
+                try {
+                    val dobParts = dob.split("-")
+                    if (dobParts.size == 3) {
+                        val selYear = dobParts[0].toIntOrNull() ?: 0
+                        val selMonth = dobParts[1].toIntOrNull() ?: 1
+                        val selDay = dobParts[2].toIntOrNull() ?: 1
+                        val selCal = Calendar.getInstance().apply {
+                            set(Calendar.YEAR, selYear)
+                            set(Calendar.MONTH, selMonth - 1)
+                            set(Calendar.DAY_OF_MONTH, selDay)
+                        }
+                        if (selCal.timeInMillis > System.currentTimeMillis()) {
+                            validationError = "Date of Birth cannot be in the future!"
+                            return@Button
+                        }
+                    }
+                } catch(e: Exception) {
+                    // ignore
+                }
                 
                 // Submit to view model
                 viewModel.registerPlayer(

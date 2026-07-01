@@ -521,11 +521,11 @@
                         </p>
                         <div class="flex items-center space-x-3 mt-4 pt-4 border-t border-white/5">
                             <div class="w-8 h-8 rounded-full bg-asclGold text-black flex items-center justify-center font-bold text-xs">
-                                W
+                                B
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-asclGold">Captain Wale</h4>
-                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">Reigning Season 1 Bronze Champion</span>
+                                <h4 class="text-xs font-bold text-asclGold">Captain Biola</h4>
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">Reigning Champion</span>
                             </div>
                         </div>
                     </div>
@@ -540,6 +540,19 @@
                     <span class="text-[10px] font-bold text-asclGold uppercase tracking-widest leading-none">REGISTRATION PROTOCOL</span>
                     <h2 class="text-xl md:text-2xl font-black tracking-tight mt-1 uppercase">ASCL PLAYER ROSTER ENVELOPE</h2>
                     <p class="text-xs text-gray-400 mt-1 leading-relaxed">Fill the form and submit. Note: Official regulatory fee is ₦1,000, payable via secure SquadCo channel. SquadCo secure payments are integrated below.</p>
+                </div>
+
+                <!-- PERSISTENT RETRIEVAL BANNER FOR ACCIDENTAL CLOSURES -->
+                <div id="reopen-success-banner" class="hidden bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="text-left">
+                        <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center">
+                            <span class="mr-1.5">⚡</span> RETRIEVE RECENT REGISTRATION
+                        </h4>
+                        <p class="text-[10px] text-gray-300">We detected a successful registration saved on this browser sandbox. Tap to retrieve your Athlete Card and the WhatsApp share link.</p>
+                    </div>
+                    <button onclick="reopenLastRegistration()" type="button" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-extrabold uppercase px-3 py-2 rounded-lg transition shrink-0">
+                        RETRIEVE CARD
+                    </button>
                 </div>
 
                 <form id="ascl-registration-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -569,11 +582,20 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <!-- Date of Birth -->
                         <div class="space-y-1">
                             <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Date of Birth</label>
                             <input type="date" id="reg-dob" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white">
+                        </div>
+                        <!-- Gender selection -->
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Gender</label>
+                            <select id="reg-gender" required class="w-full px-3 py-2 text-sm rounded-lg form-input text-white bg-asclCard">
+                                <option value="Male" selected>Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <!-- Skill Level -->
                         <div class="space-y-1">
@@ -717,12 +739,12 @@
                 </div>
 
                 <!-- Share Option Panel -->
-                <div class="bg-[#0A0A0A]/80 border border-dashed border-asclGold/30 rounded-xl p-4 mt-4 text-left space-y-3">
-                    <h4 class="text-xs font-black text-asclGold uppercase tracking-wider flex items-center">
-                        <span class="mr-1.5">⚡</span> SECURE CROSS-DEVICE SYNC & SHARING
+                <div class="bg-[#2a1214] border border-[#ff3b44]/40 rounded-xl p-5 mt-4 text-left space-y-3">
+                    <h4 class="text-xs font-black text-red-500 uppercase tracking-widest flex items-center">
+                        <span class="mr-1.5">⚠️</span> CRITICAL ACTION REQUIRED!
                     </h4>
-                    <p class="text-[10px] text-gray-400 leading-normal">
-                        Roster entries are saved securely in your phone/browser sandbox. To show up on the Admin's dashboard on another computer or phone, simply send them your <strong>Instant Import Link</strong> below or copy your transfer token!
+                    <p class="text-xs text-gray-200 leading-relaxed font-semibold">
+                        You MUST click the <span class="text-asclGreen font-black">"WHATSAPP SHARE TO ADMIN"</span> button below to send your completed registration packet directly to the ASCL Admin. Your registration is NOT officially submitted or reviewed until you click that button to send your details!
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                         <button onclick="shareWhatsAppLink()" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-bold uppercase py-2.5 px-3 rounded-lg transition flex items-center justify-center space-x-2">
@@ -1584,6 +1606,45 @@
 
         // 3. REGISTRATION FORM HANDLING
         let lastRegisteredAthlete = null;
+        try {
+            const savedLast = localStorage.getItem('ascl_last_registered_athlete');
+            if (savedLast) {
+                lastRegisteredAthlete = JSON.parse(savedLast);
+                window.addEventListener('DOMContentLoaded', () => {
+                    const reopenBanner = document.getElementById('reopen-success-banner');
+                    if (reopenBanner) reopenBanner.classList.remove('hidden');
+                });
+            }
+        } catch(e) {
+            console.error("Failed to load last registered athlete:", e);
+        }
+
+        function reopenLastRegistration() {
+            if (!lastRegisteredAthlete) return;
+            // Load athlete data successfully to view redirect badge structures
+            document.getElementById('badge-name').innerText = lastRegisteredAthlete.fullName;
+            document.getElementById('badge-nickname').innerText = lastRegisteredAthlete.nickname ? `"${lastRegisteredAthlete.nickname}"` : '"Cue Master"';
+            document.getElementById('badge-dob-area').innerText = `DOB: ${lastRegisteredAthlete.dob} • Ilorin (${lastRegisteredAthlete.residentialArea})`;
+            document.getElementById('badge-unique-id').innerText = `ID: ${lastRegisteredAthlete.uniquePlayerId}`;
+            document.getElementById('badge-specs').innerText = `${lastRegisteredAthlete.preferredCueHand} • ${lastRegisteredAthlete.skillLevel}`;
+
+            const badgePhoto = document.getElementById('badge-photo');
+            const badgeSilhouette = document.getElementById('badge-silhouette');
+            if (lastRegisteredAthlete.passportData) {
+                badgePhoto.src = lastRegisteredAthlete.passportData;
+                badgePhoto.classList.remove('hidden');
+                badgeSilhouette.classList.add('hidden');
+            } else {
+                badgePhoto.classList.add('hidden');
+                badgeSilhouette.classList.remove('hidden');
+            }
+
+            // Switch to register tab first to make sure section is visible
+            switchTab('register');
+            // Toggle visual panels of form success indicators
+            document.getElementById('register-form-box').classList.add('hidden');
+            document.getElementById('register-success-box').classList.remove('hidden');
+        }
 
         function getAthleteToken(playerObj) {
             const transferObj = {
@@ -1750,11 +1811,30 @@
         function handleFormSubmit(e) {
             e.preventDefault();
 
+            // Validate both required pictures are sent
+            if (!passportBase64 || !receiptBase64) {
+                alert("❌ Registration Blocked: You MUST upload both your Passport Photo and your ₦1,000 Payment Receipt screenshot to proceed to successful registration!");
+                return;
+            }
+
+            const dob = document.getElementById('reg-dob').value;
+            // Validate DOB is not greater than current date
+            if (dob) {
+                const selectedDate = new Date(dob);
+                const currentDate = new Date();
+                selectedDate.setHours(0,0,0,0);
+                currentDate.setHours(0,0,0,0);
+                if (selectedDate > currentDate) {
+                    alert("❌ Registration Error: Date of birth cannot be in the future!");
+                    return;
+                }
+            }
+
             const fullName = document.getElementById('reg-fullname').value;
             const nickname = document.getElementById('reg-nickname').value || null;
             const email = document.getElementById('reg-email').value;
             const whatsapp = document.getElementById('reg-whatsapp').value;
-            const dob = document.getElementById('reg-dob').value;
+            const gender = document.getElementById('reg-gender').value;
             const skillLevel = document.getElementById('reg-skill').value;
             const preferredCueHand = document.getElementById('reg-hand').value;
             const residentialArea = document.getElementById('reg-residence').value;
@@ -1771,6 +1851,7 @@
                 email: email,
                 whatsapp: whatsapp,
                 dob: dob,
+                gender: gender,
                 skillLevel: skillLevel,
                 preferredCueHand: preferredCueHand,
                 residentialArea: residentialArea,
@@ -1785,6 +1866,11 @@
             lastRegisteredAthlete = registration;
             registrations.unshift(registration);
             localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            localStorage.setItem('ascl_last_registered_athlete', JSON.stringify(registration));
+
+            // Show reopen banner on register tab if it is hidden
+            const reopenBanner = document.getElementById('reopen-success-banner');
+            if (reopenBanner) reopenBanner.classList.remove('hidden');
 
             // Load athlete data successfully to view redirect badge structures
             document.getElementById('badge-name').innerText = fullName;
@@ -2317,6 +2403,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateWebCountdown();
             checkUrlParamsForImport();
+
+            // Set max date for date of birth to today
+            const dobInput = document.getElementById('reg-dob');
+            if (dobInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dobInput.max = today;
+            }
         });
     </script>
 </body>

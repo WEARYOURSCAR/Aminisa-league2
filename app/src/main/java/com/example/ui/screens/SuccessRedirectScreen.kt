@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -93,7 +94,37 @@ fun SuccessRedirectScreen(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
         )
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .padding(vertical = 6.dp)
+                .border(1.dp, Color(0xFFE53935).copy(alpha = 0.5f), RoundedCornerShape(8.dp)),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF2A1214))
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(imageVector = Icons.Default.Warning, contentDescription = null, tint = Color(0xFFE53935), modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "ACTION REQUIRED: SUBMIT TO ADMIN!",
+                        color = Color(0xFFE53935),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Your profile is saved locally, but to finalize your registration, you MUST click the \"WHATSAPP SHARE TO ADMIN\" button below to send your roster packet. Your registration cannot be reviewed by admin until you send it!",
+                    color = Color.White.copy(alpha = 0.9f),
+                    fontSize = 11.sp,
+                    lineHeight = 15.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         // ASSIGNED CARD PASS
         Card(

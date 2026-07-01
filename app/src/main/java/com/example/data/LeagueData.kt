@@ -80,6 +80,6 @@ object LeagueData {
     
     val testimonials = listOf(
         Pair("Issa Ameenullah Abolaji", "ASCL Founder & Snooker Enthusiast:\n'Our mission with ASCL is simple: raise snooker playing standards, and establish Ilorin as a premium snooker sporting cluster in Nigeria. This registration module elevates the professionalism of our league.'"),
-        Pair("Captain Wale", "Reigning Season 1 Bronze Champion:\n'The structural competitive intensity of ASCL is unmatched. Highly organized, elite refereeing, and premium table fast conditions. If you cue snooker in Ilorin, ASC is the place to be.'")
+        Pair("Captain Biola", "Reigning Champion:\n'The structural competitive intensity of ASCL is unmatched. Highly organized, elite refereeing, and premium table fast conditions. If you cue snooker in Ilorin, ASC is the place to be.'")
     )
 }
