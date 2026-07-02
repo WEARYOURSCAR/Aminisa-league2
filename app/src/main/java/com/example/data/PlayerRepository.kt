@@ -23,7 +23,8 @@ class PlayerRepository(private val playerDao: PlayerDao) {
         emergencyRelationship: String,
         emergencyPhone: String,
         passportPhotoUri: String?,
-        paymentProofUri: String?
+        paymentProofUri: String?,
+        referralCode: String?
     ): PlayerRegistration {
         val maxId = playerDao.getMaxId() ?: 0
         val nextIdNum = maxId + 1
@@ -48,7 +49,8 @@ class PlayerRepository(private val playerDao: PlayerDao) {
             emergencyPhone = emergencyPhone,
             passportPhotoUri = passportPhotoUri,
             paymentProofUri = paymentProofUri,
-            status = "Pending"
+            status = "Pending",
+            referralCode = referralCode
         )
 
         playerDao.insertRegistration(registration)

@@ -81,7 +81,8 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                     passportPhotoUri = if (json.has("passportPhotoUri") && !json.isNull("passportPhotoUri") && json.getString("passportPhotoUri").isNotEmpty()) json.getString("passportPhotoUri") else null,
                     paymentProofUri = if (json.has("paymentProofUri") && !json.isNull("paymentProofUri") && json.getString("paymentProofUri").isNotEmpty()) json.getString("paymentProofUri") else null,
                     status = json.getString("status"),
-                    registrationDate = json.getLong("registrationDate")
+                    registrationDate = json.getLong("registrationDate"),
+                    referralCode = if (json.has("referralCode") && !json.isNull("referralCode")) json.getString("referralCode") else null
                 )
                 lastRegisteredPlayer.value = player
             }
@@ -125,6 +126,7 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
         emergencyPhone: String,
         passportPhotoUri: String?,
         paymentProofUri: String?,
+        referralCode: String?,
         onSuccess: (PlayerRegistration) -> Unit
     ) {
         viewModelScope.launch {
@@ -146,7 +148,8 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                     emergencyRelationship = emergencyRelationship,
                     emergencyPhone = emergencyPhone,
                     passportPhotoUri = passportPhotoUri,
-                    paymentProofUri = paymentProofUri
+                    paymentProofUri = paymentProofUri,
+                    referralCode = referralCode
                 )
                 lastRegisteredPlayer.value = registeredPlayer
                 try {
@@ -173,6 +176,7 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                         put("paymentProofUri", registeredPlayer.paymentProofUri ?: "")
                         put("status", registeredPlayer.status)
                         put("registrationDate", registeredPlayer.registrationDate)
+                        put("referralCode", registeredPlayer.referralCode ?: "")
                     }
                     prefs.edit().putString("last_player_json", json.toString()).apply()
                 } catch (e: Exception) {
@@ -246,7 +250,8 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                     passportPhotoUri = if (json.has("passportPhotoUri")) json.optString("passportPhotoUri", null) else null,
                     paymentProofUri = if (json.has("paymentProofUri")) json.optString("paymentProofUri", null) else null,
                     status = if (json.has("status")) json.getString("status") else "Pending",
-                    registrationDate = if (json.has("registrationDateLong")) json.getLong("registrationDateLong") else System.currentTimeMillis()
+                    registrationDate = if (json.has("registrationDateLong")) json.getLong("registrationDateLong") else System.currentTimeMillis(),
+                    referralCode = if (json.has("referralCode") && !json.isNull("referralCode") && json.getString("referralCode").isNotEmpty()) json.getString("referralCode") else null
                 )
 
                 repository.importPlayer(player)
@@ -265,13 +270,14 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         try {
-            val csvHeader = "ID,RegistrationDate,FullName,Nickname,DOB,Gender,Phone,WhatsApp,Email,Area,ExpYears,CueHand,PrevTournaments,Skill,EmergencyName,Relationship,EmergencyPhone,Status\n"
+            val csvHeader = "ID,RegistrationDate,FullName,Nickname,DOB,Gender,Phone,WhatsApp,Email,Area,ExpYears,CueHand,PrevTournaments,Skill,EmergencyName,Relationship,EmergencyPhone,Status,ReferralCode\n"
             val csvBody = list.joinToString("\n") { r ->
                 val date = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(java.util.Date(r.registrationDate))
                 val nicknameSanitized = r.nickname?.replace("\"", "\"\"") ?: ""
                 val prevTournSanitized = r.previousTournament.replace("\"", "\"\"")
+                val referralSanitized = r.referralCode?.replace("\"", "\"\"") ?: ""
                 
-                "\"${r.uniquePlayerId}\",\"$date\",\"${r.fullName}\",\"$nicknameSanitized\",\"${r.dob}\",\"${r.gender}\",\"${r.phone}\",\"${r.whatsapp}\",\"${r.email}\",\"${r.residentialArea}\",${r.experienceYears},\"${r.preferredCueHand}\",\"$prevTournSanitized\",\"${r.skillLevel}\",\"${r.emergencyName}\",\"${r.emergencyRelationship}\",\"${r.emergencyPhone}\",\"${r.status}\""
+                "\"${r.uniquePlayerId}\",\"$date\",\"${r.fullName}\",\"$nicknameSanitized\",\"${r.dob}\",\"${r.gender}\",\"${r.phone}\",\"${r.whatsapp}\",\"${r.email}\",\"${r.residentialArea}\",${r.experienceYears},\"${r.preferredCueHand}\",\"$prevTournSanitized\",\"${r.skillLevel}\",\"${r.emergencyName}\",\"${r.emergencyRelationship}\",\"${r.emergencyPhone}\",\"${r.status}\",\"$referralSanitized\""
             }
             val csvString = csvHeader + csvBody
 

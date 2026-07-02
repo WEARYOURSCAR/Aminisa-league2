@@ -196,6 +196,21 @@ fun SuccessRedirectScreen(
                         Text(text = "${player.skillLevel} (${player.experienceYears} Cues)", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     }
                 }
+
+                if (!player.referralCode.isNullOrBlank()) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Divider(color = Color.Gray.copy(alpha = 0.2f), thickness = 0.5.dp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Text(text = "REFERRAL CODE", color = Color(0xFFD4AF37), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                            Text(text = player.referralCode, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
             }
         }
 
@@ -271,6 +286,7 @@ fun SuccessRedirectScreen(
                     put("experienceYears", player.experienceYears)
                     put("gender", player.gender)
                     put("status", player.status)
+                    put("referralCode", player.referralCode ?: "")
                 }
                 android.util.Base64.encodeToString(
                     json.toString().toByteArray(Charsets.UTF_8),

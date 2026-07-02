@@ -25,5 +25,6 @@ data class PlayerRegistration(
     val emergencyPhone: String,
     val passportPhotoUri: String? = null,
     val paymentProofUri: String? = null,
-    var status: String = "Pending" // Pending, Approved, Rejected
+    var status: String = "Pending", // Pending, Approved, Rejected
+    val referralCode: String? = null
 )

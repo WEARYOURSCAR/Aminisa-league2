@@ -50,6 +50,7 @@ fun RegisterScreen(
     var whatsapp by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var residentialArea by remember { mutableStateOf("") }
+    var referralCode by remember { mutableStateOf("") }
     
     var experienceYears by remember { mutableStateOf("2") }
     var preferredCueHand by remember { mutableStateOf("Right-Handed") }
@@ -338,6 +339,19 @@ fun RegisterScreen(
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+
+                OutlinedTextField(
+                    value = referralCode,
+                    onValueChange = { referralCode = it },
+                    label = { Text("Referral Code (Optional)") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFF00A651),
+                        unfocusedBorderColor = Color.Gray.copy(alpha = 0.5f)
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
             }
         }
 
@@ -797,6 +811,7 @@ fun RegisterScreen(
                     emergencyPhone = emergencyPhone,
                     passportPhotoUri = passportUri,
                     paymentProofUri = paymentProofUri,
+                    referralCode = referralCode.ifBlank { null },
                     onSuccess = { playerReg ->
                         onRegistrationSuccess(playerReg)
                     }
