@@ -1336,7 +1336,11 @@
                     hashValue: 471928
                 }
             ];
-            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            try {
+                localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            } catch(e) {
+                console.warn("Could not seed default registrations in localStorage:", e);
+            }
         }
 
         let isAuthorized = false;
@@ -1590,22 +1594,85 @@
         let passportBase64 = "";
         let receiptBase64 = "";
 
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
         function previewFile(input, labelId, thumbId) {
             const file = input.files[0];
             if (file) {
+                const label = document.getElementById(labelId);
+                label.innerText = "⏳ Processing and optimizing image...";
+                label.classList.remove('hidden');
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const base64 = e.target.result;
-                    if (input.id === 'file-passport') passportBase64 = base64;
-                    if (input.id === 'file-receipt') receiptBase64 = base64;
+                    const originalBase64 = e.target.result;
 
-                    // Update UI representation label and show green verified state
-                    const label = document.getElementById(labelId);
-                    label.classList.remove('hidden');
+                    // If image is small (less than 150KB), don't bother compressing with canvas
+                    if (file.size < 150000) {
+                        if (input.id === 'file-passport') passportBase64 = originalBase64;
+                        if (input.id === 'file-receipt') receiptBase64 = originalBase64;
 
-                    const thumb = document.getElementById(thumbId);
-                    thumb.src = base64;
-                    thumb.classList.remove('hidden');
+                        label.innerText = "✓ Uploaded (" + formatBytes(file.size) + ")";
+                        const thumb = document.getElementById(thumbId);
+                        thumb.src = originalBase64;
+                        thumb.classList.remove('hidden');
+                        return;
+                    }
+
+                    // Otherwise compress using canvas
+                    const img = new Image();
+                    img.onload = function() {
+                        const maxDim = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxDim || height > maxDim) {
+                            if (width > height) {
+                                height = Math.round((height * maxDim) / width);
+                                width = maxDim;
+                            } else {
+                                width = Math.round((width * maxDim) / height);
+                                height = maxDim;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Compress to JPEG with 0.7 quality
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                        if (input.id === 'file-passport') passportBase64 = compressedBase64;
+                        if (input.id === 'file-receipt') receiptBase64 = compressedBase64;
+
+                        const compressedSize = Math.round((compressedBase64.length - 22) * 3 / 4);
+                        label.innerText = "✓ Uploaded (" + formatBytes(file.size) + " optimized to " + formatBytes(compressedSize) + ")";
+
+                        const thumb = document.getElementById(thumbId);
+                        thumb.src = compressedBase64;
+                        thumb.classList.remove('hidden');
+                    };
+                    img.onerror = function() {
+                        if (input.id === 'file-passport') passportBase64 = originalBase64;
+                        if (input.id === 'file-receipt') receiptBase64 = originalBase64;
+
+                        label.innerText = "✓ Uploaded (" + formatBytes(file.size) + ")";
+                        const thumb = document.getElementById(thumbId);
+                        thumb.src = originalBase64;
+                        thumb.classList.remove('hidden');
+                    };
+                    img.src = originalBase64;
+                };
+                reader.onerror = function() {
+                    label.innerText = "❌ Upload failed";
                 };
                 reader.readAsDataURL(file);
             }
@@ -1819,7 +1886,11 @@
             };
 
             registrations.unshift(rosterItem);
-            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            try {
+                localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            } catch(e) {
+                console.warn("Could not save imported registrations to localStorage:", e);
+            }
             
             // Re-render admin dashboard roster
             renderAdminRoster();
@@ -1885,8 +1956,16 @@
 
             lastRegisteredAthlete = registration;
             registrations.unshift(registration);
-            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
-            localStorage.setItem('ascl_last_registered_athlete', JSON.stringify(registration));
+            try {
+                localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            } catch(e) {
+                console.warn("Could not save registrations to localStorage:", e);
+            }
+            try {
+                localStorage.setItem('ascl_last_registered_athlete', JSON.stringify(registration));
+            } catch(e) {
+                console.warn("Could not save last registered athlete to localStorage:", e);
+            }
 
             // Show reopen banner on register tab if it is hidden
             const reopenBanner = document.getElementById('reopen-success-banner');
@@ -2198,7 +2277,11 @@
                 }
                 return player;
             });
-            localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            try {
+                localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+            } catch(e) {
+                console.warn("Could not update registrations in localStorage:", e);
+            }
             renderAdminRoster();
         }
 
