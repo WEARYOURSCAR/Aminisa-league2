@@ -302,12 +302,12 @@ fun SuccessRedirectScreen(
         Button(
             onClick = {
                 try {
-                    val message = "Hi Admin, here is my Aminisa Snooker Club League (ASCL) rooster packet!\n\n👉 $syncUrl"
+                    val message = "Hi Admin, here is my Aminisa Sport Club League (ASCL) rooster packet!\n\n👉 $syncUrl"
                     val encodedMessage = java.net.URLEncoder.encode(message, "UTF-8")
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/2349022572296?text=$encodedMessage"))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/qr/UJLC6WT7F3QWE1?text=$encodedMessage"))
                     context.startActivity(intent)
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Could not open WhatsApp. Please contact admin at 2349022572296", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Could not open WhatsApp.", Toast.LENGTH_LONG).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(

@@ -34,7 +34,7 @@ fun WebFooter(modifier: Modifier = Modifier) {
         ) {
             Column(modifier = Modifier.weight(1.5f)) {
                 Text(
-                    text = "AMINISA SNOOKER CLUB LEAGUE (ASCL)",
+                    text = "AMINISA SPORT CLUB LEAGUE (ASCL)",
                     color = Color.White,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
@@ -83,6 +83,26 @@ fun WebFooter(modifier: Modifier = Modifier) {
                     fontSize = 11.sp,
                     lineHeight = 16.sp
                 )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@aminisa.sport?_r=1&_t=ZS-97klCe15xa8"))
+                        try { context.startActivity(browserIntent) } catch (e: Exception) {}
+                    }
+                ) {
+                    Text(
+                        text = "📱 TikTok: ",
+                        color = Color.LightGray,
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        text = "@aminisa.sport",
+                        color = Color(0xFFD4AF37),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
         

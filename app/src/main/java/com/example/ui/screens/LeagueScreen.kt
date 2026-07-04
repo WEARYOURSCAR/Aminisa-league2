@@ -138,7 +138,7 @@ fun StandingsTab(isWebsiteMode: Boolean = false) {
         item {
             PreSeasonBanner(
                 title = "INAUGURAL SEASON 1 PRE-SEASON PREPARATION",
-                description = "Aminisa Snooker Club League (ASCL) is currently in its roster-building stage for the upcoming launch. Live match records and standing logs will compute dynamically once the championship commences on July 1, 2026. Ranks displayed below show indicative showcase seeding profiles.",
+                description = "Aminisa Sport Club League (ASCL) is currently in its roster-building stage for the upcoming launch. Live match records and standing logs will compute dynamically once the championship commences on July 1, 2026. Ranks displayed below show indicative showcase seeding profiles.",
                 icon = "📢",
                 bannerColor = Color(0xFFD4AF37)
             )
@@ -279,7 +279,7 @@ fun FixturesTab(isWebsiteMode: Boolean = false) {
         item {
             PreSeasonBanner(
                 title = "DRAFT SHEET SCHEDULING IN PROGRESS",
-                description = "Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on July 3, 2026. Outlined templates are illustrated below for reference.",
+                description = "Official championship grid layout pairings for all 128 player slots will lock and publish immediately after slot registration closes on July 11, 2026. Outlined templates are illustrated below for reference.",
                 icon = "🗓️",
                 bannerColor = Color(0xFF00A651)
             )

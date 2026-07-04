@@ -272,7 +272,7 @@ fun WebHeaderBar(
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = "AMINISA SNOOKER LEAGUE",
+                        text = "AMINISA SPORT CLUB LEAGUE (ASCL)",
                         color = Color.White,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Black,

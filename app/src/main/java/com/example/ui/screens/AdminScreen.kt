@@ -655,7 +655,7 @@ fun AdminScreen(
                                 Divider(color = Color.LightGray)
                                 Spacer(modifier = Modifier.height(12.dp))
                                 
-                                ReceiptField(label = "PAYMENT TO", value = "AMINISA SNOOKER CLUB LEAGUE (ASCL)")
+                                ReceiptField(label = "PAYMENT TO", value = "AMINISA SPORT CLUB LEAGUE (ASCL)")
                                 ReceiptField(label = "PAYMENT CHANNEL", value = "SquadCo Online Transfer/Card")
                                 ReceiptField(label = "SENDER NAME", value = player.fullName.uppercase())
                                 ReceiptField(label = "AMOUNT PAID", value = "₦1,000.00")

@@ -1058,7 +1058,7 @@ fun RegisterScreen(
                                             }
                                             Spacer(Modifier.height(8.dp))
                                             Text("Account: 9920199411", fontSize = 13.sp, fontWeight = FontWeight.Black, color = Color.Black)
-                                            Text("Beneficiary: Aminisa Snooker Club League", fontSize = 9.sp, color = Color.Gray)
+                                            Text("Beneficiary: Aminisa Sport Club League", fontSize = 9.sp, color = Color.Gray)
                                         }
                                     }
 

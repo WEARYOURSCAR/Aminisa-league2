@@ -41,7 +41,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
-    // Countdown state calculated from the target date of June 30, 2026
+    // Countdown state calculated from the target date of July 11, 2026
     var timeLeft by remember { mutableStateOf(calculateTimeLeft()) }
 
     var spectatorName by remember { mutableStateOf("") }
@@ -136,7 +136,7 @@ fun HomeScreen(
                     fontFamily = FontFamily.SansSerif
                 )
                 Text(
-                    text = "SNOOKER CLUB LEAGUE",
+                    text = "SPORT CLUB LEAGUE (ASCL)",
                     color = Color(0xFF00A651),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -1119,7 +1119,7 @@ fun HomeScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "AMINISA SNOOKER CLUB LEAGUE (ASCL)",
+                        text = "AMINISA SPORT CLUB LEAGUE (ASCL)",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
@@ -1178,7 +1178,7 @@ private fun calculateTimeLeft(): Tuple4<Int, Int, Int, Int> {
     val deadline = Calendar.getInstance().apply {
         set(Calendar.YEAR, 2026)
         set(Calendar.MONTH, Calendar.JULY) // July is month index 6
-        set(Calendar.DAY_OF_MONTH, 3)
+        set(Calendar.DAY_OF_MONTH, 11)
         set(Calendar.HOUR_OF_DAY, 23)
         set(Calendar.MINUTE, 59)
         set(Calendar.SECOND, 59)
