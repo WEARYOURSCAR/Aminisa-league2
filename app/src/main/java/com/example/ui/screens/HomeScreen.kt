@@ -1141,7 +1141,7 @@ fun HomeScreen(
                             Icon(imageVector = Icons.Default.Phone, contentDescription = "Phone", tint = Color(0xFF00A651))
                         }
                         IconButton(onClick = {
-                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:asclofficial26@gmail.com"))
+                            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:aminisasport@gmail.com"))
                             context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
                         }) {
                             Icon(imageVector = Icons.Default.Email, contentDescription = "Email", tint = Color(0xFF00A651))
@@ -1153,7 +1153,38 @@ fun HomeScreen(
                             Icon(imageVector = Icons.Default.Chat, contentDescription = "WhatsApp Chat", tint = Color(0xFFD4AF37))
                         }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "📱 TikTok",
+                            color = Color(0xFFD4AF37),
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.clickable {
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@aminisa.sport?_r=1&_t=ZS-97klCe15xa8"))
+                                try { context.startActivity(browserIntent) } catch (e: Exception) {}
+                            }
+                        )
+                        Text(
+                            text = "•",
+                            color = Color.Gray,
+                            fontSize = 11.sp
+                        )
+                        Text(
+                            text = "📘 Facebook",
+                            color = Color(0xFFD4AF37),
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.clickable {
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/profile.php?id=61591824231534"))
+                                try { context.startActivity(browserIntent) } catch (e: Exception) {}
+                            }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = "© 2026 ASCL. All Rights Reserved.",
                         color = Color.DarkGray,

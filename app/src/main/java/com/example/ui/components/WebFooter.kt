@@ -77,11 +77,46 @@ fun WebFooter(modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(6.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {
+                        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:aminisasport@gmail.com"))
+                        try { context.startActivity(Intent.createChooser(emailIntent, "Send Email")) } catch (e: Exception) {}
+                    }
+                ) {
+                    Text(
+                        text = "✉️ ",
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        text = "aminisasport@gmail.com",
+                        color = Color.LightGray,
+                        fontSize = 11.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {
+                        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+2349022572296"))
+                        try { context.startActivity(dialIntent) } catch (e: Exception) {}
+                    }
+                ) {
+                    Text(
+                        text = "📞 ",
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        text = "+2349022572296",
+                        color = Color.LightGray,
+                        fontSize = 11.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "✉️ asclofficial26@gmail.com\n📞 +2349022572296\n💬 Elite Cueists Team • Ilorin",
+                    text = "💬 Elite Cueists Team • Ilorin",
                     color = Color.LightGray,
-                    fontSize = 11.sp,
-                    lineHeight = 16.sp
+                    fontSize = 11.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
@@ -98,6 +133,26 @@ fun WebFooter(modifier: Modifier = Modifier) {
                     )
                     Text(
                         text = "@aminisa.sport",
+                        color = Color(0xFFD4AF37),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/profile.php?id=61591824231534"))
+                        try { context.startActivity(browserIntent) } catch (e: Exception) {}
+                    }
+                ) {
+                    Text(
+                        text = "📘 Facebook: ",
+                        color = Color.LightGray,
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        text = "Aminisa Sport",
                         color = Color(0xFFD4AF37),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold
