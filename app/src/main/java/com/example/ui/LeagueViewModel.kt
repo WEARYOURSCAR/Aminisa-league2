@@ -182,6 +182,22 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+
+                // Send welcome email asynchronously via Vercel backend proxy
+                viewModelScope.launch {
+                    try {
+                        val emailRequest = com.example.data.api.WelcomeEmailRequest(
+                            email = registeredPlayer.email,
+                            fullName = registeredPlayer.fullName,
+                            uniquePlayerId = registeredPlayer.uniquePlayerId
+                        )
+                        val response = com.example.data.api.RetrofitClient.resendService.sendWelcomeEmail(emailRequest)
+                        android.util.Log.d("ASCL_Email", "Welcome email sent successfully: ${response.id}")
+                    } catch (e: Exception) {
+                        android.util.Log.e("ASCL_Email", "Failed to send welcome email: ${e.localizedMessage}", e)
+                    }
+                }
+
                 onSuccess(registeredPlayer)
             } catch (e: Exception) {
                 Toast.makeText(getApplication(), "Registration failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
