@@ -1969,6 +1969,26 @@
                 console.warn("Could not save last registered athlete to localStorage:", e);
             }
 
+            // Trigger welcome email via Vercel serverless function (CORS-safe server-side proxy)
+            fetch('/api/welcome', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    fullName: fullName,
+                    uniquePlayerId: athleteId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Welcome email sent status:", data);
+            })
+            .catch(err => {
+                console.error("Error sending welcome email:", err);
+            });
+
             // Show reopen banner on register tab if it is hidden
             const reopenBanner = document.getElementById('reopen-success-banner');
             if (reopenBanner) reopenBanner.classList.remove('hidden');
