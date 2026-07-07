@@ -68,6 +68,20 @@ class PlayerRepository(private val playerDao: PlayerDao) {
             }
         }
 
+        // Send confirmation email via Resend if configured
+        if (ResendService.isConfigured() && registration.email.isNotEmpty()) {
+            try {
+                ResendService.sendRegistrationEmail(
+                    recipientEmail = registration.email,
+                    recipientName = registration.fullName,
+                    uniqueId = registration.uniquePlayerId,
+                    status = registration.status
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         return registration
     }
 
