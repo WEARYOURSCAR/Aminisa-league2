@@ -2420,8 +2420,16 @@
         }
 
         function initSupabaseWeb() {
-            const url = localStorage.getItem('ascl_supabase_url');
-            const key = localStorage.getItem('ascl_supabase_key');
+            let url = localStorage.getItem('ascl_supabase_url');
+            let key = localStorage.getItem('ascl_supabase_key');
+            
+            // Fallback to configured defaults so it works on all devices out-of-the-box
+            if (!url) {
+                url = "https://dhyzpnlsqrjtwyytconq.supabase.co";
+            }
+            if (!key) {
+                key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoeXpwbmxzcXJqdHd5eXRjb25xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzMzEwNzgsImV4cCI6MjA5ODkwNzA3OH0.6uyyV4JSMI6SIH410BuNRvnah7M4CCb6QzUCs0nBC4c";
+            }
             
             const statusIcon = document.getElementById('supabase-status-icon');
             const statusText = document.getElementById('supabase-status-text');
@@ -2436,9 +2444,11 @@
             if (url && key && typeof supabase !== 'undefined') {
                 try {
                     supabaseClient = supabase.createClient(url, key);
-                    statusIcon.className = "fa-solid fa-cloud text-asclGreen text-base";
-                    statusText.textContent = "Database Connected. Cloud Sync Active.";
-                    statusText.className = "text-[10px] text-emerald-400 font-bold";
+                    if (statusIcon) statusIcon.className = "fa-solid fa-cloud text-asclGreen text-base";
+                    if (statusText) {
+                        statusText.textContent = "Database Connected. Cloud Sync Active.";
+                        statusText.className = "text-[10px] text-emerald-400 font-bold";
+                    }
                     if (syncBtn) syncBtn.classList.remove('hidden');
                     
                     // Run a silent background sync
@@ -2447,15 +2457,19 @@
                     }, 1000);
                 } catch (e) {
                     console.error("Supabase load failed:", e);
-                    statusIcon.className = "fa-solid fa-cloud-bolt text-red-500 text-base";
-                    statusText.textContent = "Connection Failed: " + e.message;
-                    statusText.className = "text-[10px] text-red-400";
+                    if (statusIcon) statusIcon.className = "fa-solid fa-cloud-bolt text-red-500 text-base";
+                    if (statusText) {
+                        statusText.textContent = "Connection Failed: " + e.message;
+                        statusText.className = "text-[10px] text-red-400";
+                    }
                     if (syncBtn) syncBtn.classList.add('hidden');
                 }
             } else {
-                statusIcon.className = "fa-solid fa-cloud-slash text-gray-500 text-base";
-                statusText.textContent = "Offline Mode (Configure Supabase keys below to sync rosters with devices)";
-                statusText.className = "text-[10px] text-gray-400";
+                if (statusIcon) statusIcon.className = "fa-solid fa-cloud-slash text-gray-500 text-base";
+                if (statusText) {
+                    statusText.textContent = "Offline Mode (Configure Supabase keys below to sync rosters with devices)";
+                    statusText.className = "text-[10px] text-gray-400";
+                }
                 if (syncBtn) syncBtn.classList.add('hidden');
             }
         }
@@ -2772,6 +2786,7 @@
 
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
+            initSupabaseWeb();
             updateWebCountdown();
             checkUrlParamsForImport();
 
