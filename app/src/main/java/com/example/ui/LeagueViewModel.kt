@@ -54,6 +54,9 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
     // Last registered player to display on success screen
     val lastRegisteredPlayer = MutableStateFlow<PlayerRegistration?>(null)
 
+    val supabaseSyncState = MutableStateFlow<String>("Checking configuration...")
+    val isSupabaseConfigured = MutableStateFlow<Boolean>(false)
+
     init {
         try {
             val prefs = application.getSharedPreferences("ascl_prefs", Context.MODE_PRIVATE)
@@ -88,6 +91,26 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+        triggerSupabaseSync()
+    }
+
+    fun triggerSupabaseSync() {
+        if (!com.example.data.SupabaseClient.isConfigured()) {
+            isSupabaseConfigured.value = false
+            supabaseSyncState.value = "Running in Offline Room Mode (Configure Supabase Secrets in AI Studio to Sync)"
+            return
+        }
+        isSupabaseConfigured.value = true
+        supabaseSyncState.value = "Syncing with Supabase..."
+        viewModelScope.launch {
+            val result = repository.syncWithSupabase()
+            if (result.isSuccess) {
+                supabaseSyncState.value = "Synced with Supabase successfully"
+            } else {
+                val errorMsg = result.exceptionOrNull()?.localizedMessage ?: "Unknown error"
+                supabaseSyncState.value = "Sync error: $errorMsg"
+            }
         }
     }
 
@@ -182,22 +205,6 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
-                // Send welcome email asynchronously via Vercel backend proxy
-                viewModelScope.launch {
-                    try {
-                        val emailRequest = com.example.data.api.WelcomeEmailRequest(
-                            email = registeredPlayer.email,
-                            fullName = registeredPlayer.fullName,
-                            uniquePlayerId = registeredPlayer.uniquePlayerId
-                        )
-                        val response = com.example.data.api.RetrofitClient.resendService.sendWelcomeEmail(emailRequest)
-                        android.util.Log.d("ASCL_Email", "Welcome email sent successfully: ${response.id}")
-                    } catch (e: Exception) {
-                        android.util.Log.e("ASCL_Email", "Failed to send welcome email: ${e.localizedMessage}", e)
-                    }
-                }
-
                 onSuccess(registeredPlayer)
             } catch (e: Exception) {
                 Toast.makeText(getApplication(), "Registration failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
@@ -208,7 +215,8 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
     fun updateStatus(id: Int, status: String) {
         viewModelScope.launch {
             try {
-                repository.updateRegistrationStatus(id, status)
+                val player = registrations.value.find { it.id == id }
+                repository.updateRegistrationStatus(id, status, player?.uniquePlayerId)
                 // Also update the state of lastRegisteredPlayer if it's the same player
                 val currentLast = lastRegisteredPlayer.value
                 if (currentLast != null && currentLast.id == id) {

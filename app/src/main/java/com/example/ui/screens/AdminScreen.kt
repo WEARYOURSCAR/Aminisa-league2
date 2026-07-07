@@ -289,7 +289,56 @@ fun AdminScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Supabase Sync Status bar
+            val syncState by viewModel.supabaseSyncState.collectAsState()
+            val isConfigured by viewModel.isSupabaseConfigured.collectAsState()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .background(Color(0xFF141414), RoundedCornerShape(8.dp))
+                    .border(1.dp, if (isConfigured) Color(0xFF00A651).copy(0.3f) else Color.Gray.copy(0.2f), RoundedCornerShape(8.dp))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isConfigured) Icons.Default.Cloud else Icons.Default.CloudOff,
+                        contentDescription = "Supabase Status",
+                        tint = if (isConfigured) Color(0xFF00A651) else Color.Gray,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        text = syncState,
+                        color = Color.LightGray,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
+                if (isConfigured) {
+                    IconButton(
+                        onClick = { viewModel.triggerSupabaseSync() },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Force Sync",
+                            tint = Color(0xFFD4AF37),
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             // STATS GRID ROW
             Row(

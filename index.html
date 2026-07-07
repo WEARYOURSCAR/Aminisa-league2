@@ -57,6 +57,8 @@
             box-shadow: 0 0 0 2px rgba(0, 166, 81, 0.2);
         }
     </style>
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-asclDark text-white font-sans antialiased min-h-screen flex flex-col justify-between">
 
@@ -946,6 +948,48 @@
                     <div class="bg-asclCard border border-red-500/20 rounded-xl p-4 text-center">
                         <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest">Rejected / Refund</span>
                         <h3 id="stat-rejected" class="text-2xl font-black text-red-500 mt-1">0</h3>
+                    </div>
+                </div>
+
+                <!-- Supabase Cloud Sync Panel -->
+                <div class="bg-asclCard border border-white/5 rounded-2xl p-5 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-asclGreen/10 flex items-center justify-center text-asclGreen">
+                                <i class="fa-solid fa-cloud text-lg" id="supabase-status-icon"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-white uppercase tracking-widest">SUPABASE CLOUD SYNCHRONIZATION</h4>
+                                <p class="text-[10px] text-gray-400 mt-0.5" id="supabase-status-text">Checking connection status...</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleSupabaseConfigForm()" class="bg-asclGray hover:bg-[#252525] border border-white/10 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition flex items-center space-x-1.5">
+                                <i class="fa-solid fa-cog"></i> <span>CONFIG</span>
+                            </button>
+                            <button onclick="syncSupabaseWithLocalWeb()" id="supabase-sync-btn" class="bg-asclGreen/15 hover:bg-asclGreen/25 text-asclGreen border border-asclGreen/30 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition flex items-center space-x-1.5 hidden">
+                                <i class="fa-solid fa-rotate"></i> <span>SYNC NOW</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Config Form (hidden by default) -->
+                    <div id="supabase-config-form" class="hidden border-t border-white/5 pt-4 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[9px] font-black text-asclGold uppercase tracking-wider">SUPABASE URL</label>
+                                <input type="text" id="web-supabase-url" class="w-full px-3 py-2.5 text-xs rounded-lg form-input text-white" placeholder="https://your-project.supabase.co">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[9px] font-black text-asclGold uppercase tracking-wider">SUPABASE ANON KEY</label>
+                                <input type="text" id="web-supabase-key" class="w-full px-3 py-2.5 text-xs rounded-lg form-input text-white" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            <button onclick="saveSupabaseConfig()" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-bold uppercase px-5 py-2.5 rounded-xl transition shadow-lg">
+                                SAVE & INITIATE SYNC
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1960,6 +2004,30 @@
             registrations.unshift(registration);
             try {
                 localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+                
+                // Push registration to Supabase if configured
+                if (supabaseClient) {
+                    supabaseClient.from('player_registrations').insert([{
+                        uniquePlayerId: registration.uniquePlayerId,
+                        registrationDate: registration.registrationDate,
+                        fullName: registration.fullName,
+                        nickname: registration.nickname || null,
+                        dob: registration.dob,
+                        gender: registration.gender,
+                        whatsapp: registration.whatsapp,
+                        email: registration.email,
+                        preferredCueHand: registration.preferredCueHand,
+                        residentialArea: registration.residentialArea,
+                        skillLevel: registration.skillLevel,
+                        passportData: registration.passportData || null,
+                        receiptData: registration.receiptData || null,
+                        status: registration.status,
+                        referralCode: registration.referralCode || null,
+                        hashValue: registration.hashValue || null
+                    }]).then(({ error }) => {
+                        if (error) console.error("Error inserting to Supabase on register:", error);
+                    });
+                }
             } catch(e) {
                 console.warn("Could not save registrations to localStorage:", e);
             }
@@ -1968,26 +2036,6 @@
             } catch(e) {
                 console.warn("Could not save last registered athlete to localStorage:", e);
             }
-
-            // Trigger welcome email via Vercel serverless function (CORS-safe server-side proxy)
-            fetch('/api/welcome', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    fullName: fullName,
-                    uniquePlayerId: athleteId
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Welcome email sent status:", data);
-            })
-            .catch(err => {
-                console.error("Error sending welcome email:", err);
-            });
 
             // Show reopen banner on register tab if it is hidden
             const reopenBanner = document.getElementById('reopen-success-banner');
@@ -2296,6 +2344,15 @@
             registrations = registrations.map(player => {
                 if (player.id === playerId) {
                     player.status = nextStatus;
+                    // Sync status to Supabase if configured
+                    if (supabaseClient) {
+                        supabaseClient.from('player_registrations')
+                            .update({ status: nextStatus })
+                            .eq('uniquePlayerId', player.uniquePlayerId)
+                            .then(({ error }) => {
+                                if (error) console.error("Error updating Supabase status:", error);
+                            });
+                    }
                 }
                 return player;
             });
@@ -2352,6 +2409,182 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // ==================== SUPABASE CLIENT & INTEGRATION LOGIC ====================
+        let supabaseClient = null;
+
+        function toggleSupabaseConfigForm() {
+            const form = document.getElementById('supabase-config-form');
+            form.classList.toggle('hidden');
+        }
+
+        function initSupabaseWeb() {
+            const url = localStorage.getItem('ascl_supabase_url');
+            const key = localStorage.getItem('ascl_supabase_key');
+            
+            const statusIcon = document.getElementById('supabase-status-icon');
+            const statusText = document.getElementById('supabase-status-text');
+            const syncBtn = document.getElementById('supabase-sync-btn');
+            
+            // Set inputs if present
+            const urlInput = document.getElementById('web-supabase-url');
+            const keyInput = document.getElementById('web-supabase-key');
+            if (urlInput) urlInput.value = url || '';
+            if (keyInput) keyInput.value = key || '';
+
+            if (url && key && typeof supabase !== 'undefined') {
+                try {
+                    supabaseClient = supabase.createClient(url, key);
+                    statusIcon.className = "fa-solid fa-cloud text-asclGreen text-base";
+                    statusText.textContent = "Database Connected. Cloud Sync Active.";
+                    statusText.className = "text-[10px] text-emerald-400 font-bold";
+                    if (syncBtn) syncBtn.classList.remove('hidden');
+                    
+                    // Run a silent background sync
+                    setTimeout(() => {
+                        syncSupabaseWithLocalWeb(true);
+                    }, 1000);
+                } catch (e) {
+                    console.error("Supabase load failed:", e);
+                    statusIcon.className = "fa-solid fa-cloud-bolt text-red-500 text-base";
+                    statusText.textContent = "Connection Failed: " + e.message;
+                    statusText.className = "text-[10px] text-red-400";
+                    if (syncBtn) syncBtn.classList.add('hidden');
+                }
+            } else {
+                statusIcon.className = "fa-solid fa-cloud-slash text-gray-500 text-base";
+                statusText.textContent = "Offline Mode (Configure Supabase keys below to sync rosters with devices)";
+                statusText.className = "text-[10px] text-gray-400";
+                if (syncBtn) syncBtn.classList.add('hidden');
+            }
+        }
+
+        function saveSupabaseConfig() {
+            const url = document.getElementById('web-supabase-url').value.trim();
+            const key = document.getElementById('web-supabase-key').value.trim();
+
+            if (!url || !key) {
+                alert("Please fill in both Supabase URL and Anon Key to configure integration.");
+                return;
+            }
+
+            localStorage.setItem('ascl_supabase_url', url);
+            localStorage.setItem('ascl_supabase_key', key);
+            
+            alert("Supabase Credentials Configured Successfully!");
+            document.getElementById('supabase-config-form').classList.add('hidden');
+            initSupabaseWeb();
+        }
+
+        async function syncSupabaseWithLocalWeb(silent = false) {
+            if (!supabaseClient) {
+                if (!silent) alert("Supabase is not configured yet. Please configure the database credentials.");
+                return;
+            }
+
+            const statusText = document.getElementById('supabase-status-text');
+            if (!silent && statusText) {
+                statusText.textContent = "Synchronizing database records...";
+                statusText.className = "text-[10px] text-asclGold font-bold animate-pulse";
+            }
+
+            try {
+                // 1. Fetch remote registrations from Supabase
+                const { data: remoteRegs, error } = await supabaseClient
+                    .from('player_registrations')
+                    .select('*');
+
+                if (error) throw error;
+
+                let hasUpdates = false;
+
+                // 2. Sync remote items into local storage
+                if (remoteRegs && remoteRegs.length > 0) {
+                    remoteRegs.forEach(remote => {
+                        let localIndex = registrations.findIndex(r => r.uniquePlayerId === remote.uniquePlayerId);
+                        if (localIndex === -1) {
+                            // Insert into local
+                            registrations.unshift({
+                                id: registrations.length + 1,
+                                fullName: remote.fullName,
+                                nickname: remote.nickname,
+                                email: remote.email,
+                                whatsapp: remote.whatsapp,
+                                dob: remote.dob,
+                                gender: remote.gender,
+                                skillLevel: remote.skillLevel,
+                                preferredCueHand: remote.preferredCueHand,
+                                residentialArea: remote.residentialArea,
+                                referralCode: remote.referralCode,
+                                uniquePlayerId: remote.uniquePlayerId,
+                                registrationDate: remote.registrationDate,
+                                status: remote.status,
+                                passportData: remote.passportData,
+                                receiptData: remote.receiptData,
+                                hashValue: remote.hashValue
+                            });
+                            hasUpdates = true;
+                        } else {
+                            // Update status or other synced fields
+                            if (registrations[localIndex].status !== remote.status) {
+                                registrations[localIndex].status = remote.status;
+                                hasUpdates = true;
+                            }
+                        }
+                    });
+                }
+
+                // 3. Sync local-only items to Supabase
+                for (let local of registrations) {
+                    let remoteExists = remoteRegs && remoteRegs.some(r => r.uniquePlayerId === local.uniquePlayerId);
+                    if (!remoteExists) {
+                        const { error: insertError } = await supabaseClient
+                            .from('player_registrations')
+                            .insert([{
+                                uniquePlayerId: local.uniquePlayerId,
+                                registrationDate: local.registrationDate,
+                                fullName: local.fullName,
+                                nickname: local.nickname || null,
+                                dob: local.dob,
+                                gender: local.gender,
+                                whatsapp: local.whatsapp,
+                                email: local.email,
+                                preferredCueHand: local.preferredCueHand,
+                                residentialArea: local.residentialArea,
+                                skillLevel: local.skillLevel,
+                                passportData: local.passportData || null,
+                                receiptData: local.receiptData || null,
+                                status: local.status,
+                                referralCode: local.referralCode || null,
+                                hashValue: local.hashValue || null
+                            }]);
+                        if (insertError) console.warn("Could not insert remote registration:", insertError);
+                    }
+                }
+
+                if (hasUpdates) {
+                    localStorage.setItem('ascl_registrations', JSON.stringify(registrations));
+                    renderAdminRoster();
+                }
+
+                if (statusText) {
+                    statusText.textContent = `Database Connected. Synced ${remoteRegs ? remoteRegs.length : 0} cloud records.`;
+                    statusText.className = "text-[10px] text-emerald-400 font-bold";
+                }
+                if (!silent) {
+                    alert(`Cloud Sync Complete! Verified and merged database records successfully.`);
+                }
+            } catch (e) {
+                console.error("Supabase Sync Error:", e);
+                if (statusText) {
+                    statusText.textContent = "Sync error: " + e.message;
+                    statusText.className = "text-[10px] text-red-400";
+                }
+                if (!silent) {
+                    alert("Supabase Sync Failed:\n" + e.message + "\n\nVerify that the 'player_registrations' table exists in your Supabase database.");
+                }
+            }
         }
 
         // ------------------ SPECTATOR TICKETING STATE ------------------

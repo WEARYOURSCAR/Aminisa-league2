@@ -12,6 +12,9 @@ interface PlayerDao {
     @Query("SELECT * FROM player_registrations ORDER BY registrationDate DESC")
     fun getAllRegistrations(): Flow<List<PlayerRegistration>>
 
+    @Query("SELECT * FROM player_registrations")
+    suspend fun getAllRegistrationsOnce(): List<PlayerRegistration>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRegistration(registration: PlayerRegistration): Long
 
