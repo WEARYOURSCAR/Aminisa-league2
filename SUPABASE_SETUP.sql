@@ -56,3 +56,91 @@ CREATE POLICY "Allow anonymous status updates"
     FOR UPDATE 
     USING (true)
     WITH CHECK (true);
+
+-- =========================================================================
+--   AUTOMATED EMAIL CONFIRMATION TRIGGER (VIA RESEND API)
+-- =========================================================================
+-- This setup securely sends registration emails from the Supabase backend
+-- server. This avoids CORS blockages and protects your Resend API Key.
+
+-- Enable pg_net extension if not already enabled
+CREATE EXTENSION IF NOT EXISTS pg_net;
+
+-- Create the function that calls the Resend API
+CREATE OR REPLACE FUNCTION public.send_registration_email()
+RETURNS TRIGGER AS $$
+DECLARE
+    -- TODO: REPLACE 're_YOUR_API_KEY' WITH YOUR ACTUAL RESEND API KEY!
+    resend_api_key TEXT := 're_YOUR_API_KEY';
+    -- TODO: REPLACE WITH YOUR VERIFIED SENDER OR LEAVE DEFAULT ONBOARDING SENDER
+    from_email TEXT := 'Aminisa Sport Club <onboarding@resend.dev>';
+    html_content TEXT;
+BEGIN
+    -- Verify the email is present
+    IF NEW.email IS NULL OR NEW.email = '' THEN
+        RETURN NEW;
+    END IF;
+
+    -- Build a beautiful, styled HTML template
+    html_content := '
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 12px; background-color: #0f0f0f; color: #ffffff;">
+        <div style="text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px;">
+            <h1 style="color: #00A651; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;">Aminisa Sport Club League</h1>
+            <p style="color: #D4AF37; margin: 5px 0 0 0; font-weight: bold; font-size: 14px;">OFFICIAL PLAYER ROSTER CONFIRMATION</p>
+        </div>
+        
+        <div style="padding: 20px 0; line-height: 1.6;">
+            <p style="font-size: 16px; margin-top: 0; color: #ffffff;">Hello <strong>' || COALESCE(NEW."fullName", 'Athlete') || '</strong>,</p>
+            <p style="font-size: 14px; color: #dddddd;">Congratulations! Your application has been successfully submitted and logged on the Aminisa Sport Club League digital roster.</p>
+            
+            <div style="background-color: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                <span style="display: block; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Your Official Player ID</span>
+                <span style="font-size: 28px; font-weight: 900; color: #D4AF37; letter-spacing: 2px; display: block; margin: 5px 0;">' || NEW."uniquePlayerId" || '</span>
+                <span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: bold; border-radius: 20px; background-color: rgba(212, 175, 55, 0.15); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    STATUS: ' || UPPER(COALESCE(NEW.status, 'PENDING')) || '
+                </span>
+            </div>
+            
+            <h3 style="color: #00A651; border-bottom: 1px solid #222; padding-bottom: 5px; font-size: 15px;">What happens next?</h3>
+            <ul style="padding-left: 20px; font-size: 13px; color: #ccc;">
+                <li style="margin-bottom: 8px;"><strong>Roster Ledger Updates:</strong> Your player profile is now securely logged in our cloud database.</li>
+                <li style="margin-bottom: 8px;"><strong>Admin Evaluation:</strong> Our committee will review your submission documents, cue hand preference, skill level alignment, and registration fee receipt.</li>
+                <li style="margin-bottom: 8px;"><strong>Active Status:</strong> Once verified, your status will change to Approved, and you will be fully cleared to compete.</li>
+            </ul>
+            
+            <p style="font-size: 12px; color: #888; margin-top: 30px;">
+                This is an automated notification from the Aminisa Sport Club Portal. If you have any questions or need immediate support, you can reach out to the Admin team directly.
+            </p>
+        </div>
+        
+        <div style="border-top: 1px solid #222; padding-top: 20px; text-align: center; font-size: 11px; color: #555;">
+            <p style="margin: 0;">&copy; 2026 Aminisa Sport Club. All Rights Reserved.</p>
+        </div>
+    </div>';
+
+    -- Trigger the server-side HTTP POST request to Resend API
+    PERFORM net.http_post(
+        url := 'https://api.resend.com/emails',
+        headers := jsonb_build_object(
+            'Authorization', 'Bearer ' || resend_api_key,
+            'Content-Type', 'application/json'
+        ),
+        body := jsonb_build_object(
+            'from', from_email,
+            'to', jsonb_build_array(NEW.email),
+            'subject', 'Registration Confirmed: ' || NEW."uniquePlayerId" || ' - Aminisa Sport Club League',
+            'html', html_content
+        )
+    );
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Bind the trigger function to the player_registrations table
+DROP TRIGGER IF EXISTS tr_send_registration_email ON public.player_registrations;
+CREATE TRIGGER tr_send_registration_email
+    AFTER INSERT ON public.player_registrations
+    FOR EACH ROW
+    EXECUTE FUNCTION public.send_registration_email();
+
