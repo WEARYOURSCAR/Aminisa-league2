@@ -1378,7 +1378,7 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-1">
-                                <label class="text-[9px] font-black text-asclGold uppercase tracking-wider">RESEND API KEY (FOR CONFIRMATION EMAILS)</label>
+                                <label class="text-[9px] font-black text-asclGold uppercase tracking-wider">RESEND API KEY (FOR CLIENT-SIDE BACKUP)</label>
                                 <input type="text" id="web-resend-key" class="w-full px-3 py-2.5 text-xs rounded-lg form-input text-white" placeholder="re_your_api_key">
                             </div>
                             <div class="space-y-1">
@@ -1386,6 +1386,69 @@
                                 <input type="text" id="web-resend-from" class="w-full px-3 py-2.5 text-xs rounded-lg form-input text-white" placeholder="Aminisa Sport Club <onboarding@resend.dev>">
                             </div>
                         </div>
+
+                        <!-- GMAIL SENDER CONFIG (GOOGLE APPS SCRIPT WEB APP) -->
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[9px] font-black text-asclGold uppercase tracking-wider flex items-center">
+                                    <i class="fa-solid fa-square-envelope text-asclGreen mr-1.5 text-xs"></i> GOOGLE APPS SCRIPT WEB APP URL (GMAIL EMAIL GATEWAY)
+                                </label>
+                                <input type="text" id="web-apps-script-url" class="w-full px-3 py-2.5 text-xs rounded-lg form-input text-white" placeholder="https://script.google.com/macros/s/.../exec">
+                            </div>
+                        </div>
+
+                        <!-- Google Apps Script Setup Guide -->
+                        <div class="bg-asclGreen/5 border border-asclGreen/15 rounded-xl p-4 text-[11px] text-gray-300 space-y-2">
+                            <p class="font-bold text-asclGreen uppercase tracking-wider flex items-center">
+                                <i class="fa-brands fa-google mr-1.5 text-xs text-asclGreen"></i> OPTION 2: 100% FREE AUTOMATIC GMAIL EMAIL SENDER (RECOMMENDED)
+                            </p>
+                            <p class="leading-relaxed text-gray-400">
+                                Connect directly to your own Google Account (Gmail) securely! This is 100% free (up to 100+ emails/day), requires no external integrations like Resend, and automatically delivers your beautifully styled welcome email directly from your personal or club Gmail inbox.
+                            </p>
+                            <p class="font-semibold text-white">
+                                Easy Setup in 1 Minute:
+                            </p>
+                            <ol class="list-decimal pl-4 space-y-1 leading-relaxed text-gray-400">
+                                <li>Open <a href="https://script.google.com" target="_blank" class="text-asclGreen hover:underline font-bold">script.google.com</a> and click <strong>New Project</strong>.</li>
+                                <li>Click the button below to copy our pre-configured sender script, paste it, replacing everything in the script editor.</li>
+                                <li>Click <strong>Deploy &gt; New deployment</strong>, select type <strong>Web App</strong>, change "Who has access" to <strong>Anyone</strong>, and deploy! Copy the Web App URL and paste it above.</li>
+                            </ol>
+                            <div class="pt-1.5 flex flex-wrap gap-2">
+                                <button type="button" onclick="copyAppsScriptCode()" class="bg-asclGreen/25 hover:bg-asclGreen/35 text-asclGreen border border-asclGreen/45 px-3 py-2 rounded-lg font-bold uppercase tracking-wider text-[9px] transition flex items-center space-x-1.5">
+                                    <i class="fa-regular fa-copy"></i> <span>Copy Apps Script Code</span>
+                                </button>
+                                <a href="https://script.google.com" target="_blank" class="bg-white/5 hover:bg-white/10 text-white border border-white/15 px-3 py-2 rounded-lg font-bold uppercase tracking-wider text-[9px] transition flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Go to Google Apps Script</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Auto-Email Database Trigger Setup Guide -->
+                        <div class="bg-asclGold/5 border border-asclGold/15 rounded-xl p-4 text-[11px] text-gray-300 space-y-2">
+                            <p class="font-bold text-asclGold uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-envelope-open-text mr-1.5 text-xs text-asclGold"></i> OPTION 1: SECURE AUTOMATIC RESEND TRIGGER (VIA SUPABASE)
+                            </p>
+                            <p class="leading-relaxed">
+                                Want a professional transaction email service like Resend? The safe way is to run an automatic email trigger inside your <strong>Supabase SQL database</strong>. It keeps your Resend Key secure and runs completely on the backend!
+                            </p>
+                            <p class="font-semibold text-white">
+                                Setup in 1 minute:
+                            </p>
+                            <ol class="list-decimal pl-4 space-y-1 leading-relaxed text-gray-400">
+                                <li>Get a free account and API Key from <a href="https://resend.com" target="_blank" class="text-asclGold hover:underline font-bold">Resend.com</a>.</li>
+                                <li>Click the button below to copy our pre-coded SQL database trigger to your clipboard.</li>
+                                <li>Go to your <strong>Supabase SQL Editor</strong>, paste the script, put your real Resend Key on line 13, and tap <strong>RUN</strong>!</li>
+                            </ol>
+                            <div class="pt-1.5 flex flex-wrap gap-2">
+                                <button type="button" onclick="copyEmailTriggerSql()" class="bg-asclGold/25 hover:bg-asclGold/35 text-asclGold border border-asclGold/45 px-3 py-2 rounded-lg font-bold uppercase tracking-wider text-[9px] transition flex items-center space-x-1.5">
+                                    <i class="fa-regular fa-copy"></i> <span>Copy SQL Trigger Script</span>
+                                </button>
+                                <a href="https://resend.com" target="_blank" class="bg-white/5 hover:bg-white/10 text-white border border-white/15 px-3 py-2 rounded-lg font-bold uppercase tracking-wider text-[9px] transition flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Get Free Resend Key</span>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="flex justify-end gap-2">
                             <button onclick="saveSupabaseConfig()" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-bold uppercase px-5 py-2.5 rounded-xl transition shadow-lg">
                                 SAVE CREDENTIALS & INITIATE SYNC
@@ -2260,6 +2323,174 @@
             });
         }
 
+        function copyEmailTriggerSql() {
+            const sqlScript = `-- =========================================================================
+--   AUTOMATED EMAIL CONFIRMATION TRIGGER (VIA RESEND API)
+-- =========================================================================
+-- Paste this script directly in your Supabase SQL Editor (https://supabase.com)
+-- to automatically send beautiful welcome emails when athletes register!
+
+-- Enable pg_net extension if not already enabled (used for HTTP POST calls)
+CREATE EXTENSION IF NOT EXISTS pg_net;
+
+-- Create the function that calls the Resend API
+CREATE OR REPLACE FUNCTION public.send_registration_email()
+RETURNS TRIGGER AS $$
+DECLARE
+    -- TODO: REPLACE 're_YOUR_API_KEY' WITH YOUR ACTUAL RESEND API KEY!
+    resend_api_key TEXT := 're_YOUR_API_KEY';
+    
+    -- TODO: REPLACE WITH YOUR VERIFIED SENDER OR LEAVE DEFAULT ONBOARDING SENDER
+    from_email TEXT := 'Aminisa Sport Club <onboarding@resend.dev>';
+    html_content TEXT;
+BEGIN
+    -- Verify the email is present
+    IF NEW.email IS NULL OR NEW.email = '' THEN
+        RETURN NEW;
+    END IF;
+
+    -- Build a beautiful, styled HTML template
+    html_content := '
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 12px; background-color: #0f0f0f; color: #ffffff;">
+        <div style="text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px;">
+            <h1 style="color: #00A651; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;">Aminisa Sport Club League</h1>
+            <p style="color: #D4AF37; margin: 5px 0 0 0; font-weight: bold; font-size: 14px;">OFFICIAL PLAYER ROSTER CONFIRMATION</p>
+        </div>
+        
+        <div style="padding: 20px 0; line-height: 1.6;">
+            <p style="font-size: 16px; margin-top: 0; color: #ffffff;">Hello <strong>' || COALESCE(NEW."fullName", 'Athlete') || '</strong>,</p>
+            <p style="font-size: 14px; color: #dddddd;">Congratulations! Your application has been successfully submitted and logged on the Aminisa Sport Club League digital roster.</p>
+            
+            <div style="background-color: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                <span style="display: block; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Your Official Player ID</span>
+                <span style="font-size: 28px; font-weight: 900; color: #D4AF37; letter-spacing: 2px; display: block; margin: 5px 0;">' || NEW."uniquePlayerId" || '</span>
+                <span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: bold; border-radius: 20px; background-color: rgba(212, 175, 55, 0.15); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    STATUS: ' || UPPER(COALESCE(NEW.status, 'PENDING')) || '
+                </span>
+            </div>
+            
+            <h3 style="color: #00A651; border-bottom: 1px solid #222; padding-bottom: 5px; font-size: 15px;">What happens next?</h3>
+            <ul style="padding-left: 20px; font-size: 13px; color: #ccc;">
+                <li style="margin-bottom: 8px;"><strong>Roster Ledger Updates:</strong> Your player profile is now securely logged in our cloud database.</li>
+                <li style="margin-bottom: 8px;"><strong>Admin Evaluation:</strong> Our committee will review your submission documents, cue hand preference, skill level alignment, and registration fee receipt.</li>
+                <li style="margin-bottom: 8px;"><strong>Active Status:</strong> Once verified, your status will change to Approved, and you will be fully cleared to compete.</li>
+            </ul>
+            
+            <p style="font-size: 12px; color: #888; margin-top: 30px;">
+                This is an automated notification from the Aminisa Sport Club Portal. If you have any questions or need immediate support, you can reach out to the Admin team directly.
+            </p>
+        </div>
+        
+        <div style="border-top: 1px solid #222; padding-top: 20px; text-align: center; font-size: 11px; color: #555;">
+            <p style="margin: 0;">&copy; 2026 Aminisa Sport Club. All Rights Reserved.</p>
+        </div>
+    </div>';
+
+    -- Trigger the server-side HTTP POST request to Resend API
+    PERFORM net.http_post(
+        url := 'https://api.resend.com/emails',
+        headers := jsonb_build_object(
+            'Authorization', 'Bearer ' || resend_api_key,
+            'Content-Type', 'application/json'
+        ),
+        body := jsonb_build_object(
+            'from', from_email,
+            'to', jsonb_build_array(NEW.email),
+            'subject', 'Registration Confirmed: ' || NEW."uniquePlayerId" || ' - Aminisa Sport Club League',
+            'html', html_content
+        )
+    );
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Bind the trigger function to the player_registrations table
+DROP TRIGGER IF EXISTS tr_send_registration_email ON public.player_registrations;
+CREATE TRIGGER tr_send_registration_email
+    AFTER INSERT ON public.player_registrations
+    FOR EACH ROW
+    EXECUTE FUNCTION public.send_registration_email();`;
+
+            navigator.clipboard.writeText(sqlScript).then(() => {
+                alert("📋 SQL Email Trigger Script copied to clipboard!\n\nPaste this directly in your Supabase SQL Editor, replace 're_YOUR_API_KEY' with your real Resend Key, and click Run!");
+            }).catch(err => {
+                console.error("Failed to copy:", err);
+                alert("Could not copy script automatically. You can copy it manually from the SUPABASE_SETUP.sql file in the root directory!");
+            });
+        }
+
+        function copyAppsScriptCode() {
+            const scriptCode = `function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var recipientEmail = params.email;
+    var recipientName = params.fullName;
+    var uniquePlayerId = params.uniquePlayerId;
+    var status = params.status || 'PENDING';
+    
+    if (!recipientEmail) {
+      return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Missing recipient email" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var subject = "Registration Confirmed: " + uniquePlayerId + " - Aminisa Sport Club League";
+    
+    var htmlContent = 
+      '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 12px; background-color: #0f0f0f; color: #ffffff;">' +
+        '<div style="text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px;">' +
+          '<h1 style="color: #00A651; margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;">Aminisa Sport Club League</h1>' +
+          '<p style="color: #D4AF37; margin: 5px 0 0 0; font-weight: bold; font-size: 14px;">OFFICIAL PLAYER ROSTER CONFIRMATION</p>' +
+        '</div>' +
+        '<div style="padding: 20px 0; line-height: 1.6;">' +
+          '<p style="font-size: 16px; margin-top: 0; color: #ffffff;">Hello <strong>' + recipientName + '</strong>,</p>' +
+          '<p style="font-size: 14px; color: #dddddd;">Congratulations! Your application has been successfully submitted and logged on the Aminisa Sport Club League digital roster.</p>' +
+          '<div style="background-color: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">' +
+            '<span style="display: block; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Your Official Player ID</span>' +
+            '<span style="font-size: 28px; font-weight: 900; color: #D4AF37; letter-spacing: 2px; display: block; margin: 5px 0;">' + uniquePlayerId + '</span>' +
+            '<span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: bold; border-radius: 20px; background-color: rgba(212, 175, 55, 0.15); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.3);">' +
+              'STATUS: ' + status.toUpperCase() +
+            '</span>' +
+          '</div>' +
+          '<h3 style="color: #00A651; border-bottom: 1px solid #222; padding-bottom: 5px; font-size: 15px;">What happens next?</h3>' +
+          '<ul style="padding-left: 20px; font-size: 13px; color: #ccc;">' +
+            '<li style="margin-bottom: 8px;"><strong>Roster Ledger Updates:</strong> Your player profile is now securely logged in our cloud registration system.</li>' +
+            '<li style="margin-bottom: 8px;"><strong>Admin Evaluation:</strong> Our committee will review your submission documents, cue hand preference, skill level alignment, and registration fee receipt.</li>' +
+            '<li style="margin-bottom: 8px;"><strong>Active Status:</strong> Once verified, your status will change to Approved, and you will be fully cleared to compete.</li>' +
+          '</ul>' +
+          '<p style="font-size: 12px; color: #888; margin-top: 30px;">' +
+            'This is an automated notification from the Aminisa Sport Club Portal. If you have any questions or need immediate support, you can reach out to the Admin team directly.' +
+          '</p>' +
+        '</div>' +
+        '<div style="border-top: 1px solid #222; padding-top: 20px; text-align: center; font-size: 11px; color: #555;">' +
+          '<p style="margin: 0;">&copy; 2026 Aminisa Sport Club. All Rights Reserved.</p>' +
+        '</div>' +
+      '</div>';
+      
+    MailApp.sendEmail({
+      to: recipientEmail,
+      subject: subject,
+      htmlBody: htmlContent,
+      name: "Aminisa Sport Club"
+    });
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Email sent successfully" }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
+
+            navigator.clipboard.writeText(scriptCode).then(() => {
+                alert("📋 Google Apps Script Code copied to clipboard!\n\n1. Paste it into script.google.com.\n2. Deploy as a Web App (set 'Who has access' to 'Anyone').\n3. Copy the deployment URL and paste it into the Web Apps Script input field!");
+            }).catch(err => {
+                console.error("Failed to copy:", err);
+                alert("Could not copy script automatically. Please check your browser permissions.");
+            });
+        }
+
         function downloadAthleteFile() {
             if (!lastRegisteredAthlete) {
                 alert("No registration found.");
@@ -2446,13 +2677,13 @@
                 console.warn("Could not save registrations to localStorage:", e);
             }
             
-            // Send registration email via Resend if configured
+            // Send registration email via configured gateways (Gmail / Resend)
             try {
                 if (registration.email) {
-                    sendResendEmailWeb(registration.email, registration.fullName, registration.uniquePlayerId, registration.status);
+                    triggerWelcomeEmail(registration.email, registration.fullName, registration.uniquePlayerId, registration.status);
                 }
             } catch(e) {
-                console.warn("Could not trigger Resend email send on web:", e);
+                console.warn("Could not trigger registration email send on web:", e);
             }
 
             try {
@@ -2824,9 +3055,11 @@
 
         // Toggle state approval logic
         function updatePlayerStatus(playerId, nextStatus) {
+            let updatedPlayer = null;
             registrations = registrations.map(player => {
                 if (player.id === playerId) {
                     player.status = nextStatus;
+                    updatedPlayer = player;
                     // Sync status to Supabase if configured
                     if (supabaseClient) {
                         supabaseClient.from('player_registrations')
@@ -2845,6 +3078,15 @@
                 console.warn("Could not update registrations in localStorage:", e);
             }
             renderAdminRoster();
+
+            // Send email notification on status change
+            if (updatedPlayer && updatedPlayer.email) {
+                try {
+                    triggerWelcomeEmail(updatedPlayer.email, updatedPlayer.fullName, updatedPlayer.uniquePlayerId, updatedPlayer.status);
+                } catch (e) {
+                    console.error("Could not send status update email:", e);
+                }
+            }
         }
 
         // Deep Search Filters in Admin
@@ -2929,6 +3171,9 @@
             if (resendKeyInput) resendKeyInput.value = localStorage.getItem('ascl_resend_key') || '';
             if (resendFromInput) resendFromInput.value = localStorage.getItem('ascl_resend_from') || 'Aminisa Sport Club <onboarding@resend.dev>';
 
+            const appsScriptUrlInput = document.getElementById('web-apps-script-url');
+            if (appsScriptUrlInput) appsScriptUrlInput.value = localStorage.getItem('ascl_apps_script_url') || '';
+
             if (url && key && typeof supabase !== 'undefined') {
                 try {
                     supabaseClient = supabase.createClient(url, key);
@@ -2967,6 +3212,7 @@
             const key = document.getElementById('web-supabase-key').value.trim();
             const resendKey = document.getElementById('web-resend-key').value.trim();
             const resendFrom = document.getElementById('web-resend-from').value.trim();
+            const appsScriptUrl = document.getElementById('web-apps-script-url').value.trim();
 
             if (!url || !key) {
                 alert("Please fill in both Supabase URL and Anon Key to configure integration.");
@@ -2977,8 +3223,9 @@
             localStorage.setItem('ascl_supabase_key', key);
             localStorage.setItem('ascl_resend_key', resendKey);
             localStorage.setItem('ascl_resend_from', resendFrom);
+            localStorage.setItem('ascl_apps_script_url', appsScriptUrl);
             
-            alert("Credentials Configured Successfully!");
+            alert("Credentials & Gateway Configured Successfully!");
             document.getElementById('supabase-config-form').classList.add('hidden');
             initSupabaseWeb();
         }
@@ -3160,6 +3407,42 @@
             } catch (err) {
                 console.error("Failed to send Resend email from Web:", err);
             }
+        }
+
+        async function sendAppsScriptEmailWeb(recipientEmail, recipientName, uniquePlayerId, status) {
+            const webappUrl = localStorage.getItem('ascl_apps_script_url');
+
+            if (!webappUrl || webappUrl.trim() === "" || webappUrl.includes("your-script-url")) {
+                console.log("Google Apps Script URL not configured on Web client. Skipping confirmation email.");
+                return;
+            }
+
+            try {
+                const response = await fetch(webappUrl, {
+                    method: "POST",
+                    mode: "no-cors", // Essential to bypass CORS preflight blocking on Google Web Apps redirects
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: recipientEmail,
+                        fullName: recipientName,
+                        uniquePlayerId: uniquePlayerId,
+                        status: status
+                    })
+                });
+                console.log("Apps Script email dispatch triggered successfully.");
+            } catch (err) {
+                console.error("Failed to trigger Apps Script email:", err);
+            }
+        }
+
+        async function triggerWelcomeEmail(recipientEmail, recipientName, uniquePlayerId, status) {
+            // Send email using Resend if configured
+            await sendResendEmailWeb(recipientEmail, recipientName, uniquePlayerId, status);
+            
+            // Send email using Google Apps Script if configured
+            await sendAppsScriptEmailWeb(recipientEmail, recipientName, uniquePlayerId, status);
         }
 
         // ------------------ SPECTATOR TICKETING STATE ------------------
