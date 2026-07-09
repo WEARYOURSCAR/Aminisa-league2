@@ -947,8 +947,9 @@
                     </div>
 
                     <!-- Submit Action Button -->
-                    <button type="submit" class="w-full bg-asclGreen hover:bg-emerald-600 text-white font-extrabold uppercase tracking-widest py-4 rounded-lg shadow-lg hover:shadow-emerald-950/40 transition duration-200">
-                        SUBMIT OFFICIAL ENVELOPE
+                    <button type="submit" class="w-full bg-asclGreen hover:bg-emerald-600 text-white font-extrabold uppercase tracking-widest py-4 rounded-lg shadow-lg hover:shadow-emerald-950/40 transition duration-200 flex items-center justify-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>SUBMIT & SEND TO WHATSAPP</span>
                     </button>
                 </form>
             </div>
@@ -1018,12 +1019,12 @@
                 </div>
 
                 <!-- Share Option Panel -->
-                <div class="bg-[#2a1214] border border-[#ff3b44]/40 rounded-xl p-5 mt-4 text-left space-y-3">
-                    <h4 class="text-xs font-black text-red-500 uppercase tracking-widest flex items-center">
-                        <span class="mr-1.5">⚠️</span> CRITICAL ACTION REQUIRED!
+                <div class="bg-asclGreen/5 border border-asclGreen/30 rounded-xl p-5 mt-4 text-left space-y-3">
+                    <h4 class="text-xs font-black text-asclGreen uppercase tracking-widest flex items-center">
+                        <span class="mr-1.5">📲</span> AUTOMATIC WHATSAPP REDIRECT ACTIVE
                     </h4>
                     <p class="text-xs text-gray-200 leading-relaxed font-semibold">
-                        You MUST click the <span class="text-asclGreen font-black">"WHATSAPP SHARE TO ADMIN"</span> button below to send your completed registration packet directly to the ASCL Admin. Your registration is NOT officially submitted or reviewed until you click that button to send your details!
+                        We have automatically copied your registration details to your clipboard and launched a WhatsApp chat with the ASCL Admin. If your browser blocked the window or you need to re-send, please use the <span class="text-asclGreen font-black">"WHATSAPP SHARE TO ADMIN"</span> button below to submit your profile!
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                         <button onclick="shareWhatsAppLink()" class="bg-asclGreen hover:bg-emerald-600 text-white text-[10px] font-bold uppercase py-2.5 px-3 rounded-lg transition flex items-center justify-center space-x-2">
@@ -2207,7 +2208,14 @@
             const token = getAthleteToken(lastRegisteredAthlete);
             const baseUrl = window.location.href.split('?')[0];
             const importUrl = baseUrl + "?import_token=" + token;
-            const message = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) rooster packet!\n\n👉 ${importUrl}`;
+            const message = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) registration packet!\n\nName: ${lastRegisteredAthlete.fullName}\nID: ${lastRegisteredAthlete.uniquePlayerId}\nCue Hand: ${lastRegisteredAthlete.preferredCueHand || "Right-Handed"}\nSkill Level: ${lastRegisteredAthlete.skillLevel || "Intermediate"}\nResidency: ${lastRegisteredAthlete.residentialArea || "Ilorin"}\n\n👉 Direct Import Link: ${importUrl}`;
+            
+            navigator.clipboard.writeText(message).then(() => {
+                console.log("Roster details copied to clipboard.");
+            }).catch(err => {
+                console.warn("Could not copy:", err);
+            });
+
             window.open(`https://wa.me/qr/UJLC6WT7F3QWE1?text=${encodeURIComponent(message)}`, '_blank');
         }
 
@@ -2487,6 +2495,23 @@
             // Toggle visual panels of form success indicators
             document.getElementById('register-form-box').classList.add('hidden');
             document.getElementById('register-success-box').classList.remove('hidden');
+
+            // Automatic copy to clipboard and open WhatsApp
+            const token = getAthleteToken(registration);
+            const baseUrl = window.location.href.split('?')[0];
+            const importUrl = baseUrl + "?import_token=" + token;
+            const messageText = `Hi Admin, here is my Aminisa Snooker Club League (ASCL) registration packet!\n\nName: ${registration.fullName}\nID: ${registration.uniquePlayerId}\nCue Hand: ${registration.preferredCueHand || "Right-Handed"}\nSkill Level: ${registration.skillLevel || "Intermediate"}\nResidency: ${registration.residentialArea || "Ilorin"}\n\n👉 Direct Import Link: ${importUrl}`;
+            
+            navigator.clipboard.writeText(messageText).then(() => {
+                console.log("Roster details copied to clipboard.");
+            }).catch(err => {
+                console.warn("Could not copy:", err);
+            });
+
+            setTimeout(() => {
+                alert(`🎉 Envelope Secured Successfully!\n\nYour registration has been locally committed. We are now opening WhatsApp to send your official profile details to the League Admin.\n\nYour registration message was copied to your clipboard. Simply PASTE and SEND once WhatsApp loads!`);
+                window.open(`https://wa.me/qr/UJLC6WT7F3QWE1?text=${encodeURIComponent(messageText)}`, '_blank');
+            }, 350);
 
             // Reset inputs
             document.getElementById('ascl-registration-form').reset();
