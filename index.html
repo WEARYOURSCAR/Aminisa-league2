@@ -341,6 +341,160 @@
                 </div>
             </div>
 
+            <!-- ==================== OPEN DAY HIGHLIGHTS SLIDE SHOWCASE ==================== -->
+            <div class="relative bg-gradient-to-br from-[#0c0d0c] to-asclCard border border-asclGold/25 rounded-2xl p-6 md:p-8 overflow-hidden shadow-2xl space-y-6">
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/5 pb-5 gap-4">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 bg-asclGreen/10 border border-asclGreen/30 rounded-full px-3 py-1 text-asclGreen text-[10px] font-black uppercase tracking-widest mb-2.5">
+                            <i class="fa-solid fa-camera-retro mr-1"></i> LIVE FROM ILORIN
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-black text-white tracking-tight uppercase">
+                            Open Day <span class="text-asclGold">Highlights Gallery</span>
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-1">
+                            A retrospective look at the elite cue tournament's inauguration event
+                        </p>
+                    </div>
+                    <!-- Photo Counter / Quick Info -->
+                    <div class="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 shadow-lg">
+                        <i class="fa-solid fa-images text-asclGold text-base mr-0.5"></i>
+                        <span class="text-[10px] font-bold text-gray-300 uppercase tracking-widest"><span id="highlight-current-idx">1</span> / 5 Official Photos</span>
+                    </div>
+                </div>
+
+                <!-- Slider Viewport Container -->
+                <div class="relative group rounded-xl overflow-hidden border border-white/5 bg-black/60 shadow-inner h-[260px] sm:h-[380px] md:h-[480px]">
+                    <!-- Slides Loop -->
+                    <div id="highlights-slider-container" class="w-full h-full relative">
+                        <!-- Slide 1 -->
+                        <div class="highlight-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-end" data-slide-index="0">
+                            <!-- Image Background -->
+                            <img src="app/src/main/res/drawable/img_openday_group.jpg" alt="ASCL Official Roster Group Line-up" class="absolute inset-0 w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-700" onclick="zoomHighlightImage('app/src/main/res/drawable/img_openday_group.jpg', 'Official Roster Group Line-up')">
+                            <!-- Overlay Gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none"></div>
+                            <!-- Slide Caption Content -->
+                            <div class="relative z-10 p-5 md:p-8 space-y-2 max-w-3xl">
+                                <span class="inline-block bg-asclGreen text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
+                                    Official Launch
+                                </span>
+                                <h4 class="text-lg md:text-2xl font-black text-white uppercase tracking-tight">
+                                    Official Roster Group Line-up
+                                </h4>
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-medium">
+                                    Athletes, state coordinators, media ambassadors, and distinguished guests standing together outside the main venue. A proud, historical moment inaugurating Nigeria's premier cue league.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="highlight-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-end" data-slide-index="1">
+                            <img src="app/src/main/res/drawable/img_openday_emir.jpg" alt="Royal Visit by Kwara State Dignitaries & Elders" class="absolute inset-0 w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-700" onclick="zoomHighlightImage('app/src/main/res/drawable/img_openday_emir.jpg', 'Royal Visit by Kwara State Dignitaries')">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none"></div>
+                            <div class="relative z-10 p-5 md:p-8 space-y-2 max-w-3xl">
+                                <span class="inline-block bg-asclGold text-black text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
+                                    Honorary Visit
+                                </span>
+                                <h4 class="text-lg md:text-2xl font-black text-white uppercase tracking-tight">
+                                    Royal Visit by Kwara State Dignitaries & Elders
+                                </h4>
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-medium">
+                                    Our team was deeply honored by the official visit and blessings from our prestigious local leaders, traditional dignitaries, and community pillars, fully endorsing our mission of grassroots sports development in Kwara.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="highlight-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-end" data-slide-index="2">
+                            <img src="app/src/main/res/drawable/img_openday_officials.jpg" alt="Committed Tournament Organizers & Staff" class="absolute inset-0 w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-700" onclick="zoomHighlightImage('app/src/main/res/drawable/img_openday_officials.jpg', 'Committed Tournament Organizers & Staff')">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none"></div>
+                            <div class="relative z-10 p-5 md:p-8 space-y-2 max-w-3xl">
+                                <span class="inline-block bg-asclGreen text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
+                                    ASCL Officials
+                                </span>
+                                <h4 class="text-lg md:text-2xl font-black text-white uppercase tracking-tight">
+                                    Committed Tournament Organizers & Staff
+                                </h4>
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-medium">
+                                    Our dedicated tournament officials and technical team coordinating player registrations, checking rules, and ensuring seamless execution of match brackets.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4 -->
+                        <div class="highlight-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-end" data-slide-index="3">
+                            <img src="app/src/main/res/drawable/img_openday_announcer.jpg" alt="Official Address & Opening Proclamation" class="absolute inset-0 w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-700" onclick="zoomHighlightImage('app/src/main/res/drawable/img_openday_announcer.jpg', 'Official Address & Opening Proclamation')">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none"></div>
+                            <div class="relative z-10 p-5 md:p-8 space-y-2 max-w-3xl">
+                                <span class="inline-block bg-asclGold text-black text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
+                                    League Briefing
+                                </span>
+                                <h4 class="text-lg md:text-2xl font-black text-white uppercase tracking-tight">
+                                    Official Address & Opening Proclamation
+                                </h4>
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-medium">
+                                    Official welcome address, player briefing, and rules proclamation by the league commissioner, setting the stage for an intense and respectful championship.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5 -->
+                        <div class="highlight-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-end" data-slide-index="4">
+                            <img src="app/src/main/res/drawable/img_openday_arena.jpg" alt="The Championship Arena & Roster Launch" class="absolute inset-0 w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-700" onclick="zoomHighlightImage('app/src/main/res/drawable/img_openday_arena.jpg', 'The Championship Arena')">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent pointer-events-none"></div>
+                            <div class="relative z-10 p-5 md:p-8 space-y-2 max-w-3xl">
+                                <span class="inline-block bg-asclGreen text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shadow-sm">
+                                    Palms Mall Venue
+                                </span>
+                                <h4 class="text-lg md:text-2xl font-black text-white uppercase tracking-tight">
+                                    The Championship Arena & Roster Launch
+                                </h4>
+                                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-medium">
+                                    A majestic atmosphere inside our premium Snooker & Billiards Lounge at Mix & Mingle, Palms Mall, setup with tournament-grade tables, professional lighting, and official championship branding.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button onclick="changeHighlightSlide(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-asclGreen text-white w-10 h-10 rounded-full flex items-center justify-center border border-white/10 hover:border-asclGreen transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 z-20 focus:outline-none">
+                        <i class="fa-solid fa-chevron-left text-sm"></i>
+                    </button>
+                    <button onclick="changeHighlightSlide(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-asclGreen text-white w-10 h-10 rounded-full flex items-center justify-center border border-white/10 hover:border-asclGreen transition-all duration-300 shadow-lg opacity-0 group-hover:opacity-100 z-20 focus:outline-none">
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+
+                    <!-- Indicators (Pagination dots) -->
+                    <div class="absolute bottom-4 right-6 flex space-x-2 z-20">
+                        <button onclick="setHighlightSlide(0)" class="highlight-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-all duration-300" data-dot-index="0"></button>
+                        <button onclick="setHighlightSlide(1)" class="highlight-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-all duration-300" data-dot-index="1"></button>
+                        <button onclick="setHighlightSlide(2)" class="highlight-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-all duration-300" data-dot-index="2"></button>
+                        <button onclick="setHighlightSlide(3)" class="highlight-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-all duration-300" data-dot-index="3"></button>
+                        <button onclick="setHighlightSlide(4)" class="highlight-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white transition-all duration-300" data-dot-index="4"></button>
+                    </div>
+
+                    <!-- Play/Pause Indicator (Small visual feedback) -->
+                    <div class="absolute top-4 left-6 flex items-center space-x-2 bg-black/50 border border-white/10 px-2.5 py-1 rounded-full z-20 text-[8px] text-gray-400 font-bold uppercase tracking-wider">
+                        <span id="slider-play-pulse" class="w-1.5 h-1.5 rounded-full bg-asclGreen animate-pulse"></span>
+                        <span id="slider-play-text">Auto Playing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lightbox Modal for Gallery Images -->
+            <div id="gallery-lightbox" class="hidden fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4" onclick="closeGalleryLightbox()">
+                <button onclick="closeGalleryLightbox()" class="absolute top-4 right-4 md:top-8 md:right-8 bg-white/10 hover:bg-red-600 hover:text-white text-gray-300 w-12 h-12 rounded-full flex items-center justify-center border border-white/10 transition-all duration-200 shadow-xl z-[110] focus:outline-none">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+                <div class="relative max-w-5xl max-h-[85vh] flex items-center justify-center rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black" onclick="event.stopPropagation()">
+                    <img id="lightbox-image" src="" alt="Zoomed Highlight" class="max-w-full max-h-[80vh] object-contain rounded-lg">
+                </div>
+                <!-- Lightbox Description Panel -->
+                <div class="w-full max-w-3xl mt-4 text-center px-4 space-y-1 pointer-events-none">
+                    <h4 id="lightbox-title" class="text-sm md:text-lg font-black uppercase text-asclGold tracking-widest"></h4>
+                </div>
+            </div>
+
             <!-- ==================== LIVE QUALIFIERS FIXTURE BOARD ==================== -->
             <div class="bg-gradient-to-br from-[#0B1E14] via-asclDark to-[#050C08] border-2 border-asclGreen/40 rounded-2xl overflow-hidden shadow-2xl space-y-6 my-8">
                 <!-- Header Banner -->
@@ -3628,11 +3782,140 @@ CREATE TRIGGER tr_send_registration_email
             }
         }
 
+        // 10. HIGHLIGHTS GALLERY SLIDER MANAGER
+        let currentHighlightIndex = 0;
+        let sliderTimer = null;
+        let isSliderHovered = false;
+
+        function initHighlightsSlider() {
+            showHighlightSlide(0);
+            startSliderAutoplay();
+
+            // Hover events to pause / resume autoplay
+            const container = document.getElementById('highlights-slider-container');
+            if (container) {
+                container.addEventListener('mouseenter', () => {
+                    isSliderHovered = true;
+                    updateSliderStatusUI();
+                });
+                container.addEventListener('mouseleave', () => {
+                    isSliderHovered = false;
+                    updateSliderStatusUI();
+                });
+            }
+        }
+
+        function showHighlightSlide(index) {
+            const slides = document.querySelectorAll('.highlight-slide');
+            const dots = document.querySelectorAll('.highlight-dot');
+            if (slides.length === 0) return;
+
+            // Handle wrapping
+            if (index >= slides.length) {
+                currentHighlightIndex = 0;
+            } else if (index < 0) {
+                currentHighlightIndex = slides.length - 1;
+            } else {
+                currentHighlightIndex = index;
+            }
+
+            // Update DOM element states with transitions
+            slides.forEach((slide, idx) => {
+                if (idx === currentHighlightIndex) {
+                    slide.classList.remove('opacity-0', 'pointer-events-none');
+                    slide.classList.add('opacity-100', 'z-10');
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+
+            // Update pagination dots styling
+            dots.forEach((dot, idx) => {
+                if (idx === currentHighlightIndex) {
+                    dot.classList.remove('bg-white/40');
+                    dot.classList.add('bg-asclGold', 'scale-125', 'w-4');
+                } else {
+                    dot.classList.remove('bg-asclGold', 'scale-125', 'w-4');
+                    dot.classList.add('bg-white/40');
+                }
+            });
+
+            // Update counter UI
+            const counterEl = document.getElementById('highlight-current-idx');
+            if (counterEl) {
+                counterEl.innerText = currentHighlightIndex + 1;
+            }
+        }
+
+        function changeHighlightSlide(step) {
+            showHighlightSlide(currentHighlightIndex + step);
+            resetSliderAutoplay();
+        }
+
+        // Support swipe/keyboard or direct dot click
+        function setHighlightSlide(index) {
+            showHighlightSlide(index);
+            resetSliderAutoplay();
+        }
+
+        function startSliderAutoplay() {
+            if (sliderTimer) clearInterval(sliderTimer);
+            sliderTimer = setInterval(() => {
+                if (!isSliderHovered) {
+                    showHighlightSlide(currentHighlightIndex + 1);
+                }
+            }, 5000); // 5 seconds autoplay intervals
+        }
+
+        function resetSliderAutoplay() {
+            startSliderAutoplay();
+        }
+
+        function updateSliderStatusUI() {
+            const textEl = document.getElementById('slider-play-text');
+            const pulseEl = document.getElementById('slider-play-pulse');
+            if (!textEl || !pulseEl) return;
+
+            if (isSliderHovered) {
+                textEl.innerText = "Paused (Hover)";
+                pulseEl.classList.remove('bg-asclGreen', 'animate-pulse');
+                pulseEl.classList.add('bg-yellow-500');
+            } else {
+                textEl.innerText = "Auto Playing";
+                pulseEl.classList.remove('bg-yellow-500');
+                pulseEl.classList.add('bg-asclGreen', 'animate-pulse');
+            }
+        }
+
+        // Lightbox controllers
+        function zoomHighlightImage(src, title) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const img = document.getElementById('lightbox-image');
+            const titleEl = document.getElementById('lightbox-title');
+
+            if (lightbox && img && titleEl) {
+                img.src = src;
+                titleEl.innerText = title;
+                lightbox.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Disable background scrolling
+            }
+        }
+
+        function closeGalleryLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            if (lightbox) {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore background scrolling
+            }
+        }
+
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             initSupabaseWeb();
             updateWebCountdown();
             checkUrlParamsForImport();
+            initHighlightsSlider();
 
             // Set max date for date of birth to today
             const dobInput = document.getElementById('reg-dob');
