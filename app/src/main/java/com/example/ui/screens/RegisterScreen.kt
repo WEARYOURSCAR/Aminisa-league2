@@ -156,8 +156,11 @@ fun RegisterScreen(
             }
         }
 
-        // ====== SECTION 1: PERSONAL INFORMATION ======
-        Card(
+        val isRegOpen by viewModel.isRegistrationOpen.collectAsState()
+
+        if (isRegOpen) {
+            // ====== SECTION 1: PERSONAL INFORMATION ======
+            Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
@@ -839,6 +842,62 @@ fun RegisterScreen(
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.sp
             )
+        }
+        } else {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+                    .border(1.dp, Color(0xFFD4AF37).copy(0.3f), RoundedCornerShape(12.dp)),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF141414)),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "Registration Closed",
+                        tint = Color(0xFFD4AF37),
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "REGISTRATION CLOSED",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.5.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "ROSTER COMPLETED & COMMITTED",
+                        color = Color(0xFF00A651),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Registration for the Aminisa Sport Club League is currently closed. Thank you for your interest! The tournament brackets and match fixtures are currently being drawn.",
+                        color = Color.LightGray,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 18.sp
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "Existing registered players can still access and download their official digital player card and share packages above.",
+                        color = Color.Gray,
+                        fontSize = 11.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 15.sp
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(28.dp))
 

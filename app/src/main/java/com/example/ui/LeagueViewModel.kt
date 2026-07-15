@@ -54,12 +54,15 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
     // Last registered player to display on success screen
     val lastRegisteredPlayer = MutableStateFlow<PlayerRegistration?>(null)
 
+    val isRegistrationOpen = MutableStateFlow<Boolean>(false)
+
     val supabaseSyncState = MutableStateFlow<String>("Checking configuration...")
     val isSupabaseConfigured = MutableStateFlow<Boolean>(false)
 
     init {
         try {
             val prefs = application.getSharedPreferences("ascl_prefs", Context.MODE_PRIVATE)
+            isRegistrationOpen.value = prefs.getBoolean("is_registration_open", false)
             val jsonStr = prefs.getString("last_player_json", null)
             if (jsonStr != null) {
                 val json = org.json.JSONObject(jsonStr)
@@ -226,6 +229,12 @@ class LeagueViewModel(application: Application) : AndroidViewModel(application) 
                 Toast.makeText(getApplication(), "Failed to update status", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun setRegistrationOpen(open: Boolean) {
+        isRegistrationOpen.value = open
+        val prefs = getApplication<Application>().getSharedPreferences("ascl_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("is_registration_open", open).apply()
     }
 
     fun importPlayerToken(token: String, onSuccess: () -> Unit, onError: (String) -> Unit) {

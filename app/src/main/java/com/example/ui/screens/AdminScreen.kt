@@ -353,6 +353,61 @@ fun AdminScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // REGISTRATION GATEWAY CONTROL CARD
+            val isRegOpen by viewModel.isRegistrationOpen.collectAsState()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .background(Color(0xFF141414), RoundedCornerShape(8.dp))
+                    .border(1.dp, if (isRegOpen) Color(0xFF00A651).copy(0.3f) else Color(0xFFD4AF37).copy(0.3f), RoundedCornerShape(8.dp))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "Registration Status",
+                        tint = if (isRegOpen) Color(0xFF00A651) else Color(0xFFD4AF37),
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Column {
+                        Text(
+                            text = "PLAYER REGISTRATION STATUS",
+                            color = Color.White,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp
+                        )
+                        Text(
+                            text = if (isRegOpen) "STATUS: ACTIVE (PLAYERS CAN ENROLL)" else "STATUS: STOPPED (REGISTRATION IS CLOSED)",
+                            color = if (isRegOpen) Color(0xFF00A651) else Color(0xFFD4AF37),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+
+                Switch(
+                    checked = isRegOpen,
+                    onCheckedChange = { viewModel.setRegistrationOpen(it) },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = Color(0xFF00A651),
+                        uncheckedThumbColor = Color.Gray,
+                        uncheckedTrackColor = Color.DarkGray
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // SEARCH AND EXPORT RIDER
             Row(
                 modifier = Modifier.fillMaxWidth(),

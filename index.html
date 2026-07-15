@@ -827,6 +827,23 @@
                     </button>
                 </div>
 
+                <!-- REGISTRATION CLOSED BOX -->
+                <div id="register-closed-box" class="hidden text-center py-10 space-y-4">
+                    <div class="w-16 h-16 mx-auto bg-asclGold/10 rounded-full flex items-center justify-center text-asclGold">
+                        <i class="fa-solid fa-lock text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white uppercase tracking-wider">REGISTRATION IS CLOSED</h3>
+                        <p class="text-[10px] text-asclGreen font-bold uppercase tracking-widest mt-1">Roster Completed & Committed</p>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-md mx-auto leading-relaxed">
+                        Player registration for the Aminisa Sport Club League is currently closed. Thank you for your interest! The tournament brackets and fixtures are being compiled.
+                    </p>
+                    <p class="text-[11px] text-gray-500 max-w-sm mx-auto leading-relaxed">
+                        If you have already registered, you can still view your official ASC Player ID card or retrieve details using the banner above.
+                    </p>
+                </div>
+
                 <form id="ascl-registration-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Full Name -->
@@ -1339,6 +1356,30 @@
                     <div class="bg-asclCard border border-red-500/20 rounded-xl p-4 text-center">
                         <span class="text-[9px] font-bold text-red-500 uppercase tracking-widest">Rejected / Refund</span>
                         <h3 id="stat-rejected" class="text-2xl font-black text-red-500 mt-1">0</h3>
+                    </div>
+                </div>
+
+                <!-- Player Registration System Control -->
+                <div class="bg-asclCard border border-white/5 rounded-2xl p-5 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-asclGold/10 flex items-center justify-center text-asclGold" id="admin-reg-status-icon-box">
+                                <i class="fa-solid fa-lock text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-white uppercase tracking-widest">PLAYER REGISTRATION GATEWAY</h4>
+                                <p class="text-[10px] text-gray-400 mt-0.5">Control whether athletes can enroll in the league roster. Default: STOPPED.</p>
+                                <div class="mt-1 flex items-center space-x-1.5">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-asclGold" id="admin-reg-status-dot"></span>
+                                    <span id="admin-reg-status-label" class="text-[10px] font-bold text-asclGold uppercase tracking-wider">STOPPED (CLOSED)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" onclick="toggleRegistrationStatus()" id="admin-reg-toggle-btn" class="bg-asclGreen/15 hover:bg-asclGreen/25 text-asclGreen border border-asclGreen/30 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition">
+                                OPEN REGISTRATION
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -2192,6 +2233,74 @@
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        // --- REGISTRATION CONTROL LOGIC ---
+        let isRegistrationOpen = false;
+        try {
+            isRegistrationOpen = localStorage.getItem('ascl_is_registration_open') === 'true'; // Defaults to false
+        } catch(e) {
+            console.error("Failed to load registration status:", e);
+        }
+
+        function updateRegistrationStateUI() {
+            const form = document.getElementById('ascl-registration-form');
+            const closedBox = document.getElementById('register-closed-box');
+            const statusLabel = document.getElementById('admin-reg-status-label');
+            const toggleBtn = document.getElementById('admin-reg-toggle-btn');
+            const statusDot = document.getElementById('admin-reg-status-dot');
+            const iconBox = document.getElementById('admin-reg-status-icon-box');
+            
+            if (isRegistrationOpen) {
+                if (form) form.classList.remove('hidden');
+                if (closedBox) closedBox.classList.add('hidden');
+                
+                if (statusLabel) {
+                    statusLabel.innerText = "ACTIVE (PLAYERS CAN ENROLL)";
+                    statusLabel.className = "text-[10px] font-bold text-asclGreen uppercase tracking-wider";
+                }
+                if (statusDot) {
+                    statusDot.className = "inline-block w-2 h-2 rounded-full bg-asclGreen";
+                }
+                if (iconBox) {
+                    iconBox.className = "w-10 h-10 rounded-xl bg-asclGreen/10 flex items-center justify-center text-asclGreen";
+                    iconBox.innerHTML = '<i class="fa-solid fa-lock-open text-lg"></i>';
+                }
+                if (toggleBtn) {
+                    toggleBtn.innerText = "STOP REGISTRATION";
+                    toggleBtn.className = "bg-red-600/15 hover:bg-red-600/25 text-red-500 border border-red-500/30 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition";
+                }
+            } else {
+                if (form) form.classList.add('hidden');
+                if (closedBox) closedBox.classList.remove('hidden');
+                
+                if (statusLabel) {
+                    statusLabel.innerText = "STOPPED (CLOSED)";
+                    statusLabel.className = "text-[10px] font-bold text-asclGold uppercase tracking-wider";
+                }
+                if (statusDot) {
+                    statusDot.className = "inline-block w-2 h-2 rounded-full bg-asclGold";
+                }
+                if (iconBox) {
+                    iconBox.className = "w-10 h-10 rounded-xl bg-asclGold/10 flex items-center justify-center text-asclGold";
+                    iconBox.innerHTML = '<i class="fa-solid fa-lock text-lg"></i>';
+                }
+                if (toggleBtn) {
+                    toggleBtn.innerText = "OPEN REGISTRATION";
+                    toggleBtn.className = "bg-asclGreen/15 hover:bg-asclGreen/25 text-asclGreen border border-asclGreen/30 px-4 py-2 rounded-xl text-[10px] font-bold uppercase transition";
+                }
+            }
+        }
+
+        function toggleRegistrationStatus() {
+            isRegistrationOpen = !isRegistrationOpen;
+            try {
+                localStorage.setItem('ascl_is_registration_open', isRegistrationOpen ? 'true' : 'false');
+            } catch(e) {
+                console.error("Failed to save registration status:", e);
+            }
+            updateRegistrationStateUI();
+            alert(`Player registration has been ${isRegistrationOpen ? 'OPENED' : 'STOPPED/CLOSED'} successfully!`);
         }
 
         // 3. REGISTRATION FORM HANDLING
@@ -3633,6 +3742,7 @@ CREATE TRIGGER tr_send_registration_email
             initSupabaseWeb();
             updateWebCountdown();
             checkUrlParamsForImport();
+            updateRegistrationStateUI();
 
             // Set max date for date of birth to today
             const dobInput = document.getElementById('reg-dob');
